@@ -4,12 +4,14 @@ class Kota_Model extends CI_Model {
         public function __construct()
         {
                 $this->load->database();
+
+                $this->create_Kelas();
         }
 
         public function create_Kelas(){
                 $sql = "SHOW TABLES LIKE 'Kelas'";
                 $exist = $this->db->query($sql);
-                if($exist > 0){
+                if($exist->num_rows() == 0){
                          $sql2="CREATE TABLE `tamiyaku`.`Kelas` ( `id` INT NOT NULL AUTO_INCREMENT , `nama` VARCHAR(255) NOT NULL , `deskripsi` TEXT NOT NULL , PRIMARY KEY (`id`)) ENGINE = InnoDB;";
                          $this->db->query($sql2);
                 }
