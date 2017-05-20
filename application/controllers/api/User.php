@@ -23,12 +23,14 @@ class User extends REST_Controller {
         try {            
             $data = json_decode(file_get_contents('php://input'));
             $nama = $data->nama;
-            $id_kota = $data->id_kota;
             $no_hp = $data->no_hp;
             $jenis_kelamin = $data->jenis_kelamin;
             $id_kelas = $data->id_kelas;
             $password = $data->password;
-            $result = $this->User_Model->insert_user($nama, $password, $id_kota, $no_hp, $jenis_kelamin, $id_kelas);
+
+            $this->load->helper('security');
+            $password = do_hash($password, "md5");
+            $result = $this->User_Model->insert_user($nama, $password, $no_hp, $jenis_kelamin, $id_kelas);
 
             if ($result > 0) {
                 $this->set_response([
@@ -40,6 +42,26 @@ class User extends REST_Controller {
                     'status' => FALSE,
                     'message' => 'Failed Insert User'
                         ], REST_Controller::HTTP_BAD_REQUEST);
+            }
+        } catch (Exception $ex) {
+            $this->response(array('error' => $ex->getMessage()), $ex->getCode());
+        }
+    }
+
+    public function checkNoHp_get(){
+         try {            
+            $no_hp = $this->get('no_hp');
+            $user = $this->User_Model->get_noHp($no_hp);
+            if (count($user) > 0) {
+                $this->set_response([
+                        'status' => "FALSE",
+                        'message' => 'No HP sudah ada'
+                            ], REST_Controller::HTTP_ACCEPTED);
+            } else {
+                $this->set_response([
+                    'status' => "TRUE",
+                    'message' => 'No HP Belom ada'
+                        ], REST_Controller::HTTP_ACCEPTED);
             }
         } catch (Exception $ex) {
             $this->response(array('error' => $ex->getMessage()), $ex->getCode());
