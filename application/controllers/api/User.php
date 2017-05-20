@@ -31,8 +31,7 @@ class User extends REST_Controller {
             $this->load->helper('security');
             $password = do_hash($password, "md5");
             $result = $this->User_Model->insert_user($nama, $password, $no_hp, $jenis_kelamin, $id_kelas);
-
-            if ($result > 0) {
+            if($result->num_rows() > 0){
                 $this->set_response([
                     'status' => TRUE,
                     'message' => 'Successfully Insert User'

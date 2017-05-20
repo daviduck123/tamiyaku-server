@@ -48,7 +48,7 @@ class FirstDatabase_Model extends CI_Model {
         $sql = "SHOW TABLES LIKE 'users_kelas'";
         $exist = $this->db->query($sql);
         if($exist->num_rows() == 0){
-            $sql2="CREATE TABLE `users_kelas` ( `id_user` INT NOT NULL , `id_kelas` INT NOT NULL , UNIQUE (`id_user`), UNIQUE(`id_kelas`)) ENGINE = InnoDB;";
+            $sql2="CREATE TABLE `users_kelas` ( `id_user` INT NOT NULL , `id_kelas` INT NOT NULL , PRIMARY KEY (`id_user`,`id_kelas`)) ENGINE = InnoDB;";
             $this->db->query($sql2);
             $sql3 = "ALTER TABLE `users_kelas` ADD CONSTRAINT `fk_kelas_userskelas` FOREIGN KEY (`id_kelas`) REFERENCES `kelas`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;";
             $this->db->query($sql3);
