@@ -8,7 +8,7 @@ class User_Model extends CI_Model {
 		$this->load->model("UsersKelas_Model");
 	}
 
-	public function insert_user($nama, $password, $no_hp, $jenis_kelamin, $id_kelas){
+	public function insert_user($nama, $password, $no_hp, $jenis_kelamin, $array_id_kelas){
 		$sql = "INSERT INTO `Users` (`nama`, `password`, `no_hp`, `jenis_kelamin`,`created_at`) VALUES (?,?,?,?,NOW())";
 		$this->db->query($sql, array($nama, $password, $no_hp, $jenis_kelamin));
 
@@ -16,8 +16,10 @@ class User_Model extends CI_Model {
 		$hasil = $this->db->query($sql2);
 		$id_user = $hasil->row()->id;
 
-		$hasil2 = $this->UsersKelas_Model->insert_users_Kelas($id_user, $id_kelas);
-		return $hasil2;
+		foreach ($array_id_kelas as $id_kelas) {
+			$this->UsersKelas_Model->insert_users_Kelas($id_user, $id_kelas);
+		}
+		return $hasil;
 	}
 
 	public function get_noHp($no_hp){
