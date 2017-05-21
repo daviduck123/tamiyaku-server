@@ -20,28 +20,49 @@ class User extends REST_Controller {
     }
 
     public function registerNewUser_post(){
-        try {            
-            $data = json_decode(file_get_contents('php://input'));
-            $nama = $data->nama;
-            $no_hp = $data->no_hp;
-            $jenis_kelamin = $data->jenis_kelamin;
-            $id_kelas = $data->id_kelas;
-            $password = $data->password;
+        try {        
 
-            $this->load->helper('security');
-            $password = do_hash($password, "md5");
-            $result = $this->User_Model->insert_user($nama, $password, $no_hp, $jenis_kelamin, $id_kelas);
-            if($result->num_rows() > 0){
-                $this->set_response([
-                    'status' => TRUE,
-                    'message' => 'Successfully Insert User'
-                        ], REST_Controller::HTTP_OK);
+            $nama = $this->input->post('nama');
+            $no_hp = $this->input->post('no_hp');
+            $jenis_kelamin = $this->input->post('jenis_kelamin');
+            $id_kelas = $this->input->post('id_kelas');
+            $password = $this->input->post('password');
+
+            $array_id_kelas = explode(',', $id_kelas);
+            
+            $this->load->helper('file');
+            $config['upload_path'] = './assets/images/users/';
+            $config['allowed_types'] =  'gif|jpg|png';
+
+            $this->load->library('upload', $config);
+            $this->upload->initialize($config);
+            
+            if($this->upload->do_upload('file'))
+            {
+                $file = $this->upload->data();
+                $path = file_get_contents($file['full_path']);
+                
+                $this->load->helper('security');
+                $password = do_hash($password, "md5");
+
+                $result = $this->User_Model->insert_user($nama, $password, $no_hp, $jenis_kelamin, $path, $array_id_kelas);
+                if($result->num_rows() > 0){
+                    $this->set_response([
+                        'status' => TRUE,
+                        'message' => 'Successfully Insert User'
+                            ], REST_Controller::HTTP_OK);
+                } else {
+                    $this->set_response([
+                        'status' => FALSE,
+                        'message' => 'Failed Insert User'
+                            ], REST_Controller::HTTP_BAD_REQUEST);
+                }
             } else {
-                $this->set_response([
-                    'status' => FALSE,
-                    'message' => 'Failed Insert User'
-                        ], REST_Controller::HTTP_BAD_REQUEST);
+                $error = $this->upload->display_errors();
+                $this->response(array('error' => $error), REST_Controller::HTTP_INTERNAL_SERVER_ERROR);
             }
+
+           
         } catch (Exception $ex) {
             $this->response(array('error' => $ex->getMessage()), $ex->getCode());
         }
