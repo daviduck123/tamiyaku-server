@@ -3,33 +3,28 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 require APPPATH . '/libraries/REST_Controller.php';
 
-class User extends REST_Controller {
+class Post extends REST_Controller {
 
     public function __construct(){
         parent::__construct();
-        $this->load->model('User_Model');
+        $this->load->model('Post_Model');
     }
 
     public function index_get(){
-        echo "Selamat datang di User Controller";
+        echo "Selamat datang di Post Controller";
     }
 
     public function registerNewUser_post(){
-        try {        
+        try {
+            $deskripsi = $this->input->post('deskripsi');
+            $id_user = $this->input->post('id_user');
+            $id_grup = $this->input->post('id_grup');
 
-            $nama = $this->input->post('nama');
-            $email = $this->input->post('email');
-            $jenis_kelamin = $this->input->post('jenis_kelamin');
-            $id_kelas = $this->input->post('id_kelas');
-            $password = $this->input->post('password');
-
-            $array_id_kelas = explode(',', $id_kelas);
-            
             $this->load->helper('file');
-            if (!file_exists('./assets/images/users/')) {
-                mkdir('./assets/images/users/', 0777, true);
+            if (!file_exists('./assets/images/post/')) {
+                mkdir('./assets/images/post/', 0777, true);
             }
-            $config['upload_path'] = './assets/images/users/';
+            $config['upload_path'] = './assets/images/post/';
             $config['allowed_types'] =  'gif|jpg|png';
 
             $this->load->library('upload', $config);
@@ -39,20 +34,17 @@ class User extends REST_Controller {
             {
                 $file = $this->upload->data();
                 $path = file_get_contents($file['full_path']);
-                
-                $this->load->helper('security');
-                $password = do_hash($password, "md5");
 
-                $result = $this->User_Model->insert_user($nama, $password, $email, $jenis_kelamin, $path, $array_id_kelas);
+                $result = $this->Post_Model->insert_post($deskripsi, $id_user, $id_grup);
                 if($result->num_rows() > 0){
                     $this->set_response([
                         'status' => TRUE,
-                        'message' => 'Successfully Insert User'
+                        'message' => 'Successfully Create Post'
                             ], REST_Controller::HTTP_OK);
                 } else {
                     $this->set_response([
                         'status' => FALSE,
-                        'message' => 'Failed Insert User'
+                        'message' => 'Failed Create Post'
                             ], REST_Controller::HTTP_BAD_REQUEST);
                 }
             } else {

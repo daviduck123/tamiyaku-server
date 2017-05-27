@@ -1,5 +1,5 @@
 <?php
-class Kota_Model extends CI_Model {
+class Kelas_Model extends CI_Model {
 
     public function __construct()
     {

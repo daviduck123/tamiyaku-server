@@ -13,6 +13,7 @@ class FirstDatabase_Model extends CI_Model {
         $this->create_Users();
         $this->create_UsersKelas();
         $this->create_Grup();
+        $this->create_UsersGrup();
         $this->create_GrupKelas();
         $this->create_Post();
         $this->create_Komentar();
@@ -94,6 +95,22 @@ class FirstDatabase_Model extends CI_Model {
             $sql3 = "ALTER TABLE `grup` ADD CONSTRAINT `fk_grup_user` FOREIGN KEY (`id_user`) REFERENCES `users`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;";
             $this->db->query($sql3);
         }
+    }
+
+    public function create_UsersGrup(){
+        $sql = "SHOW TABLES LIKE 'users_grup'";
+        $exist = $this->db->query($sql);
+        if($exist->num_rows() == 0){
+            $sql2 = "CREATE TABLE `users_grup` ( `id_user` INT NOT NULL , `id_grup` INT NOT NULL , PRIMARY KEY (`id_user`, `id_grup`)) ENGINE = InnoDB;";
+            $this->db->query($sql2);
+
+            $sql3 = "ALTER TABLE `users_grup` ADD CONSTRAINT `fk_usersgrup_user` FOREIGN KEY (`id_user`) REFERENCES `users`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;";
+            $this->db->query($sql3);
+
+            $sql3 = "ALTER TABLE `users_grup` ADD CONSTRAINT `fk_usersgrup_grup` FOREIGN KEY (`id_grup`) REFERENCES `grup`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;";
+            $this->db->query($sql3);
+        }
+        
     }
 
     public function create_GrupKelas(){
