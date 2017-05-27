@@ -12,6 +12,10 @@ class FirstDatabase_Model extends CI_Model {
         $this->create_Kota();
         $this->create_Users();
         $this->create_UsersKelas();
+        $this->create_Grup();
+        $this->create_GrupKelas();
+        $this->create_Post();
+        $this->create_Komentar();
     }
 
     public function create_Kelas(){
@@ -42,15 +46,15 @@ class FirstDatabase_Model extends CI_Model {
             $this->db->query($sql2);
 
             $sql3 = "INSERT INTO `kota` (`nama`, `created_at`) VALUES (?, NOW());";
-            $this->db->query($sql3, array(1,"Surabaya"));
+            $this->db->query($sql3, array("Surabaya"));
             $sql3 = "INSERT INTO `kota` (`nama`, `created_at`) VALUES (?, NOW());";
-            $this->db->query($sql3, array(2,"Jakarta"));
+            $this->db->query($sql3, array("Jakarta"));
             $sql3 = "INSERT INTO `kota` (`nama`, `created_at`) VALUES (?, NOW());";
-            $this->db->query($sql3, array(3,"Semarang"));
+            $this->db->query($sql3, array("Semarang"));
             $sql3 = "INSERT INTO `kota` (`nama`, `created_at`) VALUES (?, NOW());";
-            $this->db->query($sql3, array(4,"Bandung"));
+            $this->db->query($sql3, array("Bandung"));
             $sql3 = "INSERT INTO `kota` (`nama`, `created_at`) VALUES (?, NOW());";
-            $this->db->query($sql3, array(5,"Denpasar"));
+            $this->db->query($sql3, array("Denpasar"));
         }
     }
 
@@ -61,7 +65,7 @@ class FirstDatabase_Model extends CI_Model {
             $sql2="CREATE TABLE `Users` ( `id` INT NOT NULL AUTO_INCREMENT , `email` VARCHAR(255) NOT NULL , `nama` VARCHAR(255) NOT NULL ,`password` VARCHAR(255) NOT NULL , `jenis_kelamin` ENUM('Laki-laki','Perempuan') NOT NULL , `foto` BLOB NULL , `lat` FLOAT NULL , `lng` FLOAT NULL , `id_kota` INT NULL , `created_at` DATETIME NOT NULL , PRIMARY KEY (`id`), UNIQUE (`email`), UNIQUE(`id_kota`)) ENGINE = InnoDB;";
             $this->db->query($sql2);
 
-            $sql3="ALTER TABLE `users` ADD CONSTRAINT `fk_user_kota` FOREIGN KEY (`id_kota`) REFERENCES `kota`(`id`) ON DELETE RESTRICT ON UPDATE RESTRICT;";
+            $sql3="ALTER TABLE `users` ADD CONSTRAINT `fk_users_kota` FOREIGN KEY (`id_kota`) REFERENCES `kota`(`id`) ON DELETE RESTRICT ON UPDATE RESTRICT;";
             $this->db->query($sql3);
         }
     } 
@@ -72,11 +76,69 @@ class FirstDatabase_Model extends CI_Model {
         if($exist->num_rows() == 0){
             $sql2="CREATE TABLE `users_kelas` ( `id_user` INT NOT NULL , `id_kelas` INT NOT NULL , PRIMARY KEY (`id_user`,`id_kelas`)) ENGINE = InnoDB;";
             $this->db->query($sql2);
-            $sql3 = "ALTER TABLE `users_kelas` ADD CONSTRAINT `fk_kelas_userskelas` FOREIGN KEY (`id_kelas`) REFERENCES `kelas`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;";
+            $sql3 = "ALTER TABLE `users_kelas` ADD CONSTRAINT `fk_userskelas_kelas` FOREIGN KEY (`id_kelas`) REFERENCES `kelas`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;";
             $this->db->query($sql3);
 
-            $sql4 ="ALTER TABLE `users_kelas` ADD CONSTRAINT `fk_users_userskelas` FOREIGN KEY (`id_user`) REFERENCES `users`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;";
+            $sql4 ="ALTER TABLE `users_kelas` ADD CONSTRAINT `fk_userskelas_user` FOREIGN KEY (`id_user`) REFERENCES `users`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;";
             $this->db->query($sql4);
+        }
+    }
+
+    public function create_Grup(){
+        $sql = "SHOW TABLES LIKE 'grup'";
+        $exist = $this->db->query($sql);
+        if($exist->num_rows() == 0){
+            $sql2 = "CREATE TABLE `grup` ( `id` INT NOT NULL AUTO_INCREMENT , `nama` VARCHAR(255) NOT NULL , `lat` FLOAT NOT NULL , `lng` FLOAT NOT NULL , `created_at` DATE NOT NULL , `id_user` INT NOT NULL , PRIMARY KEY (`id`), UNIQUE (`id_user`)) ENGINE = InnoDB;";
+            $this->db->query($sql2);
+
+            $sql3 = "ALTER TABLE `grup` ADD CONSTRAINT `fk_grup_user` FOREIGN KEY (`id_user`) REFERENCES `users`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;";
+            $this->db->query($sql3);
+        }
+    }
+
+    public function create_GrupKelas(){
+        $sql = "SHOW TABLES LIKE 'grup_kelas'";
+        $exist = $this->db->query($sql);
+        if($exist->num_rows() == 0){
+            $sql2 = "CREATE TABLE `grup_kelas` ( `id_grup` INT NOT NULL , `id_kelas` INT NOT NULL , PRIMARY KEY (`id_grup`,`id_kelas`)) ENGINE = InnoDB;";
+            $this->db->query($sql2);
+
+            $sql3 = "ALTER TABLE `grup_kelas` ADD CONSTRAINT `fk_grupkelas_grup` FOREIGN KEY (`id_grup`) REFERENCES `grup`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;";
+            $this->db->query($sql3);
+
+            $sql3 = "ALTER TABLE `grup_kelas` ADD CONSTRAINT `fk_grupkelas_kelas` FOREIGN KEY (`id_kelas`) REFERENCES `kelas`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;";
+            $this->db->query($sql3);
+        }
+
+    }
+
+    public function create_Post(){
+        $sql = "SHOW TABLES LIKE 'post'";
+        $exist = $this->db->query($sql);
+        if($exist->num_rows() == 0){
+            $sql2 ="CREATE TABLE `post` ( `id` INT NOT NULL AUTO_INCREMENT , `deskripsi` TEXT NOT NULL , `foto` BLOB NULL , `created_at` DATE NOT NULL , `id_user` INT NULL , `id_grup` INT NULL , PRIMARY KEY (`id`), UNIQUE (`id_grup`), UNIQUE (`id_user`)) ENGINE = InnoDB;";
+            $this->db->query($sql2);
+
+            $sql3 = "ALTER TABLE `post` ADD CONSTRAINT `fk_post_user` FOREIGN KEY (`id_user`) REFERENCES `users`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;";
+            $this->db->query($sql3);
+
+            $sql3 = "ALTER TABLE `post` ADD CONSTRAINT `fk_post_grup` FOREIGN KEY (`id_grup`) REFERENCES `grup`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;";
+            $this->db->query($sql3);
+        }
+    }
+
+    public function create_Komentar(){
+        $sql = "SHOW TABLES LIKE 'komentar'";
+        $exist = $this->db->query($sql);
+        if($exist->num_rows() == 0){
+           $sql2 = "CREATE TABLE `komentar` ( `id` INT NOT NULL AUTO_INCREMENT , `deskripsi` TEXT NOT NULL , `created_at` DATETIME NOT NULL , `id_user` INT NULL , `id_post` INT NULL , PRIMARY KEY (`id`), UNIQUE (`id_post`), UNIQUE (`id_user`)) ENGINE = InnoDB;";
+            $this->db->query($sql2);
+
+            $sql3 = "ALTER TABLE `komentar` ADD CONSTRAINT `fk_komentar_user` FOREIGN KEY (`id_user`) REFERENCES `users`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;";
+            $this->db->query($sql3);
+
+            $sql3 = "ALTER TABLE `komentar` ADD CONSTRAINT `fk_komentar_post` FOREIGN KEY (`id_post`) REFERENCES `post`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;";
+            $this->db->query($sql3);
         }
     }
 }
