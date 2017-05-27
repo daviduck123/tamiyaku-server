@@ -23,7 +23,7 @@ class User extends REST_Controller {
         try {        
 
             $nama = $this->input->post('nama');
-            $no_hp = $this->input->post('no_hp');
+            $email = $this->input->post('email');
             $jenis_kelamin = $this->input->post('jenis_kelamin');
             $id_kelas = $this->input->post('id_kelas');
             $password = $this->input->post('password');
@@ -45,7 +45,7 @@ class User extends REST_Controller {
                 $this->load->helper('security');
                 $password = do_hash($password, "md5");
 
-                $result = $this->User_Model->insert_user($nama, $password, $no_hp, $jenis_kelamin, $path, $array_id_kelas);
+                $result = $this->User_Model->insert_user($nama, $password, $email, $jenis_kelamin, $path, $array_id_kelas);
                 if($result->num_rows() > 0){
                     $this->set_response([
                         'status' => TRUE,
@@ -68,19 +68,19 @@ class User extends REST_Controller {
         }
     }
 
-    public function checkNoHp_get(){
+    public function checkEmail_get(){
          try {            
-            $no_hp = $this->get('no_hp');
-            $user = $this->User_Model->get_noHp($no_hp);
+            $email = $this->get('email');
+            $user = $this->User_Model->get_email($email);
             if (count($user) > 0) {
                 $this->set_response([
                         'status' => "FALSE",
-                        'message' => 'No HP sudah ada'
+                        'message' => 'Email sudah ada'
                             ], REST_Controller::HTTP_ACCEPTED);
             } else {
                 $this->set_response([
                     'status' => "TRUE",
-                    'message' => 'No HP Belom ada'
+                    'message' => 'Email Belom ada'
                         ], REST_Controller::HTTP_ACCEPTED);
             }
         } catch (Exception $ex) {

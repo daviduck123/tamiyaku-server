@@ -8,10 +8,10 @@ class User_Model extends CI_Model {
 		$this->load->model("UsersKelas_Model");
 	}
 
-	public function insert_user($nama, $password, $no_hp, $jenis_kelamin, $file, $array_id_kelas){
+	public function insert_user($nama, $password, $email, $jenis_kelamin, $file, $array_id_kelas){
 
-		$sql = "INSERT INTO `Users` (`nama`, `password`, `no_hp`, `jenis_kelamin`,`foto`,`created_at`) VALUES (?,?,?,?,?,NOW())";
-		$this->db->query($sql, array($nama, $password, $no_hp, $jenis_kelamin, $file));
+		$sql = "INSERT INTO `Users` (`nama`, `password`, `email`, `jenis_kelamin`,`foto`,`created_at`) VALUES (?,?,?,?,?,NOW())";
+		$this->db->query($sql, array($nama, $password, $email, $jenis_kelamin, $file));
 
 		$sql2 = "SELECT LAST_INSERT_ID() as id";
 		$hasil = $this->db->query($sql2);
@@ -23,9 +23,9 @@ class User_Model extends CI_Model {
 		return $hasil;
 	}
 
-	public function get_noHp($no_hp){
-		$sql="SELECT * FROM Users u WHERE u.no_hp = ?";
-		$hasil = $this->db->query($sql, array($no_hp));
+	public function get_email($email){
+		$sql="SELECT * FROM Users u WHERE u.email = ?";
+		$hasil = $this->db->query($sql, array($email));
 		return $hasil->row_array();
 	}
 }

@@ -15,7 +15,7 @@ class Kota_Model extends CI_Model {
                 return $hasil->row()->id;
         }
 
-        public function get_all_kota(){
+        public function get_allKota(){
                $sql = "SELECT id, nama FROM kota";
                $hasil = $this->db->query($sql);
                return $hasil->row_array();

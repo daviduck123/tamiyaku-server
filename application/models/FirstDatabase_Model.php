@@ -38,8 +38,19 @@ class FirstDatabase_Model extends CI_Model {
         $sql = "SHOW TABLES LIKE 'Kota'";
         $exist = $this->db->query($sql);
        if($exist->num_rows() == 0){
-            $sql2="CREATE TABLE `Kota` ( `id` INT NOT NULL AUTO_INCREMENT , `nama` VARCHAR(255) NOT NULL , `created_at` DATETIME NOT NULL , PRIMARY KEY (`id`)) ENGINE = InnoDB;"; 
+            $sql2="CREATE TABLE `Kota` (`id` INT NOT NULL AUTO_INCREMENT , `nama` VARCHAR(255) NOT NULL , `created_at` DATETIME NOT NULL , PRIMARY KEY (`id`)) ENGINE = InnoDB;"; 
             $this->db->query($sql2);
+
+            $sql3 = "INSERT INTO `kota` (`nama`, `created_at`) VALUES (?, NOW());";
+            $this->db->query($sql3, array(1,"Surabaya"));
+            $sql3 = "INSERT INTO `kota` (`nama`, `created_at`) VALUES (?, NOW());";
+            $this->db->query($sql3, array(2,"Jakarta"));
+            $sql3 = "INSERT INTO `kota` (`nama`, `created_at`) VALUES (?, NOW());";
+            $this->db->query($sql3, array(3,"Semarang"));
+            $sql3 = "INSERT INTO `kota` (`nama`, `created_at`) VALUES (?, NOW());";
+            $this->db->query($sql3, array(4,"Bandung"));
+            $sql3 = "INSERT INTO `kota` (`nama`, `created_at`) VALUES (?, NOW());";
+            $this->db->query($sql3, array(5,"Denpasar"));
         }
     }
 
@@ -47,7 +58,7 @@ class FirstDatabase_Model extends CI_Model {
         $sql = "SHOW TABLES LIKE 'Users'";
         $exist = $this->db->query($sql);
         if($exist->num_rows() == 0){
-            $sql2="CREATE TABLE `Users` ( `id` INT NOT NULL AUTO_INCREMENT , `email` VARCHAR(255) NULL , `no_hp` VARCHAR(12) NOT NULL , `nama` VARCHAR(255) NOT NULL ,`password` VARCHAR(255) NOT NULL , `jenis_kelamin` ENUM('Laki-laki','Perempuan') NOT NULL , `foto` BLOB NULL , `lat` FLOAT NULL , `lng` FLOAT NULL , `id_kota` INT NULL , `created_at` DATETIME NOT NULL , PRIMARY KEY (`id`), UNIQUE (`email`), UNIQUE (`no_hp`), UNIQUE(`id_kota`)) ENGINE = InnoDB;";
+            $sql2="CREATE TABLE `Users` ( `id` INT NOT NULL AUTO_INCREMENT , `email` VARCHAR(255) NOT NULL , `nama` VARCHAR(255) NOT NULL ,`password` VARCHAR(255) NOT NULL , `jenis_kelamin` ENUM('Laki-laki','Perempuan') NOT NULL , `foto` BLOB NULL , `lat` FLOAT NULL , `lng` FLOAT NULL , `id_kota` INT NULL , `created_at` DATETIME NOT NULL , PRIMARY KEY (`id`), UNIQUE (`email`), UNIQUE(`id_kota`)) ENGINE = InnoDB;";
             $this->db->query($sql2);
 
             $sql3="ALTER TABLE `users` ADD CONSTRAINT `fk_user_kota` FOREIGN KEY (`id_kota`) REFERENCES `kota`(`id`) ON DELETE RESTRICT ON UPDATE RESTRICT;";
