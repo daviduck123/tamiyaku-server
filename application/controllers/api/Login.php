@@ -27,7 +27,7 @@ class Login extends REST_Controller {
                     $password = do_hash($password, "md5");
                     if ($password == $user["password"]) {
                         $this->set_response([
-                            'id' => $user["id"],
+                            'user' => $user,
                             'status' => "TRUE",
                             'message' => 'Successfuly Login'
                                 ], REST_Controller::HTTP_ACCEPTED);
