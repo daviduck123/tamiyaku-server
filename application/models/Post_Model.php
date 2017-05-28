@@ -9,26 +9,26 @@ class Post_Model extends CI_Model {
 
     public function insert_post($deskripsi, $id_user, $id_grup, $foto){
        $sql = "INSERT INTO `post` (`deskripsi`, ";
-       $values = "VALUES (?,";
+       $values = "VALUES(?,";
        $array = [];
+       array_push($array, $deskripsi);
        if(isset($foto)){
-          $sql += " `foto`,";
-          $values = "?,";
+          $sql = $sql ." `foto`,";
+          $values .= "?,";
           array_push($array, $foto);
        }
        if(isset($id_user)){
-          $sql += " `id_user`,";
-          $values = "?,";
+         $sql = $sql ." `id_user`,";
+          $values .= "?,";
           array_push($array, $id_user);
        }
        if(isset($id_grup)){
-          $sql += " `id_grup`,";
-          $values = "?,";
+         $sql = $sql ." `id_grup`,";
+          $values .= "?,";
           array_push($array, $id_grup);
        }
-       $sql += "`created_at`) ".$values." NOW());";
-       array_push($array, "NOW()");
-      
+       $sql = $sql ."`created_at`) ".$values."NOW());";
+
        $this->db->query($sql, $array);
 
        $sql2 = "SELECT LAST_INSERT_ID() as id";

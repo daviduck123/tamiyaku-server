@@ -11,17 +11,18 @@ class Komentar_Model extends CI_Model {
        $sql = "INSERT INTO `post` (`deskripsi`, ";
        $values = "VALUES (?,";
        $array = [];
+       array_push($array, $deskripsi);
        if(isset($id_user)){
-          $sql += " `id_user`,";
-          $values = "?,";
+          $sql = $sql ." `id_user`,";
+          $values .= "?,";
           array_push($array, $id_user);
        }
        if(isset($id_post)){
-          $sql += " `id_post`,";
-          $values = "?,";
+          $sql = $sql ." `id_post`,";
+          $values .= "?,";
           array_push($array, $id_post);
        }
-       $sql += "`created_at`) ".$values." NOW());";
+       $sql = $sql ."`created_at`) ".$values." NOW());";
        array_push($array, "NOW()");
       
        $this->db->query($sql, $array);

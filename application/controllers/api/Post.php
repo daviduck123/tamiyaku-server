@@ -91,6 +91,8 @@ class Post extends REST_Controller {
             $this->upload->initialize($config);
             
             if(!empty($_FILES['file']['name'])){
+
+                   
                 if($this->upload->do_upload('file'))
                 {
                     $file = $this->upload->data();
@@ -113,7 +115,7 @@ class Post extends REST_Controller {
                     $this->response(array('error' => $error), REST_Controller::HTTP_INTERNAL_SERVER_ERROR);
                 }
             }else{
-                 $result = $this->Post_Model->insert_post($deskripsi, $id_user, $id_grup);
+                 $result = $this->Post_Model->insert_post($deskripsi, $id_user, $id_grup, null);
                     if($result->num_rows() > 0){
                         $this->set_response([
                             'status' => TRUE,
