@@ -18,7 +18,7 @@ class Grup extends REST_Controller {
             } else {
                 $this->set_response([
                     'status' => "TRUE",
-                    'message' => 'Kota kosong'
+                    'message' => 'Grup kosong'
                         ], REST_Controller::HTTP_ACCEPTED);
             }
         } catch (Exception $ex) {

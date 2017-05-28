@@ -20,5 +20,5 @@ class Kelas_Model extends CI_Model {
        $sql = "SELECT id, nama, deskripsi FROM kelas";
        $hasil = $this->db->query($sql);
        return $hasil->row_array();
-    }   
+    }
 }

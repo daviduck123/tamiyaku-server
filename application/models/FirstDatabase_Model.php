@@ -68,6 +68,16 @@ class FirstDatabase_Model extends CI_Model {
 
             $sql3="ALTER TABLE `users` ADD CONSTRAINT `fk_users_kota` FOREIGN KEY (`id_kota`) REFERENCES `kota`(`id`) ON DELETE RESTRICT ON UPDATE RESTRICT;";
             $this->db->query($sql3);
+
+            //Create User - Teman relationship
+            $sql4 = "CREATE TABLE `tamiyaku`.`users_teman` ( `id_user` INT NOT NULL , `id_teman` INT NOT NULL , PRIMARY KEY (`id_user`, `id_teman`)) ENGINE = InnoDB;";
+            $this->db->query($sql4);
+
+            $sql4 = "ALTER TABLE `users_teman` ADD CONSTRAINT `fk_usersteman_user` FOREIGN KEY (`id_user`) REFERENCES `users`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;";
+            $this->db->query($sql4);
+
+            $sql4 = "ALTER TABLE `users_teman` ADD CONSTRAINT `fk_usersteman_teman` FOREIGN KEY (`id_teman`) REFERENCES `users`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;";
+            $this->db->query($sql4);
         }
     } 
 

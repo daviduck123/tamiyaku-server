@@ -22,12 +22,10 @@ class Login extends REST_Controller {
 
             $this->load->helper('security');
             if ($email != null && $password != null) {
-                $user = $this->User_Model->get_email($email);
+                $user = $this->User_Model->get_userByEmail($email);
                 if (count($user) > 0) {
                     $password = do_hash($password, "md5");
                     if ($password == $user["password"]) {
-                        $user_foto = $user["foto"];
-                        $user['foto'] = base64_encode($user_foto);
                         $this->set_response([
                             'user' => $user,
                             'status' => "TRUE",

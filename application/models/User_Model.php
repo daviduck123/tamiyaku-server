@@ -8,9 +8,18 @@ class User_Model extends CI_Model {
 		$this->load->model("UsersKelas_Model");
 	}
 
+	public function get_userByemail($email){
+		$sql="SELECT * FROM users u WHERE u.email = ?";
+		$hasil = $this->db->query($sql, array($email));
+		$user = $hasil->row_array();
+		$user_foto = $user["foto"];
+        $user['foto'] = base64_encode($user_foto);
+		return $user;
+	}
+
 	public function insert_user($nama, $password, $id_kota, $email, $jenis_kelamin, $file, $array_id_kelas){
 
-		$sql = "INSERT INTO `Users` (`nama`, `password`, `id_kota`, `email`, `jenis_kelamin`,`foto`,`created_at`) VALUES (?,?,?,?,?,?,NOW())";
+		$sql = "INSERT INTO `users` (`nama`, `password`, `id_kota`, `email`, `jenis_kelamin`,`foto`,`created_at`) VALUES (?,?,?,?,?,?,NOW())";
 		$this->db->query($sql, array($nama, $password, $id_kota, $email, $jenis_kelamin, $file));
 
 		$sql2 = "SELECT LAST_INSERT_ID() as id";
@@ -23,9 +32,7 @@ class User_Model extends CI_Model {
 		return $hasil;
 	}
 
-	public function get_email($email){
-		$sql="SELECT * FROM Users u WHERE u.email = ?";
-		$hasil = $this->db->query($sql, array($email));
-		return $hasil->row_array();
+	public function insert_Friend($id_user, $id_teman){
+		$sql = "INSERT INTO `"
 	}
 }

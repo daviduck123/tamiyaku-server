@@ -18,7 +18,7 @@ class Post extends REST_Controller {
             } else {
                 $this->set_response([
                     'status' => "TRUE",
-                    'message' => 'Kota kosong'
+                    'message' => 'Post kosong'
                         ], REST_Controller::HTTP_ACCEPTED);
             }
         } catch (Exception $ex) {
@@ -34,7 +34,7 @@ class Post extends REST_Controller {
             } else {
                 $this->set_response([
                     'status' => "TRUE",
-                    'message' => 'Kota kosong'
+                    'message' => 'Post kosong'
                         ], REST_Controller::HTTP_ACCEPTED);
             }
         } catch (Exception $ex) {
@@ -50,7 +50,7 @@ class Post extends REST_Controller {
             } else {
                 $this->set_response([
                     'status' => "TRUE",
-                    'message' => 'Kota kosong'
+                    'message' => 'Post kosong'
                         ], REST_Controller::HTTP_ACCEPTED);
             }
         } catch (Exception $ex) {

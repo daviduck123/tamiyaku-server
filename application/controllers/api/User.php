@@ -15,8 +15,7 @@ class User extends REST_Controller {
     }
 
     public function registerNewUser_post(){
-        try {        
-
+        try {
             $nama = $this->input->post('nama');
             $email = $this->input->post('email');
             $jenis_kelamin = $this->input->post('jenis_kelamin');
@@ -70,7 +69,7 @@ class User extends REST_Controller {
     public function checkEmail_get(){
          try {            
             $email = $this->get('email');
-            $user = $this->User_Model->get_email($email);
+            $user = $this->User_Model->get_userByemail($email);
             if (count($user) > 0) {
                 $this->set_response([
                         'status' => "FALSE",
@@ -81,6 +80,47 @@ class User extends REST_Controller {
                     'status' => "TRUE",
                     'message' => 'Email Belom ada'
                         ], REST_Controller::HTTP_ACCEPTED);
+            }
+        } catch (Exception $ex) {
+            $this->response(array('error' => $ex->getMessage()), $ex->getCode());
+        }
+    }
+
+    public function addFriend_post(){
+        try {            
+            $data = json_decode(file_get_contents('php://input'));
+            $id_user = $data->id_user;
+            $id_teman = $data->id_teman;
+
+            $result = $this->User_Model->addFriend($id_user, $id_teman);
+
+            if ($email != null && $password != null) {
+                $user = $this->User_Model->get_email($email);
+                if (count($user) > 0) {
+                    $password = do_hash($password, "md5");
+                    if ($password == $user["password"]) {
+                        $this->set_response([
+                            'user' => $user,
+                            'status' => "TRUE",
+                            'message' => 'Berhasil Login'
+                            ], REST_Controller::HTTP_ACCEPTED);
+                    } else {
+                        $this->set_response([
+                            'status' => "FALSE",
+                            'message' => 'Password salah'
+                                ], REST_Controller::HTTP_ACCEPTED);
+                    }
+                } else {
+                    $this->set_response([
+                        'status' => "FALSE",
+                        'message' => 'User tidak ditemukan'
+                            ], REST_Controller::HTTP_ACCEPTED);
+                }
+            } else {
+                $this->set_response([
+                    'status' => "FALSE",
+                    'message' => 'Kurang Parameter'
+                        ], REST_Controller::HTTP_BAD_REQUEST);
             }
         } catch (Exception $ex) {
             $this->response(array('error' => $ex->getMessage()), $ex->getCode());

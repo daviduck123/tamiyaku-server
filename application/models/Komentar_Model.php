@@ -31,9 +31,17 @@ class Komentar_Model extends CI_Model {
        return $hasil->row()->id;
     }
 
-    public function get_post_byIdPost($id_post){
-       $sql = "SELECT * FROM komentar WHERE id_post = ? ORDER BY created_at DESC";
+    public function get_komentar_byIdPost($id_post){
+       $sql = "SELECT k.*, u.id, u.nama, u.foto 
+               FROM komentar k, users u
+               WHERE k.id_post = ? AND k.id_user = u.id 
+               ORDER BY created_at DESC";
        $hasil = $this->db->query($sql, array($id_post));
-       return $hasil->row_array();
+       $komentar = $hasil->result_array();
+       foreach($komentar as $com){
+          $com_foto = $com["foto"];
+          $com['foto'] = base64_encode($com);
+       }
+       return $komentar;
     }   
 }
