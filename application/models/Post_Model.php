@@ -7,7 +7,7 @@ class Post_Model extends CI_Model {
     }
 
 
-    public function insert_post($deskripsi, $id_user, $id_grup){
+    public function insert_post($deskripsi, $id_user, $id_grup, $foto){
        $sql = "INSERT INTO `post` (`deskripsi`, ";
        $values = "VALUES (?,";
        $array = [];

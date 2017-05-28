@@ -26,11 +26,13 @@ class Login extends REST_Controller {
                 if (count($user) > 0) {
                     $password = do_hash($password, "md5");
                     if ($password == $user["password"]) {
+                        $user_foto = $user["foto"];
+                        $user['foto'] = base64_encode($user_foto);
                         $this->set_response([
                             'user' => $user,
                             'status' => "TRUE",
-                            'message' => 'Successfuly Login'
-                                ], REST_Controller::HTTP_ACCEPTED);
+                            'message' => 'Berhasil Login'
+                            ], REST_Controller::HTTP_ACCEPTED);
                     } else {
                         $this->set_response([
                             'status' => "FALSE",

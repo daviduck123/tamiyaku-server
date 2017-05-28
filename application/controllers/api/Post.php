@@ -12,7 +12,47 @@ class Post extends REST_Controller {
 
     public function index_get(){
         try{
-            
+            $result = $this->Post_Model->get_all_post();
+            if (count($result) > 0) {
+               $this->set_response($result, REST_Controller::HTTP_OK);
+            } else {
+                $this->set_response([
+                    'status' => "TRUE",
+                    'message' => 'Kota kosong'
+                        ], REST_Controller::HTTP_ACCEPTED);
+            }
+        } catch (Exception $ex) {
+            $this->response(array('error' => $ex->getMessage()), $ex->getCode());
+        }
+    }
+
+    public function getAllPostByUser_get(){
+        try{
+            $result = $this->Post_Model->get_post_byIdUser($this->get("id_user"));
+            if (count($result) > 0) {
+               $this->set_response($result, REST_Controller::HTTP_OK);
+            } else {
+                $this->set_response([
+                    'status' => "TRUE",
+                    'message' => 'Kota kosong'
+                        ], REST_Controller::HTTP_ACCEPTED);
+            }
+        } catch (Exception $ex) {
+            $this->response(array('error' => $ex->getMessage()), $ex->getCode());
+        }
+    }
+
+    public function getAllPostByGrup_get(){
+        try{
+            $result = $this->Post_Model->get_post_byIdGrup($this->get("id_grup"));
+            if (count($result) > 0) {
+               $this->set_response($result, REST_Controller::HTTP_OK);
+            } else {
+                $this->set_response([
+                    'status' => "TRUE",
+                    'message' => 'Kota kosong'
+                        ], REST_Controller::HTTP_ACCEPTED);
+            }
         } catch (Exception $ex) {
             $this->response(array('error' => $ex->getMessage()), $ex->getCode());
         }
@@ -34,29 +74,42 @@ class Post extends REST_Controller {
             $this->load->library('upload', $config);
             $this->upload->initialize($config);
             
-            if($this->upload->do_upload('file'))
-            {
-                $file = $this->upload->data();
-                $path = file_get_contents($file['full_path']);
+            if(!empty($_FILES['file']['name'])){
+                if($this->upload->do_upload('file'))
+                {
+                    $file = $this->upload->data();
+                    $path = file_get_contents($file['full_path']);
 
-                $result = $this->Post_Model->insert_post($deskripsi, $id_user, $id_grup);
-                if($result->num_rows() > 0){
-                    $this->set_response([
-                        'status' => TRUE,
-                        'message' => 'Successfully Create Post'
+                    $result = $this->Post_Model->insert_post($deskripsi, $id_user, $id_grup, $path);
+                    if($result->num_rows() > 0){
+                        $this->set_response([
+                            'status' => TRUE,
+                            'message' => 'Successfully Create Post'
                             ], REST_Controller::HTTP_OK);
+                    } else {
+                        $this->set_response([
+                            'status' => FALSE,
+                            'message' => 'Failed Create Post'
+                                ], REST_Controller::HTTP_BAD_REQUEST);
+                    }
                 } else {
-                    $this->set_response([
-                        'status' => FALSE,
-                        'message' => 'Failed Create Post'
-                            ], REST_Controller::HTTP_BAD_REQUEST);
+                    $error = $this->upload->display_errors();
+                    $this->response(array('error' => $error), REST_Controller::HTTP_INTERNAL_SERVER_ERROR);
                 }
-            } else {
-                $error = $this->upload->display_errors();
-                $this->response(array('error' => $error), REST_Controller::HTTP_INTERNAL_SERVER_ERROR);
+            }else{
+                 $result = $this->Post_Model->insert_post($deskripsi, $id_user, $id_grup);
+                    if($result->num_rows() > 0){
+                        $this->set_response([
+                            'status' => TRUE,
+                            'message' => 'Successfully Create Post'
+                            ], REST_Controller::HTTP_OK);
+                    } else {
+                        $this->set_response([
+                            'status' => FALSE,
+                            'message' => 'Failed Create Post'
+                                ], REST_Controller::HTTP_BAD_REQUEST);
+                    }
             }
-
-           
         } catch (Exception $ex) {
             $this->response(array('error' => $ex->getMessage()), $ex->getCode());
         }
