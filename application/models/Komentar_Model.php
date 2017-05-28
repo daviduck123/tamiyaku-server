@@ -23,7 +23,6 @@ class Komentar_Model extends CI_Model {
           array_push($array, $id_post);
        }
        $sql = $sql ."`created_at`) ".$values." NOW());";
-       array_push($array, "NOW()");
       
        $this->db->query($sql, $array);
 
