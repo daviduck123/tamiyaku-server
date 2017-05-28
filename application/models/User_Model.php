@@ -17,6 +17,19 @@ class User_Model extends CI_Model {
 		return $user;
 	}
 
+	public function get_userBySearch($param){
+		$sql="SELECT * 
+				FROM users u 
+				WHERE u.nama LIKE '%".$param."%' OR u.email LIKE '%".$param."%'";
+		$hasil = $this->db->query($sql);
+		$users = $hasil->result_array();
+		foreach($users as $user){
+		  $user_foto = $user["foto"];
+		  $user['foto'] = base64_encode($user_foto);
+		}
+		return $users;
+	}
+
 	public function insert_user($nama, $password, $id_kota, $email, $jenis_kelamin, $file, $array_id_kelas){
 
 		$sql = "INSERT INTO `users` (`nama`, `password`, `id_kota`, `email`, `jenis_kelamin`,`foto`,`created_at`) VALUES (?,?,?,?,?,?,NOW())";

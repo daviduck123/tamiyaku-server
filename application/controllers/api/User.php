@@ -69,7 +69,7 @@ class User extends REST_Controller {
     public function checkEmail_get(){
          try {            
             $email = $this->get('email');
-            $user = $this->User_Model->get_userByemail($email);
+            $user = $this->User_Model->get_userByEmail($email);
             if (count($user) > 0) {
                 $this->set_response([
                         'status' => "FALSE",
@@ -121,6 +121,27 @@ class User extends REST_Controller {
                     'status' => "FALSE",
                     'message' => 'Kurang Parameter'
                         ], REST_Controller::HTTP_BAD_REQUEST);
+            }
+        } catch (Exception $ex) {
+            $this->response(array('error' => $ex->getMessage()), $ex->getCode());
+        }
+    }
+
+    public function searchUser_get(){
+        try {            
+            $param = $this->get('param');
+            $users = $this->User_Model->get_userBySearch($param);
+            if (count($users) > 0) {
+                 $this->set_response([
+                    'users' => $users,
+                    'status' => "TRUE",
+                    'message' => 'Berhasil ketemu'
+                        ], REST_Controller::HTTP_ACCEPTED);
+            } else {
+                $this->set_response([
+                    'status' => "FALSE",
+                    'message' => 'Tidak ada yang ketemu'
+                        ], REST_Controller::HTTP_ACCEPTED);
             }
         } catch (Exception $ex) {
             $this->response(array('error' => $ex->getMessage()), $ex->getCode());
