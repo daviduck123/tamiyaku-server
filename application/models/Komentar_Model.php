@@ -11,7 +11,7 @@ class Komentar_Model extends CI_Model {
        $sql = "INSERT INTO `post` (`deskripsi`, ";
        $values = "VALUES (?,";
        $array = [];
-       if(isset($id_user){
+       if(isset($id_user)){
           $sql += " `id_user`,";
           $values = "?,";
           array_push($array, $id_user);

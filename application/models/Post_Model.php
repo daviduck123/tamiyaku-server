@@ -16,7 +16,7 @@ class Post_Model extends CI_Model {
           $values = "?,";
           array_push($array, $foto);
        }
-       if(isset($id_user){
+       if(isset($id_user)){
           $sql += " `id_user`,";
           $values = "?,";
           array_push($array, $id_user);
