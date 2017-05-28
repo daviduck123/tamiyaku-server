@@ -19,5 +19,5 @@ class Kota_Model extends CI_Model {
         $sql = "SELECT id, nama FROM kota";
         $hasil = $this->db->query($sql);
         return $hasil->row_array();
-    }0
+    }
 }

@@ -12,8 +12,7 @@ class Post extends REST_Controller {
 
     public function index_get(){
         try{
-            $this->
-             $this->response(, REST_Controller::HTTP_OK);
+            
         } catch (Exception $ex) {
             $this->response(array('error' => $ex->getMessage()), $ex->getCode());
         }
