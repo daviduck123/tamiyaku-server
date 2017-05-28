@@ -40,11 +40,13 @@ class Post_Model extends CI_Model {
        $sql = "SELECT * FROM post ORDER BY created_at DESC";
        $hasil = $this->db->query($sql);
        $post = $hasil->result_array();
+       $post2 = [];
        foreach($post as $posting){
           $posting_foto = $posting["foto"];
           $posting['foto'] = base64_encode($posting_foto);
+          array_push($post2, $posting);
        }
-       return $post;
+       return $post2;
     }  
 
     public function get_post_byIdUser($id_user){
@@ -54,16 +56,13 @@ class Post_Model extends CI_Model {
                 ORDER BY p.created_at DESC";
        $hasil = $this->db->query($sql, array($id_user));
        $post = $hasil->result_array();
-       foreach($post as $index => $posting){
+       $post2 = [];
+       foreach($post as $posting){
           $posting_foto = $posting["foto"];
-		  if(isset($posting_foto)){
-			$post[index]['foto'] = base64_encode($posting_foto);	
-		  }
+    			$posting['foto'] = base64_encode($posting_foto);
+          array_push($post2, $posting);
        }
-	   print_r($post);
-	   exit();
-	  
-       return $post;
+       return $post2;
     }
 
     public function get_all_friendPost($id_user){
@@ -72,22 +71,25 @@ class Post_Model extends CI_Model {
                 WHERE p.id_user = ut.id_teman AND ut.id_user = ? AND ut.id_teman = u.id
                 ORDER BY created_at DESC";
        $hasil = $this->db->query($sql, array($id_user));
-       $post = $hasil->result_array();
+       $post2 = [];
        foreach($post as $posting){
           $posting_foto = $posting["foto"];
           $posting['foto'] = base64_encode($posting_foto);
+          array_push($post2, $posting);
        }
-       return $post;
+       return $post2;
     }
 
     public function get_post_byIdGrup($id_grup){
        $sql = "SELECT * FROM post WHERE id_grup = ? ORDER BY created_at DESC";
        $hasil = $this->db->query($sql, array($id_grup));
        $post = $hasil->result_array();
+       $post2 = [];
        foreach($post as $posting){
           $posting_foto = $posting["foto"];
           $posting['foto'] = base64_encode($posting_foto);
+          array_push($post2, $posting);
        }
-       return $post;
+       return $post2;
     }   
 }

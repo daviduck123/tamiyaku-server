@@ -23,9 +23,11 @@ class User_Model extends CI_Model {
 				WHERE u.nama LIKE '%".$param."%' OR u.email LIKE '%".$param."%'";
 		$hasil = $this->db->query($sql);
 		$users = $hasil->result_array();
+		$users2 = [];
 		foreach($users as $user){
 		  $user_foto = $user["foto"];
 		  $user['foto'] = base64_encode($user_foto);
+		  array_push($users2, $user);
 		}
 		return $users;
 	}

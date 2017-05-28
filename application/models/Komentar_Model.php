@@ -38,10 +38,12 @@ class Komentar_Model extends CI_Model {
                ORDER BY created_at DESC";
        $hasil = $this->db->query($sql, array($id_post));
        $komentar = $hasil->result_array();
+       $komentar2 = [];
        foreach($komentar as $com){
           $com_foto = $com["foto"];
           $com['foto'] = base64_encode($com);
+          array_push($komentar2, $com);
        }
-       return $komentar;
+       return $komentar2;
     }   
 }
