@@ -46,6 +46,6 @@ class User_Model extends CI_Model {
 	}
 
 	public function insert_Friend($id_user, $id_teman){
-		$sql = "INSERT INTO `"
+		$sql = "INSERT INTO `";
 	}
 }
