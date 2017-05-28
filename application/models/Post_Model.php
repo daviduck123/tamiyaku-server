@@ -48,16 +48,21 @@ class Post_Model extends CI_Model {
     }  
 
     public function get_post_byIdUser($id_user){
-       $sql = "SELECT * 
+       $sql = "SELECT p.* 
                 FROM post p
-                WHERE id_user = ? 
-                ORDER BY created_at DESC";
+                WHERE p.id_user = ? 
+                ORDER BY p.created_at DESC";
        $hasil = $this->db->query($sql, array($id_user));
        $post = $hasil->result_array();
-       foreach($post as $posting){
+       foreach($post as $index => $posting){
           $posting_foto = $posting["foto"];
-          $posting['foto'] = base64_encode($posting_foto);
+		  if(isset($posting_foto)){
+			$post[index]['foto'] = base64_encode($posting_foto);	
+		  }
        }
+	   print_r($post);
+	   exit();
+	  
        return $post;
     }
 
