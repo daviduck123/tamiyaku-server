@@ -99,7 +99,7 @@ class Post extends REST_Controller {
                     $path = file_get_contents($file['full_path']);
 
                     $result = $this->Post_Model->insert_post($deskripsi, $id_user, $id_grup, $path);
-                    if($result->num_rows() > 0){
+                    if(count($result) > 0){
                         $this->set_response([
                             'status' => TRUE,
                             'message' => 'Successfully Create Post'
@@ -116,7 +116,7 @@ class Post extends REST_Controller {
                 }
             }else{
                  $result = $this->Post_Model->insert_post($deskripsi, $id_user, $id_grup, null);
-                    if($result->num_rows() > 0){
+                    if(count($result) > 0){
                         $this->set_response([
                             'status' => TRUE,
                             'message' => 'Successfully Create Post'
