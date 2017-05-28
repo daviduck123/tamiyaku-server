@@ -42,6 +42,22 @@ class Post extends REST_Controller {
         }
     }
 
+    public function getAllPostFriendByUser_get(){
+        try{
+            $result = $this->Post_Model->get_all_friendPost($this->get("id_user"));
+            if (count($result) > 0) {
+               $this->set_response($result, REST_Controller::HTTP_OK);
+            } else {
+                $this->set_response([
+                    'status' => "TRUE",
+                    'message' => 'Post kosong'
+                        ], REST_Controller::HTTP_ACCEPTED);
+            }
+        } catch (Exception $ex) {
+            $this->response(array('error' => $ex->getMessage()), $ex->getCode());
+        }
+    }
+
     public function getAllPostByGrup_get(){
         try{
             $result = $this->Post_Model->get_post_byIdGrup($this->get("id_grup"));

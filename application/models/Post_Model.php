@@ -48,7 +48,24 @@ class Post_Model extends CI_Model {
     }  
 
     public function get_post_byIdUser($id_user){
-       $sql = "SELECT * FROM post WHERE id_user = ? ORDER BY created_at DESC";
+       $sql = "SELECT * 
+                FROM post p
+                WHERE id_user = ? 
+                ORDER BY created_at DESC";
+       $hasil = $this->db->query($sql, array($id_user));
+       $post = $hasil->result_array();
+       foreach($post as $posting){
+          $posting_foto = $posting["foto"];
+          $posting['foto'] = base64_encode($posting_foto);
+       }
+       return $post;
+    }
+
+    public function get_all_friendPost($id_user){
+       $sql = "SELECT p.*, u.nama, u.foto
+                FROM post p, users_teman ut, users u
+                WHERE p.id_user = ut.id_teman AND ut.id_user = ? AND ut.id_teman = u.id
+                ORDER BY created_at DESC";
        $hasil = $this->db->query($sql, array($id_user));
        $post = $hasil->result_array();
        foreach($post as $posting){
