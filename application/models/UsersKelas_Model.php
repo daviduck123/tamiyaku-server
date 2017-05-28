@@ -18,6 +18,6 @@ class UsersKelas_Model extends CI_Model {
 	public function get_allKelas_byUser($id_user){
 		$sql = "SELECT * FROM users_kelas WHERE id_user = ?";
 		$hasil = $this->db->query($sql, array($id_user));
-		return $hasil->row_array();
+		return $hasil->result_array();
 	}
 }
