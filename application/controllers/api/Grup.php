@@ -51,24 +51,4 @@ class Grup extends REST_Controller {
             $this->response(array('error' => $ex->getMessage()), $ex->getCode());
         }
     }
-
-    public function checkEmail_get(){
-         try {            
-            $email = $this->get('email');
-            $user = $this->User_Model->get_email($email);
-            if (count($user) > 0) {
-                $this->set_response([
-                        'status' => "FALSE",
-                        'message' => 'Email sudah ada'
-                            ], REST_Controller::HTTP_ACCEPTED);
-            } else {
-                $this->set_response([
-                    'status' => "TRUE",
-                    'message' => 'Email Belom ada'
-                        ], REST_Controller::HTTP_ACCEPTED);
-            }
-        } catch (Exception $ex) {
-            $this->response(array('error' => $ex->getMessage()), $ex->getCode());
-        }
-    }
 }

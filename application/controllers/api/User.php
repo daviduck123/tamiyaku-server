@@ -21,6 +21,7 @@ class User extends REST_Controller {
             $email = $this->input->post('email');
             $jenis_kelamin = $this->input->post('jenis_kelamin');
             $id_kelas = $this->input->post('id_kelas');
+            $id_kota = $this->input->post('id_kota');            
             $password = $this->input->post('password');
 
             $array_id_kelas = explode(',', $id_kelas);
@@ -43,7 +44,7 @@ class User extends REST_Controller {
                 $this->load->helper('security');
                 $password = do_hash($password, "md5");
 
-                $result = $this->User_Model->insert_user($nama, $password, $email, $jenis_kelamin, $path, $array_id_kelas);
+                $result = $this->User_Model->insert_user($nama, $password, $id_kota, $email, $jenis_kelamin, $path, $array_id_kelas);
                 if($result->num_rows() > 0){
                     $this->set_response([
                         'status' => TRUE,

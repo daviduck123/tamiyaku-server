@@ -8,10 +8,10 @@ class User_Model extends CI_Model {
 		$this->load->model("UsersKelas_Model");
 	}
 
-	public function insert_user($nama, $password, $email, $jenis_kelamin, $file, $array_id_kelas){
+	public function insert_user($nama, $password, $id_kota, $email, $jenis_kelamin, $file, $array_id_kelas){
 
-		$sql = "INSERT INTO `Users` (`nama`, `password`, `email`, `jenis_kelamin`,`foto`,`created_at`) VALUES (?,?,?,?,?,NOW())";
-		$this->db->query($sql, array($nama, $password, $email, $jenis_kelamin, $file));
+		$sql = "INSERT INTO `Users` (`nama`, `password`, `id_kota`, `email`, `jenis_kelamin`,`foto`,`created_at`) VALUES (?,?,?,?,?,?,NOW())";
+		$this->db->query($sql, array($nama, $password, $id_kota, $email, $jenis_kelamin, $file));
 
 		$sql2 = "SELECT LAST_INSERT_ID() as id";
 		$hasil = $this->db->query($sql2);

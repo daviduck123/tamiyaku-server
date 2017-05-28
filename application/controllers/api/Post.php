@@ -11,10 +11,15 @@ class Post extends REST_Controller {
     }
 
     public function index_get(){
-        echo "Selamat datang di Post Controller";
+        try{
+            $this->
+             $this->response(, REST_Controller::HTTP_OK);
+        } catch (Exception $ex) {
+            $this->response(array('error' => $ex->getMessage()), $ex->getCode());
+        }
     }
 
-    public function registerNewUser_post(){
+    public function createPost_post(){
         try {
             $deskripsi = $this->input->post('deskripsi');
             $id_user = $this->input->post('id_user');
@@ -53,26 +58,6 @@ class Post extends REST_Controller {
             }
 
            
-        } catch (Exception $ex) {
-            $this->response(array('error' => $ex->getMessage()), $ex->getCode());
-        }
-    }
-
-    public function checkEmail_get(){
-         try {            
-            $email = $this->get('email');
-            $user = $this->User_Model->get_email($email);
-            if (count($user) > 0) {
-                $this->set_response([
-                        'status' => "FALSE",
-                        'message' => 'Email sudah ada'
-                            ], REST_Controller::HTTP_ACCEPTED);
-            } else {
-                $this->set_response([
-                    'status' => "TRUE",
-                    'message' => 'Email Belom ada'
-                        ], REST_Controller::HTTP_ACCEPTED);
-            }
         } catch (Exception $ex) {
             $this->response(array('error' => $ex->getMessage()), $ex->getCode());
         }
