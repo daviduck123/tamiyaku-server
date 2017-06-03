@@ -34,8 +34,8 @@ class Komentar extends REST_Controller {
             $deskripsi = $data->deskripsi;      
 
             $result = $this->Komentar_Model->insert_komentar($deskripsi, $id_user, $id_post);
-            if($result->num_rows() > 0){
-               $this->set_response(
+            if(count($result) > 0){
+               $this->set_response([
                		'status' => "TRUE",
                     'message' => 'Berhasil Insert Komentar'
                        	], REST_Controller::HTTP_ACCEPTED);

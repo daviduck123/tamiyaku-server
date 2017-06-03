@@ -8,7 +8,7 @@ class Komentar_Model extends CI_Model {
 
 
     public function insert_komentar($deskripsi, $id_user, $id_post){
-       $sql = "INSERT INTO `post` (`deskripsi`, ";
+       $sql = "INSERT INTO `komentar` (`deskripsi`, ";
        $values = "VALUES (?,";
        $array = [];
        array_push($array, $deskripsi);
