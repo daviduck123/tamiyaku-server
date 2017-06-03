@@ -12,9 +12,9 @@ class Grup extends REST_Controller {
 
     public function index_get(){
        try {   
-            $kota = $this->Grup_Model->get_allKota();
-            if (count($kota) > 0) {
-               $this->set_response($kota, REST_Controller::HTTP_OK);
+            $grup = $this->Grup_Model->get_allGrup_byUser($this->get("id_user"));
+            if (count($grup) > 0) {
+               $this->set_response($grup, REST_Controller::HTTP_OK);
             } else {
                 $this->set_response([
                     'status' => "TRUE",
@@ -28,25 +28,64 @@ class Grup extends REST_Controller {
 
     public function createGrup_post(){
         try {
-            $data = json_decode(file_get_contents('php://input'));
-            $nama = $data->nama;
-            $lat = $data->lat;
-            $lng = $data->lng;
-            $id_user = $data->id_user;
-            $id_kelas = $data->id_kelas;
+            $nama = $this->input->post('nama');
+            $lat = $this->input->post('lat');
+            $lng = $this->input->post('lng');
+            $lokasi = $this->input->post('lokasi');
+            $id_kota = $this->input->post('id_kota');
+            $id_user = $this->input->post('id_user');
+            $id_kelas = $this->input->post('id_kelas');
 
-            $result = $this->Grup_Model->insert_grup($nama, $lat, $lng, $id_user, $id_kelas);
-            if($result->num_rows() > 0){
-                    $this->set_response([
-                        'status' => TRUE,
-                        'message' => 'Successfully Create Grup'
-                            ], REST_Controller::HTTP_OK);
-            } else {
-                $this->set_response([
-                    'status' => FALSE,
-                    'message' => 'Failed Insert Grup'
-                        ], REST_Controller::HTTP_BAD_REQUEST);
+            $this->load->helper('file');
+            if (!file_exists('./assets/images/grup/')) {
+                mkdir('./assets/images/grup/', 0777, true);
             }
+            $config['upload_path'] = './assets/images/grup/';
+            $config['allowed_types'] =  'gif|jpg|png';
+
+            $this->load->library('upload', $config);
+            $this->upload->initialize($config);
+            
+            if(!empty($_FILES['file']['name'])){
+
+                   
+                if($this->upload->do_upload('file'))
+                {
+                    $file = $this->upload->data();
+                    $path = file_get_contents($file['full_path']);
+
+                    $result = $this->Grup_Model->insert_grup($nama, $lat, $lng, $lokasi, $path, $id_kota $id_user, $id_kelas);
+                    if(count($result) > 0){
+                        $this->set_response([
+                            'status' => TRUE,
+                            'message' => 'Successfully Create Grup'
+                            ], REST_Controller::HTTP_OK);
+                    } else {
+                        $this->set_response([
+                            'status' => FALSE,
+                            'message' => 'Failed Create Grup'
+                                ], REST_Controller::HTTP_BAD_REQUEST);
+                    }
+                } else {
+                    $error = $this->upload->display_errors();
+                    $this->response(array('error' => $error), REST_Controller::HTTP_INTERNAL_SERVER_ERROR);
+                }
+            }else{
+                 $result = $this->Grup_Model->insert_grup($nama, $lat, $lng, $lokasi, null, $id_kota $id_user, $id_kelas);
+                    if(count($result) > 0){
+                        $this->set_response([
+                            'status' => TRUE,
+                            'message' => 'Successfully Create Grup'
+                            ], REST_Controller::HTTP_OK);
+                    } else {
+                        $this->set_response([
+                            'status' => FALSE,
+                            'message' => 'Failed Create Grup'
+                                ], REST_Controller::HTTP_BAD_REQUEST);
+                    }
+            }
+            $data = json_decode(file_get_contents('php://input'));
+            
         } catch (Exception $ex) {
             $this->response(array('error' => $ex->getMessage()), $ex->getCode());
         }

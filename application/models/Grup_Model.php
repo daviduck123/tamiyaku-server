@@ -11,8 +11,17 @@ class Grup_Model extends CI_Model {
     }
 
 
-    public function insert_grup($nama, $lat, $lng, $id_user, $id_kelas){
-        $sql = "INSERT INTO `grup` (`nama`, `lat`, `lng`, `id_user`, `id_kelas`, `created_at`) VALUES (?,?,?,?,?,NOW())";
+    public function insert_grup($nama, $lat, $lng, $lokasi, $foto, $id_kota $id_user, $id_kelas){
+        $sql = "INSERT INTO `grup` (`nama`, `lat`, `lng`, `lokasi`,";
+        $values = "VALUES (?,?,?,?";
+        $array = array($nama, $lat, $lng, $lokasi);
+        if(isset($foto)){
+            $sql .= " `foto`,"
+            $values .= "?,";
+        }
+        $sql .= "`id_kota`, `id_user`, `id_kelas`, `created_at`) ".  $values . "?,?,?,NOW());";
+        array_push($array, $id_kota, $id_user, $id_kelas)
+
         $this->db->query($sql, array($nama, $lat, $lng, $id_user, $id_kelas));
 
         $sql2 = "SELECT LAST_INSERT_ID() as id";
@@ -48,11 +57,11 @@ class Grup_Model extends CI_Model {
         $array_kelas = $this->UsersKelas_Model->get_allKelas_byUser($id_user);
         $values = [];
         foreach ($array_kelas as $id_kelas) {
-            $id_kelas_sql = "id_kelas = ? OR";
+            $id_kelas_sql = "id_kelas = ? OR ";
             array_push($values, $id_kelas);
         }
         $len = strlen($id_kelas_sql);
-        substr($id_kelas_sql, 0, $len - 2);
+        substr($id_kelas_sql, 0, $len - 3);
 
         $sql ="SELECT g.* 
                 FROM (SELECT id_grup from grup_kelas WHERE ".$id_kelas_sql." ) as t1, grup g

@@ -99,13 +99,16 @@ class FirstDatabase_Model extends CI_Model {
         $sql = "SHOW TABLES LIKE 'grup'";
         $exist = $this->db->query($sql);
         if($exist->num_rows() == 0){
-            $sql2 = "CREATE TABLE `grup` ( `id` INT NOT NULL AUTO_INCREMENT , `nama` VARCHAR(255) NOT NULL , `lat` FLOAT NOT NULL , `lng` FLOAT NOT NULL , `created_at` DATE NOT NULL , `id_user` INT NOT NULL , `id_kelas` INT NOT NULL , PRIMARY KEY (`id`), INDEX (`id_user`), INDEX (`id_kelas`)) ENGINE = InnoDB;";
+            $sql2 = "CREATE TABLE `grup` ( `id` INT NOT NULL AUTO_INCREMENT , `nama` VARCHAR(255) NOT NULL ,  `foto` BLOB NULL , `lat` FLOAT NOT NULL , `lng` FLOAT NOT NULL , `lokasi` TEXT NULL , `created_at` DATE NOT NULL , `id_user` INT NOT NULL , `id_kelas` INT NOT NULL , `id_kota` INT NOT NULL , PRIMARY KEY (`id`), INDEX (`id_user`), INDEX (`id_kelas`), INDEX (`id_kota`)) ENGINE = InnoDB;";
             $this->db->query($sql2);
 
             $sql3 = "ALTER TABLE `grup` ADD CONSTRAINT `fk_grup_user` FOREIGN KEY (`id_user`) REFERENCES `users`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;";
             $this->db->query($sql3);
 
-             $sql3 = "ALTER TABLE `grup` ADD CONSTRAINT `fk_grup_kelas` FOREIGN KEY (`id_kelas`) REFERENCES `kelas`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;";
+            $sql3 = "ALTER TABLE `grup` ADD CONSTRAINT `fk_grup_kelas` FOREIGN KEY (`id_kelas`) REFERENCES `kelas`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;";
+            $this->db->query($sql3);
+
+            $sql3 = "ALTER TABLE `grup` ADD CONSTRAINT `fk_grup_kota` FOREIGN KEY (`id_kota`) REFERENCES `kota`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;";
             $this->db->query($sql3);
         }
     }
