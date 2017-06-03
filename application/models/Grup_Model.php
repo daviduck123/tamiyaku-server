@@ -5,7 +5,8 @@ class Grup_Model extends CI_Model {
     {
         $this->load->database();
 
-        $this->load->model("GrupKelas_Model");
+        //$this->load->model("GrupKelas_Model");
+		$this->load->model("Grup_Model");
         $this->load->model("UsersKelas_Model");
         $this->load->model("UsersGrup_Model");
     }
@@ -16,11 +17,11 @@ class Grup_Model extends CI_Model {
         $values = "VALUES (?,?,?,?";
         $array = array($nama, $lat, $lng, $lokasi);
         if(isset($foto)){
-            $sql .= " `foto`,"
+            $sql .= " `foto`,";
             $values .= "?,";
         }
         $sql .= "`id_kota`, `id_user`, `id_kelas`, `created_at`) ".  $values . "?,?,?,NOW());";
-        array_push($array, $id_kota, $id_user, $id_kelas)
+        array_push($array, $id_kota, $id_user, $id_kelas);
 
         $this->db->query($sql, array($nama, $lat, $lng, $id_user, $id_kelas));
 
