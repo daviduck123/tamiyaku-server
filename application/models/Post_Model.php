@@ -51,8 +51,8 @@ class Post_Model extends CI_Model {
 
     public function get_post_byIdUser($id_user){
        $sql = "SELECT p.*, u.id as user_id, u.nama, u.foto as user_foto
-                FROM post p
-                WHERE p.id_user = ? 
+                FROM post p, users u
+                WHERE p.id_user = ? AND u.id = p.id_user
                 ORDER BY p.created_at DESC";
        $hasil = $this->db->query($sql, array($id_user));
        $post = $hasil->result_array();

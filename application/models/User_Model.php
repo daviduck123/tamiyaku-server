@@ -9,16 +9,12 @@ class User_Model extends CI_Model {
 	}
 
 	public function get_userByemail($email){
-		$sql="SELECT u.*, count(t1.id_post) as count_post, count(t2.id_teman) as count_teman
-				FROM (
-					SELECT p.id as id_post, u.id as id_user FROM users u, post p
-					WHERE u.id = p.id_user
-				) as t1, (
-				    SELECT ut.id_teman, u.id as id_user FROM users u, users_teman ut
-					WHERE u.id = ut.id_user
-				    ) as t2, users u
-				WHERE t1. id_user = u.id AND t2.id_user = u.id AND u.email= ?
-				HAVING u.id IS NOT NULL";
+		$sql="SELECT u.*, count(t1.id_post) as count_post, count(t2.id_teman) as count_teman 
+		FROM users u 
+		LEFT JOIN ( SELECT p.id as id_post, u.id as id_user FROM users u, post p WHERE u.id = p.id_user ) as t1 ON t1.id_user = u.id 
+		LEFT JOIN ( SELECT ut.id_teman, u.id as id_user FROM users u, users_teman ut WHERE u.id = ut.id_user ) as t2 ON t2.id_user = u.id 
+		WHERE u.email = ? 
+		HAVING u.id IS NOT NULL";
 		$hasil = $this->db->query($sql, array($email));
 		$user = $hasil->row_array();
 		$user_foto = $user["foto"];
