@@ -12,7 +12,10 @@ class Grup extends REST_Controller {
 
     public function index_get(){
        try {   
-            $grup = $this->Grup_Model->get_allGrup_byUser($this->get("id_user"));
+            $id_user =  $this->get("id_user");
+            $lat =  $this->get("lat");
+            $lng =  $this->get("lng");
+            $grup = $this->Grup_Model->get_allGrup_byUser($id_user, $lat, $lng);
             if (count($grup) > 0) {
                $this->set_response($grup, REST_Controller::HTTP_OK);
             } else {
