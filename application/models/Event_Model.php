@@ -38,9 +38,9 @@ class Event_Model extends CI_Model {
     }
 
     public function get_all_event(){
-        $sql = "SELECT e.*, u.id, u.nama
-                FROM event e, users u
-                WHERE e.id_user = u.id
+        $sql = "SELECT e.*, u.id as user_id, u.nama, u.foto as user_foto
+                FROM event e, users u, users_kelas uk
+                WHERE e.id_user = u.id AND u.id = uk.id_user AND uk.id_kelas = e.id_kelas
                 ORDER BY e.created_at DESC";
         $hasil = $this->db->query($sql);
         $events = $hasil->row_array();
@@ -48,6 +48,9 @@ class Event_Model extends CI_Model {
         foreach($events as $event){
           $event_foto = $event["foto"];
           $event['foto'] = base64_encode($event_foto);
+
+          $user_foto = $event["user_foto"];
+          $event['user_foto'] = base64_encode($user_foto);
           array_push($events2, $event);
         }
         return $events2;

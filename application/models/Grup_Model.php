@@ -12,17 +12,12 @@ class Grup_Model extends CI_Model {
 
 
     public function insert_grup($nama, $lat, $lng, $id_user, $id_kelas){
-        $sql = "INSERT INTO `grup` (`nama`, `lat`, `lng`, `id_user`,`created_at`) VALUES (?,?,?,?,NOW())";
-        $this->db->query($sql, array($nama, $lat, $lng, $id_user));
+        $sql = "INSERT INTO `grup` (`nama`, `lat`, `lng`, `id_user`, `id_kelas`, `created_at`) VALUES (?,?,?,?,?,NOW())";
+        $this->db->query($sql, array($nama, $lat, $lng, $id_user, $id_kelas));
 
         $sql2 = "SELECT LAST_INSERT_ID() as id";
         $hasil = $this->db->query($sql2);
         $id_grup = $hasil->row()->id;
-
-        //Save Grup Kelas
-        foreach ($array_id_kelas as $id_kelas) {
-          $this->GrupKelas_Model->insert_grupKelas($id_grup, $id_kelas);
-        }
 
         //Save User Grup (Member)
         $this->UsersGrup_Model->insert_usersGrup($id_user, $id_grup);
