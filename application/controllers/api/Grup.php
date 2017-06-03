@@ -54,7 +54,7 @@ class Grup extends REST_Controller {
                     $file = $this->upload->data();
                     $path = file_get_contents($file['full_path']);
 
-                    $result = $this->Grup_Model->insert_grup($nama, $lat, $lng, $lokasi, $path, $id_kota $id_user, $id_kelas);
+                    $result = $this->Grup_Model->insert_grup($nama, $lat, $lng, $lokasi, $path, $id_kota, $id_user, $id_kelas);
                     if(count($result) > 0){
                         $this->set_response([
                             'status' => TRUE,
@@ -71,7 +71,7 @@ class Grup extends REST_Controller {
                     $this->response(array('error' => $error), REST_Controller::HTTP_INTERNAL_SERVER_ERROR);
                 }
             }else{
-                 $result = $this->Grup_Model->insert_grup($nama, $lat, $lng, $lokasi, null, $id_kota $id_user, $id_kelas);
+                 $result = $this->Grup_Model->insert_grup($nama, $lat, $lng, $lokasi, null, $id_kota, $id_user, $id_kelas);
                     if(count($result) > 0){
                         $this->set_response([
                             'status' => TRUE,
