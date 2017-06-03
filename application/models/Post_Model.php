@@ -69,10 +69,13 @@ class Post_Model extends CI_Model {
 
     public function get_all_friendPost($id_user){
        $sql = "SELECT p.*, u.id as user_id, u.nama, u.foto as user_foto
-                FROM post p, users_teman ut, users u
-                WHERE p.id_user = ut.id_teman AND ut.id_user = ? AND ut.id_teman = u.id
+                FROM post p
+                LEFT JOIN users u ON p.id_user = u.id
+                LEFT JOIN users_teman ut ON p.id_user = ut.id_user OR p.id_user = ut.id_user
+                WHERE p.id_user = ?
                 ORDER BY p.created_at DESC";
        $hasil = $this->db->query($sql, array($id_user));
+       $post = $hasil->result_array();
        $post2 = [];
        foreach($post as $posting){
           $posting_foto = $posting["foto"];
