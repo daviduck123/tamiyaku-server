@@ -14,16 +14,17 @@ class Grup_Model extends CI_Model {
 
     public function insert_grup($nama, $lat, $lng, $lokasi, $foto, $id_kota, $id_user, $id_kelas){
         $sql = "INSERT INTO `grup` (`nama`, `lat`, `lng`, `lokasi`,";
-        $values = "VALUES (?,?,?,?";
+        $values = "VALUES (?,?,?,?,";
         $array = array($nama, $lat, $lng, $lokasi);
         if(isset($foto)){
             $sql .= " `foto`,";
             $values .= "?,";
+            array_push($array, $foto);
         }
         $sql .= "`id_kota`, `id_user`, `id_kelas`, `created_at`) ".  $values . "?,?,?,NOW());";
         array_push($array, $id_kota, $id_user, $id_kelas);
 
-        $this->db->query($sql, array($nama, $lat, $lng, $id_user, $id_kelas));
+        $this->db->query($sql, $array);
 
         $sql2 = "SELECT LAST_INSERT_ID() as id";
         $hasil = $this->db->query($sql2);
