@@ -11,7 +11,7 @@ class Grup_Model extends CI_Model {
     }
 
 
-    public function insert_grup($nama, $lat, $lng, $lokasi, $foto, $id_kota $id_user, $id_kelas){
+    public function insert_grup($nama, $lat, $lng, $lokasi, $foto, $id_kota, $id_user, $id_kelas){
         $sql = "INSERT INTO `grup` (`nama`, `lat`, `lng`, `lokasi`,";
         $values = "VALUES (?,?,?,?";
         $array = array($nama, $lat, $lng, $lokasi);
