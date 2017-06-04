@@ -36,6 +36,7 @@ class Grup_Model extends CI_Model {
         return $hasil;
     }
 
+    //for searching purpose
     public function get_allGrup_byLatLng($lat, $lng, $id_user){
 
         $array_kelas = $this->UsersKelas_Model->get_allKelas_byUser($id_user);
@@ -47,29 +48,19 @@ class Grup_Model extends CI_Model {
         $len = strlen($id_kelas_sql);
         substr($id_kelas_sql, 0, $len - 2);
 
-        $sql ="SELECT g.* 
+        $sql ="SELECT g.*, ( 6371 * acos( cos( radians(?) ) * cos( radians( g.lat ) ) * cos( radians( g.lng ) - radians(?) ) + sin( radians(?) ) * sin( radians( g.lat ) ) ) ) AS distance
                 FROM (SELECT id_grup from grup_kelas WHERE ".$id_kelas_sql." ) as t1, grup g
                 WHERE t1.id_grup = g.id AND g.lat = ? AND g.lng = ?";
-        array_push($values, $lat, $lng);
-        $this->db->query($sql, array($nama, $lat, $lng, $id_user));
+        array_push($values, $lat, $lng, $lat);
+        $hasil = $this->db->query($sql, $values);
+        return $hasil -> result_array();
     }
 
-    public function get_allGrup_byUser($id_user, $lat, $lng){
-
-        $array_kelas = $this->UsersKelas_Model->get_allKelas_byUser($id_user);
-        $values = [];
-        foreach ($array_kelas as $id_kelas) {
-            $id_kelas_sql = "id_kelas = ? OR ";
-            array_push($values, $id_kelas);
-        }
-        $len = strlen($id_kelas_sql);
-        substr($id_kelas_sql, 0, $len - 3);
-        
-        $sql ="SELECT g.*,  ( 6371 * acos( cos( radians(?) ) * cos( radians( g.lat ) ) * cos( radians( g.lng ) - radians(?) ) + sin( radians(?) ) * sin( radians( g.lat ) ) ) ) AS distance
-                FROM (SELECT id_grup from grup_kelas WHERE ".$id_kelas_sql." ) as t1, grup g
-                WHERE t1.id_grup = g.id 
-                HAVING distance <= 20";
-        array_push($values, $lat, $lng, $lat);
-        $this->db->query($sql, array($nama, $lat, $lng, $id_user));
+    public function get_allGrup_byUser($id_user){
+        $sql ="SELECT g.*
+                FROM grup g
+                WHERE g.id_user = ?";
+        $hasil = $this->db->query($sql, array($id_user));
+        return $hasil -> result_array();
     }
 }
