@@ -80,8 +80,9 @@ class Grup_Model extends CI_Model {
     }
 
     public function get_grupInfo($id_grup){
-        $sql ="SELECT g.*
+        $sql ="SELECT g.*, IFNULL(count(ug.id_user),0) as count_member
                 FROM grup g
+                LEFT JOIN users_grup ug ON ug.id_grup = g.id
                 WHERE g.id = ?";
         $hasil = $this->db->query($sql, array($id_user));
         $grup = $hasil -> row_array();
