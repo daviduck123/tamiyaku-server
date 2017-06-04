@@ -78,4 +78,15 @@ class Grup_Model extends CI_Model {
         }
         return $grups2;
     }
+
+    public function get_grupInfo($id_grup){
+        $sql ="SELECT g.*
+                FROM grup g
+                WHERE g.id = ?";
+        $hasil = $this->db->query($sql, array($id_user));
+        $grup = $hasil -> row_array();
+        $grup_foto = $grup["foto"];
+        $grup['foto'] = base64_encode($grup_foto);
+        return $grup;
+    }
 }
