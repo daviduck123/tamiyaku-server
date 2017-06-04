@@ -53,7 +53,15 @@ class Grup_Model extends CI_Model {
                 WHERE t1.id_grup = g.id AND g.lat = ? AND g.lng = ?";
         array_push($values, $lat, $lng, $lat);
         $hasil = $this->db->query($sql, $values);
-        return $hasil -> result_array();
+
+        $grups = $hasil -> result_array();
+        $grups2 = [];
+        foreach($grups as $grup){
+          $grup_foto = $grup["foto"];
+          $grup['foto'] = base64_encode($grup_foto);
+          array_push($grups2, $grup);
+        }
+        return $grups2;
     }
 
     public function get_allGrup_byUser($id_user){
@@ -61,6 +69,13 @@ class Grup_Model extends CI_Model {
                 FROM grup g, users_grup ug
                 WHERE ug.id_grup = g.id AND ug.id_user = ?";
         $hasil = $this->db->query($sql, array($id_user));
-        return $hasil -> result_array();
+        $grups = $hasil -> result_array();
+        $grups2 = [];
+        foreach($grups as $grup){
+          $grup_foto = $grup["foto"];
+          $grup['foto'] = base64_encode($grup_foto);
+          array_push($grups2, $grup);
+        }
+        return $grups2;
     }
 }
