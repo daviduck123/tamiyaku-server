@@ -58,8 +58,8 @@ class Grup_Model extends CI_Model {
 
     public function get_allGrup_byUser($id_user){
         $sql ="SELECT g.*
-                FROM grup g
-                WHERE g.id_user = ?";
+                FROM grup g, users_grup ug
+                WHERE ug.id_grup = g.id AND ug.id_user = ?";
         $hasil = $this->db->query($sql, array($id_user));
         return $hasil -> result_array();
     }
