@@ -12,7 +12,18 @@ class Komentar extends REST_Controller {
 
     public function index_get(){
         try {
-            $komentar = $this->Komentar_Model->get_komentar_byIdPost($this->get("id_post"));
+            $id_post = $this->get("id_post");
+            $id_event = $this->get("id_event");
+            $id_jualbeli = $this->get("id_jualbeli");
+            if(isset($id_post)){
+                $komentar = $this->Komentar_Model->get_komentar_byIdPost($id_event);
+            }
+            if(isset($id_event)){
+                $komentar = $this->Komentar_Model->get_komentar_byIdEvent($id_post);
+            }
+            if(isset($id_jualbeli)){
+               $komentar = $this->Komentar_Model->get_komentar_byIdJualBeli($id_jualbeli);
+            }
             if (count($komentar) > 0) {
                $this->set_response($komentar, REST_Controller::HTTP_OK);
             } else {
@@ -28,17 +39,28 @@ class Komentar extends REST_Controller {
 
     public function index_post(){
         try {   
-        	$data = json_decode(file_get_contents('php://input'));
+            $data = json_decode(file_get_contents('php://input'));
             $id_user = $data->id_user;
             $id_post = $data->id_post;
-            $deskripsi = $data->deskripsi;      
+            $id_event = $data->id_event;
+            $id_jualbeli = $data->id_jualbeli;
+            $deskripsi = $data->deskripsi;
+            if(isset($id_post)){
+                $type = 1;
+            }
+            if(isset($id_event)){
+                $type = 2;
+            }
+            if(isset($id_jualbeli)){
+                $type = 3;
+            }
 
-            $result = $this->Komentar_Model->insert_komentar($deskripsi, $id_user, $id_post);
+            $result = $this->Komentar_Model->insert_komentar($deskripsi, $type, $id_user, $id_post, $id_event, $id_jualbeli);
             if(count($result) > 0){
                $this->set_response([
-               		'status' => "TRUE",
+                    'status' => "TRUE",
                     'message' => 'Berhasil Insert Komentar'
-                       	], REST_Controller::HTTP_ACCEPTED);
+                        ], REST_Controller::HTTP_ACCEPTED);
             } else {
                 $this->set_response([
                     'status' => "TRUE",

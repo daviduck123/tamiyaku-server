@@ -16,6 +16,7 @@ class FirstDatabase_Model extends CI_Model {
         $this->create_UsersGrup();
         $this->create_Post();
         $this->create_Event();
+        $this->create_JualBeli();
         $this->create_Komentar();
     }
 
@@ -162,11 +163,26 @@ class FirstDatabase_Model extends CI_Model {
         }
     }
 
+    public function create_JualBeli(){
+        $sql = "SHOW TABLES LIKE 'jual_beli'";
+        $exist = $this->db->query($sql);
+        if($exist->num_rows() == 0){
+           $sql2 = "CREATE TABLE `jual_beli` ( `id` INT NOT NULL AUTO_INCREMENT , `nama` VARCHAR(255) NOT NULL , `harga` INT(20) NOT NULL , `foto` BLOB NOT NULL , `deskripsi` TEXT NOT NULL , `created_at` DATETIME NOT NULL, `id_user` INT NOT NULL , `id_kota` INT NOT NULL , PRIMARY KEY (`id`), INDEX (`id_user`), INDEX (`id_kota`)) ENGINE = InnoDB;";
+            $this->db->query($sql2);
+
+            $sql3 = "ALTER TABLE `jual_beli` ADD CONSTRAINT `fk_jualbeli_user` FOREIGN KEY (`id_user`) REFERENCES `users`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;";
+            $this->db->query($sql3);
+
+            $sql3 = "ALTER TABLE `jual_beli` ADD CONSTRAINT `fk_jualbeli_kota` FOREIGN KEY (`id_kota`) REFERENCES `kota`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;";
+            $this->db->query($sql3);
+        }
+    }
+
     public function create_Komentar(){
         $sql = "SHOW TABLES LIKE 'komentar'";
         $exist = $this->db->query($sql);
         if($exist->num_rows() == 0){
-           $sql2 = "CREATE TABLE `komentar` ( `id` INT NOT NULL AUTO_INCREMENT , `deskripsi` TEXT NOT NULL , `created_at` DATETIME NOT NULL , `id_user` INT NULL , `id_post` INT NULL , `id_event` INT NULL , PRIMARY KEY (`id`), INDEX (`id_post`), INDEX (`id_user`), INDEX (`id_event`)) ENGINE = InnoDB;";
+           $sql2 = "CREATE TABLE `komentar` ( `id` INT NOT NULL AUTO_INCREMENT ,  `deskripsi` INT NOT NULL ,  `type` ENUM('1','2','3') NOT NULL COMMENT '1 = user and grup; 2 = event; 3 = jual beli' ,  `created_at` DATETIME NOT NULL ,  `id_user` INT NOT NULL ,  `id_post` INT NULL COMMENT 'If Post Status User and Grup komentar' ,  `id_event` INT NULL ,  `id_jualbeli` INT NULL ,  PRIMARY KEY  (`id`), INDEX  (`id_jualbeli`),    INDEX  (`id_event`),    INDEX  (`id_post`),    INDEX  (`id_user`)) ENGINE = InnoDB;";
             $this->db->query($sql2);
 
             $sql3 = "ALTER TABLE `komentar` ADD CONSTRAINT `fk_komentar_user` FOREIGN KEY (`id_user`) REFERENCES `users`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;";
@@ -176,6 +192,9 @@ class FirstDatabase_Model extends CI_Model {
             $this->db->query($sql3);
 
             $sql3 = "ALTER TABLE `komentar` ADD CONSTRAINT `fk_komentar_event` FOREIGN KEY (`id_event`) REFERENCES `event`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;";
+            $this->db->query($sql3);
+
+            $sql3 = "ALTER TABLE `komentar` ADD CONSTRAINT `fk_komentar_jualbeli` FOREIGN KEY (`id_jualbeli`) REFERENCES `jual_beli`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;";
             $this->db->query($sql3);
         }
     }

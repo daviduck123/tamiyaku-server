@@ -23,9 +23,10 @@ class User_Model extends CI_Model {
 	}
 
 	public function get_userBySearch($param){
-		$sql="SELECT * 
+		$sql="SELECT u.* 
 				FROM users u 
-				WHERE u.nama LIKE '%".$param."%' OR u.email LIKE '%".$param."%'";
+				WHERE u.nama LIKE '%".$param."%' OR u.email LIKE '%".$param."%'
+				ORDER BY u.nama ASC";
 		$hasil = $this->db->query($sql);
 		$users = $hasil->result_array();
 		$users2 = [];
