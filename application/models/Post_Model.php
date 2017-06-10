@@ -54,7 +54,7 @@ class Post_Model extends CI_Model {
                 FROM post p
                 LEFT JOIN users u ON p.id_user = u.id
                 LEFT JOIN komentar k ON k.id_post = p.id
-                WHERE p.id_user = ?
+                WHERE p.id_user = ? AND p.id_grup IS NULL
                 GROUP BY p.id
                 ORDER BY p.created_at DESC";
        $hasil = $this->db->query($sql, array($id_user));
@@ -76,7 +76,7 @@ class Post_Model extends CI_Model {
                 LEFT JOIN users u ON p.id_user = u.id
                 LEFT JOIN users_teman ut ON p.id_user = ut.id_user OR p.id_user = ut.id_user
                 LEFT JOIN komentar k ON k.id_post = p.id
-                WHERE p.id_user = ?
+                WHERE p.id_user = ? AND p.id_grup IS NULL
                 GROUP BY p.id
                 ORDER BY p.created_at DESC";
        $hasil = $this->db->query($sql, array($id_user));
