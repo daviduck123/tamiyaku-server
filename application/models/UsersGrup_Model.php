@@ -14,4 +14,10 @@ class UsersGrup_Model extends CI_Model {
 		$hasil = $this->db->query($sql2);
 		return $hasil->row()->id;
 	}
+
+	public function delete_usersGrup($id_user, $id_grup){
+		$sql = "DELETE FROM `users_grup` WHERE id_grup=? AND id_user=?;";
+		$result = $this->db->query($sql, array($id_grup, $id_user));
+		return $result;
+	}
 }

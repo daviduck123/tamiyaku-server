@@ -8,6 +8,7 @@ class Grup extends REST_Controller {
     public function __construct(){
         parent::__construct();
         $this->load->model('Grup_Model');
+        $this->load->model('UsersGrup_Model');
     }
 
     public function index_get(){
@@ -98,6 +99,48 @@ class Grup extends REST_Controller {
             }
             $data = json_decode(file_get_contents('php://input'));
             
+        } catch (Exception $ex) {
+            $this->response(array('error' => $ex->getMessage()), $ex->getCode());
+        }
+    }
+
+    public function joinGrup_get(){
+        try {
+            $id_grup =  $this->get("id_grup");
+            $id_user =  $this->get("id_user");
+            $result = $this->UsersGrup_Model->insert_usersGrup($id_user, $id_grup);
+            if(count($result)){
+               $this->set_response([
+                            'status' => TRUE,
+                            'message' => 'Successfully Join Grup'
+                            ], REST_Controller::HTTP_OK);
+            } else {
+                $this->set_response([
+                            'status' => TRUE,
+                            'message' => 'Cannot Join Grup'
+                            ], REST_Controller::HTTP_OK);
+            }
+        } catch (Exception $ex) {
+            $this->response(array('error' => $ex->getMessage()), $ex->getCode());
+        }
+    }
+
+    public function leaveGrup_get(){
+        try {
+            $id_grup =  $this->get("id_grup");
+            $id_user =  $this->get("id_user");
+            $result = $this->UsersGrup_Model->delete_usersGrup($id_user, $id_grup);
+            if($result->mysql_affected_rows() > 0){
+               $this->set_response([
+                            'status' => TRUE,
+                            'message' => 'Successfully Leave Grup'
+                            ], REST_Controller::HTTP_OK);
+            } else {
+                $this->set_response([
+                            'status' => TRUE,
+                            'message' => 'Cannot Leave Grup'
+                            ], REST_Controller::HTTP_OK);
+            }
         } catch (Exception $ex) {
             $this->response(array('error' => $ex->getMessage()), $ex->getCode());
         }
