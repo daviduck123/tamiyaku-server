@@ -37,12 +37,12 @@ class Event_Model extends CI_Model {
          return $hasil->row()->id;
     }
 
-    public function get_all_event(){
+    public function get_allEventByUserKelas($id_user){
         $sql = "SELECT e.*, u.id as user_id, u.nama, u.foto as user_foto
-                FROM event e, users u, users_kelas uk
-                WHERE e.id_user = u.id AND u.id = uk.id_user AND uk.id_kelas = e.id_kelas
+                FROM event e, users u, (SELECT uk.* from users_kelas uk WHERE uk.id_user = ?) as t1
+                WHERE u.id = e.id_user AND t1.id_kelas = e.id_kelas
                 ORDER BY e.created_at DESC";
-        $hasil = $this->db->query($sql);
+        $hasil = $this->db->query($sql, array($id_user));
         $events = $hasil->row_array();
         $events2 = [];
         foreach($events as $event){
