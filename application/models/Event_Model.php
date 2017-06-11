@@ -43,7 +43,7 @@ class Event_Model extends CI_Model {
                 WHERE u.id = e.id_user AND t1.id_kelas = e.id_kelas
                 ORDER BY e.created_at DESC";
         $hasil = $this->db->query($sql, array($id_user));
-        $events = $hasil->row_array();
+        $events = $hasil->result_array();
         $events2 = [];
         foreach($events as $event){
           $event_foto = $event["foto"];
