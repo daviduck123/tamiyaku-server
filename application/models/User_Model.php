@@ -35,7 +35,7 @@ class User_Model extends CI_Model {
 		  $user['foto'] = base64_encode($user_foto);
 		  array_push($users2, $user);
 		}
-		return $users;
+		return $users2;
 	}
 
 	public function insert_user($nama, $password, $id_kota, $email, $jenis_kelamin, $file, $array_id_kelas){
