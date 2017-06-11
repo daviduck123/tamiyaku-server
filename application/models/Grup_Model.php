@@ -87,7 +87,7 @@ class Grup_Model extends CI_Model {
                 FROM grup g
                 LEFT JOIN users_grup ug ON ug.id_grup = g.id
                 WHERE g.id = ?";
-        $hasil = $this->db->query($sql, array($id_user));
+        $hasil = $this->db->query($sql, array($id_grup));
         $grup = $hasil -> row_array();
         $grup_foto = $grup["foto"];
         $grup['foto'] = base64_encode($grup_foto);
