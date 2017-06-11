@@ -146,7 +146,7 @@ class Grup extends REST_Controller {
             $id_grup =  $this->get("id_grup");
             $id_user =  $this->get("id_user");
             $result = $this->UsersGrup_Model->delete_usersGrup($id_user, $id_grup);
-            if($result->mysql_affected_rows() > 0){
+            if(count($result)){
                $this->set_response([
                             'status' => TRUE,
                             'message' => 'Successfully Leave Grup'
