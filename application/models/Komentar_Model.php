@@ -4,6 +4,7 @@ class Komentar_Model extends CI_Model {
     public function __construct()
     {
         $this->load->database();
+        $this->load->model("Notifikasi_Model");
     }
 
 

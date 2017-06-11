@@ -6,6 +6,7 @@ class User_Model extends CI_Model {
 		$this->load->database();
 
 		$this->load->model("UsersKelas_Model");
+		$this->load->model("Notifikasi_Model");
 	}
 
 	public function get_userByemail($email){

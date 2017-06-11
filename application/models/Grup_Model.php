@@ -9,6 +9,7 @@ class Grup_Model extends CI_Model {
 		$this->load->model("Grup_Model");
         $this->load->model("UsersKelas_Model");
         $this->load->model("UsersGrup_Model");
+        $this->load->model("Notifikasi_Model");
     }
 
 

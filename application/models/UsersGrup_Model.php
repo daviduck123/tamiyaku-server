@@ -4,6 +4,7 @@ class UsersGrup_Model extends CI_Model {
 	public function __construct()
 	{
 		$this->load->database();
+		$this->load->model("Notifikasi_Model");
 	}
 
 	public function insert_usersGrup($id_user, $id_grup){
