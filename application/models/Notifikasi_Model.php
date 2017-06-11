@@ -4,12 +4,12 @@ class Notifikasi_Model extends CI_Model {
     public function __construct()
     {
         $this->load->database();
-        $this->load->model("Users_Model");
+        $this->load->model("User_Model");
     }
 
 
     public function insert_notifiksai($deskripsi, $url, $id_user){
-      $user = $this->Users_Model->get_infoById($id_user);
+      $user = $this->User_Model->get_infoById($id_user);
       $notif = $user["nama"] ." ".$deskripsi;
 
       $sql = "INSERT INTO `notifikasi` (`deskripsi`, `url`, `created_at`, `id_user`) VALUES (?,?, NOW(),?)";
