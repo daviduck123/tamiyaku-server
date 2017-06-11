@@ -4,6 +4,8 @@ class Event_Model extends CI_Model {
     public function __construct()
     {
         $this->load->database();
+
+        $this->load->model("Notifikasi_Model");
     }
 
 
@@ -34,7 +36,11 @@ class Event_Model extends CI_Model {
 
          $sql2 = "SELECT LAST_INSERT_ID() as id";
          $hasil = $this->db->query($sql2);
-         return $hasil->row()->id;
+         $id = $hasil->row()->id;
+         
+         $this->Notifikasi_Model->insert_notifiksai("telah membuat Lomba "+$nama,"blabl.html?id_event="+$id,$id_user);
+
+         return $id;
     }
 
     public function get_allEventByUserKelas($id_user){

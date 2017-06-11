@@ -16,10 +16,10 @@ class Komentar extends REST_Controller {
             $id_event = $this->get("id_event");
             $id_jualbeli = $this->get("id_jualbeli");
             if(isset($id_post)){
-                $komentar = $this->Komentar_Model->get_komentar_byIdPost($id_event);
+                $komentar = $this->Komentar_Model->get_komentar_byIdPost($id_post);
             }
             if(isset($id_event)){
-                $komentar = $this->Komentar_Model->get_komentar_byIdEvent($id_post);
+                $komentar = $this->Komentar_Model->get_komentar_byIdEvent($id_event);
             }
             if(isset($id_jualbeli)){
                $komentar = $this->Komentar_Model->get_komentar_byIdJualBeli($id_jualbeli);
@@ -41,9 +41,18 @@ class Komentar extends REST_Controller {
         try {   
             $data = json_decode(file_get_contents('php://input'));
             $id_user = $data->id_user;
-            $id_post = $data->id_post;
-            $id_event = $data->id_event;
-            $id_jualbeli = $data->id_jualbeli;
+            $id_post = NULL;
+            $id_event = NULL;
+            $id_jualbeli = NULL;
+            if(isset($data->id_post)){
+                $id_post = $data->id_post;
+            }
+            if(isset($data->id_event)){
+                $id_event = $data->id_event;
+            }
+            if(isset($data->id_jualbeli)){
+                $id_jualbeli = $data->id_jualbeli;
+            }
             $deskripsi = $data->deskripsi;
             if(isset($id_post)){
                 $type = 1;

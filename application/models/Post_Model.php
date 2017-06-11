@@ -33,7 +33,11 @@ class Post_Model extends CI_Model {
 
        $sql2 = "SELECT LAST_INSERT_ID() as id";
        $hasil = $this->db->query($sql2);
-       return $hasil->row()->id;
+
+       $id = $hasil -> row()->id;
+       $this->Notifikasi_Model->insert_notifiksai("telah menulis status","blabl.html?id_post="+$id, $id_user);
+
+       return $id;
     }
 
     public function get_all_post(){

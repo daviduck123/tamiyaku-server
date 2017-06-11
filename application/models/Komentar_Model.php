@@ -11,7 +11,7 @@ class Komentar_Model extends CI_Model {
        $sql = "INSERT INTO `komentar` (`deskripsi`, `type`, ";
        $values = "VALUES (?,?,";
        $array = [];
-       array_push($array, $deskripsi);
+       array_push($array, $deskripsi, $type);
        if(isset($id_user)){
           $sql = $sql ." `id_user`,";
           $values .= "?,";
@@ -33,12 +33,16 @@ class Komentar_Model extends CI_Model {
           array_push($array, $id_jualbeli);
        }
        $sql = $sql ."`created_at`) ".$values." NOW());";
-      
+
        $this->db->query($sql, $array);
 
        $sql2 = "SELECT LAST_INSERT_ID() as id";
        $hasil = $this->db->query($sql2);
-       return $hasil->row()->id;
+
+       $id = $hasil->row()->id;
+       $this->Notifikasi_Model->insert_notifiksai("telah menulis komentar di post","blabl.html?id_post="+$id, $id_user);
+
+       return $id;
     }
 
     public function get_komentar_byIdPost($id_post){
