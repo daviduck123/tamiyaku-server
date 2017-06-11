@@ -33,7 +33,7 @@ class User extends REST_Controller {
             $id_user = $this->get('id_user');
             $teman = $this->User_Model->get_temanByIdUser($id_user);
             if (count($teman) > 0) {
-                $this->set_response($teman REST_Controller::HTTP_ACCEPTED);
+                $this->set_response($teman, REST_Controller::HTTP_ACCEPTED);
             } else {
                 $this->set_response([], REST_Controller::HTTP_ACCEPTED);
             }
