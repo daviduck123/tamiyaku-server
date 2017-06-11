@@ -14,6 +14,34 @@ class User extends REST_Controller {
         echo "Selamat datang di User Controller";
     }
 
+    public function getUserByIdUser_get(){
+        try {            
+            $id_user = $this->get('id_user');
+            $user = $this->User_Model->get_infoById($id_user);
+            if (count($user) > 0) {
+                $this->set_response($user REST_Controller::HTTP_ACCEPTED);
+            } else {
+                $this->set_response([], REST_Controller::HTTP_ACCEPTED);
+            }
+        } catch (Exception $ex) {
+            $this->response(array('error' => $ex->getMessage()), $ex->getCode());
+        }
+    }
+
+    public function getTemanByIdUser_get(){
+        try {            
+            $id_user = $this->get('id_user');
+            $teman = $this->User_Model->get_temanByIdUser($id_user);
+            if (count($teman) > 0) {
+                $this->set_response($teman REST_Controller::HTTP_ACCEPTED);
+            } else {
+                $this->set_response([], REST_Controller::HTTP_ACCEPTED);
+            }
+        } catch (Exception $ex) {
+            $this->response(array('error' => $ex->getMessage()), $ex->getCode());
+        }
+    }
+
     public function registerNewUser_post(){
         try {
             $nama = $this->input->post('nama');
@@ -86,46 +114,83 @@ class User extends REST_Controller {
         }
     }
 
-    public function addFriend_post(){
-        try {            
-            $data = json_decode(file_get_contents('php://input'));
-            $id_user = $data->id_user;
-            $id_teman = $data->id_teman;
-
-            $result = $this->User_Model->addFriend($id_user, $id_teman);
-
-            if ($email != null && $password != null) {
-                $user = $this->User_Model->get_email($email);
-                if (count($user) > 0) {
-                    $password = do_hash($password, "md5");
-                    if ($password == $user["password"]) {
-                        $this->set_response([
-                            'user' => $user,
-                            'status' => "TRUE",
-                            'message' => 'Berhasil Login'
-                            ], REST_Controller::HTTP_ACCEPTED);
-                    } else {
-                        $this->set_response([
-                            'status' => "FALSE",
-                            'message' => 'Password salah'
-                                ], REST_Controller::HTTP_ACCEPTED);
-                    }
-                } else {
-                    $this->set_response([
-                        'status' => "FALSE",
-                        'message' => 'User tidak ditemukan'
-                            ], REST_Controller::HTTP_ACCEPTED);
-                }
+    public function getFriend_get(){
+         try {
+            $id_user =  $this->get("id_user");
+            $result = $this->User_Model->get_temanByIdUser($id_user);
+            if($result->mysql_affected_rows() > 0){
+               $this->set_response([
+                            'status' => TRUE,
+                            'message' => 'Successfully Add Friend'
+                            ], REST_Controller::HTTP_OK);
             } else {
                 $this->set_response([
-                    'status' => "FALSE",
-                    'message' => 'Kurang Parameter'
-                        ], REST_Controller::HTTP_BAD_REQUEST);
+                            'status' => TRUE,
+                            'message' => 'Cannot Add Friend'
+                            ], REST_Controller::HTTP_OK);
             }
         } catch (Exception $ex) {
             $this->response(array('error' => $ex->getMessage()), $ex->getCode());
         }
     }
+
+    public function addFriend_get(){
+        try {
+            $id_teman =  $this->get("id_teman");
+            $id_user =  $this->get("id_user");
+            $result = $this->UsersTeman_Model->insert_usersTeman($id_user, $id_teman);
+            if($result->mysql_affected_rows() > 0){
+               $this->set_response([
+                            'status' => TRUE,
+                            'message' => 'Successfully Add Friend'
+                            ], REST_Controller::HTTP_OK);
+            } else {
+                $this->set_response([
+                            'status' => TRUE,
+                            'message' => 'Cannot Add Friend'
+                            ], REST_Controller::HTTP_OK);
+            }
+        } catch (Exception $ex) {
+            $this->response(array('error' => $ex->getMessage()), $ex->getCode());
+        }
+    }
+
+    public function deleteFriend_get(){
+        try {
+            $id_teman =  $this->get("id_teman");
+            $id_user =  $this->get("id_user");
+            $result = $this->UsersTeman_Model->delete_usersTeman($id_user, $id_teman);
+            if($result->mysql_affected_rows() > 0){
+               $this->set_response([
+                            'status' => TRUE,
+                            'message' => 'Successfully Delete Teman'
+                            ], REST_Controller::HTTP_OK);
+            } else {
+                $this->set_response([
+                            'status' => TRUE,
+                            'message' => 'Cannot Delete Teman'
+                            ], REST_Controller::HTTP_OK);
+            }
+        } catch (Exception $ex) {
+            $this->response(array('error' => $ex->getMessage()), $ex->getCode());
+        }
+    }
+
+    public function checkIsTeman_get(){
+        try {
+            $id_teman =  $this->get("id_teman");
+            $id_user =  $this->get("id_user");
+            $result = $this->UsersTeman_Model->get_isTeman($id_user, $id_teman);
+            if(count($result) > 0){
+               $this->set_response($result, REST_Controller::HTTP_OK);
+            } else {
+                $this->set_response([], REST_Controller::HTTP_OK);
+            }
+        } catch (Exception $ex) {
+            $this->response(array('error' => $ex->getMessage()), $ex->getCode());
+        }
+    }
+
 
     public function searchUser_get(){
         try {            

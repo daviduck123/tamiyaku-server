@@ -52,9 +52,30 @@ class User_Model extends CI_Model {
 		return $hasil;
 	}
 
-	public function insert_Friend($id_user, $id_teman){
-		$sql = "INSERT INTO `users_teman` (`id_user`, `id_teman`) VALUES (?,?)";
-		$hasil = $this->db->query($id_user, $id_teman);
-		return $hasil;
+	public function get_temanByIdUser($id_user){
+		$sql = "SELECT u.*
+				FROM users u, users_teman ut
+				WHERE ut.id_user = ? AND ut.id_kelas = u.id
+				ORDER BY u.nama ASC";
+		$hasil = $this->db->query($sql, array($id_user));
+		$users = $hasil->result_array();
+		$users2 = [];
+		foreach($users as $user){
+		  $user_foto = $user["foto"];
+		  $user['foto'] = base64_encode($user_foto);
+		  array_push($users2, $user);
+		}
+		return $users2;
+	}
+
+	public function get_infoById($id_user){
+		$sql = "SELECT u.*
+				FROM users u
+				WHERE u.id = ?";
+		$hasil = $this->db->query($sql, array($id_user));
+		$user = $hasil->row_array();
+		$user_foto = $user["foto"];
+        $user['foto'] = base64_encode($user_foto);
+		return $user;
 	}
 }
