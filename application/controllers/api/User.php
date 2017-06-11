@@ -19,7 +19,7 @@ class User extends REST_Controller {
             $id_user = $this->get('id_user');
             $user = $this->User_Model->get_infoById($id_user);
             if (count($user) > 0) {
-                $this->set_response($user REST_Controller::HTTP_ACCEPTED);
+                $this->set_response($user, REST_Controller::HTTP_ACCEPTED);
             } else {
                 $this->set_response([], REST_Controller::HTTP_ACCEPTED);
             }
