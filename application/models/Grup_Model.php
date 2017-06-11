@@ -39,22 +39,23 @@ class Grup_Model extends CI_Model {
     //for searching purpose
     public function get_allGrup_byLatLng($lat, $lng, $id_user){
         $sql ="SELECT g.*, ( 6371 * acos( cos( radians(?) ) * cos( radians( g.lat ) ) * cos( radians( g.lng ) - radians(?) ) + sin( radians(?) ) * sin( radians( g.lat ) ) ) ) AS distance
-                FROM grup g";
+                FROM grup g ";
         $values = [];
         array_push($values, $lat, $lng, $lat);
 
         $array_kelas = $this->UsersKelas_Model->get_allKelas_byUser($id_user);
        
+        $id_kelas_sql = "";
         foreach ($array_kelas as $id_kelas) {
-            $id_kelas_sql = "g.id_kelas = ? OR ";
-            array_push($values, $id_kelas);
+            $id_kelas_sql .= "g.id_kelas = ? OR ";
+            array_push($values, $id_kelas["id_kelas"]);
         }
         $len = strlen($id_kelas_sql);
-        substr($id_kelas_sql, 0, $len - 3);
+        $id_kelas_sql = substr($id_kelas_sql, 0, $len - 3);
 
         $sql .= "WHERE ".$id_kelas_sql."
                 HAVING distance < 20"; //in 20 km radius
-      
+
         $hasil = $this->db->query($sql, $values);
 
         $grups = $hasil -> result_array();
