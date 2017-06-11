@@ -55,7 +55,7 @@ class Grup_Model extends CI_Model {
         $len = strlen($id_kelas_sql);
         $id_kelas_sql = substr($id_kelas_sql, 0, $len - 3);
 
-        $sql .= "WHERE ".$id_kelas_sql."
+        $sql .= "WHERE ".$id_kelas_sql." 
                 HAVING distance < 20"; //in 20 km radius
 
         $hasil = $this->db->query($sql, $values);
