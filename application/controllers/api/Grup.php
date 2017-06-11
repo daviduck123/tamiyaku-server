@@ -161,4 +161,19 @@ class Grup extends REST_Controller {
             $this->response(array('error' => $ex->getMessage()), $ex->getCode());
         }
     }
+
+    public function checkJoinedGrup_get(){
+        try {
+            $id_grup =  $this->get("id_grup");
+            $id_user =  $this->get("id_user");
+            $result = $this->UsersGrup_Model->get_isJoinedGrup($id_user, $id_grup);
+            if(count($result) > 0){
+               $this->set_response($result, REST_Controller::HTTP_OK);
+            } else {
+                $this->set_response([], REST_Controller::HTTP_OK);
+            }
+        } catch (Exception $ex) {
+            $this->response(array('error' => $ex->getMessage()), $ex->getCode());
+        }
+    }
 }

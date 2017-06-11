@@ -20,4 +20,10 @@ class UsersGrup_Model extends CI_Model {
 		$result = $this->db->query($sql, array($id_grup, $id_user));
 		return $result;
 	}
+
+	public function get_isJoinedGrup($id_user, $id_grup){
+        $sql = "SELECT * FROM users_grup WHERE id_grup=? AND id_user=?;";
+        $result = $this->db->query($sql, array($id_grup, $id_user));
+		return $result->result_array();
+    }
 }
