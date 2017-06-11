@@ -8,7 +8,7 @@ class Event_Model extends CI_Model {
 
 
     public function insert_event($nama, $tanggal, $tempat, $hadiah1, $hadiah2, $hadiah3, $harga_tiket, $deskripsi, 
-      $foto, $id_user, $id_kota){
+      $foto, $id_user, $id_kota, $id_kelas){
         $sql = "INSERT INTO `event` (`nama`, `tanggal`, `tempat`, `hadiah1`, ";
         $values = "VALUES (?,?,?,?,";
         $array = array($nama, $tanggal, $tempat, $hadiah1);
@@ -27,8 +27,8 @@ class Event_Model extends CI_Model {
             $values .= "?,";
             array_push($array, $foto);
         }
-        $sql .= "`harga_tiket`, `deskripsi`, `id_user`, `id_kota`, `created_at`) ".  $values . "?,?,?,?,NOW());";
-        array_push($array, $harga_tiket, $deskripsi, $id_user, $id_kota);
+        $sql .= "`harga_tiket`, `deskripsi`, `id_user`, `id_kota`, `id_kelas`, `created_at`) ".  $values . "?,?,?,?,?,NOW());";
+        array_push($array, $harga_tiket, $deskripsi, $id_user, $id_kota, $id_kelas);
 
          $this->db->query($sql, $array);
 

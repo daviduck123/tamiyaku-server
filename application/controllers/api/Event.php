@@ -44,6 +44,7 @@ class Event extends REST_Controller {
             $deskripsi = $this->input->post('deskripsi');
             $id_user = $this->input->post('id_user');
             $id_kota = $this->input->post('id_kota');
+            $id_kelas = $this->input->post('id_kelas');
 
             $this->load->helper('file');
             if (!file_exists('./assets/images/event/')) {
@@ -60,7 +61,7 @@ class Event extends REST_Controller {
                 {
                     $file = $this->upload->data();
                     $path = file_get_contents($file['full_path']);
-                    $result = $this->Event_Model->insert_event($nama, $tanggal, $tempat, $hadiah1, $hadiah2, $hadiah3, $harga_tiket, $deskripsi, $path, $id_user, $id_kota);
+                    $result = $this->Event_Model->insert_event($nama, $tanggal, $tempat, $hadiah1, $hadiah2, $hadiah3, $harga_tiket, $deskripsi, $path, $id_user, $id_kota, $id_kelas);
                     if(count($result) > 0){
                         $this->set_response([
                             'status' => TRUE,
@@ -77,7 +78,7 @@ class Event extends REST_Controller {
                     $this->response(array('error' => $error), REST_Controller::HTTP_INTERNAL_SERVER_ERROR);
                 }
             }else{
-                 $result = $this->Event_Model->insert_event($nama, $tanggal, $tempat, $hadiah1, $hadiah2, $hadiah3, $harga_tiket, $deskripsi, NULL, $id_user, $id_kota);
+                 $result = $this->Event_Model->insert_event($nama, $tanggal, $tempat, $hadiah1, $hadiah2, $hadiah3, $harga_tiket, $deskripsi, NULL, $id_user, $id_kota, $id_kelas);
                     if(count($result) > 0){
                         $this->set_response([
                             'status' => TRUE,
