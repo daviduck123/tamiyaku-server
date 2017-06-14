@@ -180,7 +180,7 @@ class User extends REST_Controller {
         try {
             $id_teman =  $this->get("id_teman");
             $id_user =  $this->get("id_user");
-            $result = $this->UsersTeman_Model->get_isTeman($id_user, $id_teman);
+            $result = $this->User_Model->get_isTeman($id_user, $id_teman);
             if(count($result) > 0){
                $this->set_response($result, REST_Controller::HTTP_OK);
             } else {
