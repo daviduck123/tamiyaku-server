@@ -25,7 +25,7 @@ class Notifikasi_Model extends CI_Model {
                FROM notifikasi n, users_teman ut
                WHERE ut.id_user = ? AND ut.id_teman = n.id_user
                ORDER BY created_at DESC";
-       $hasil = $this->db->query($sql, array($id_post));
+       $hasil = $this->db->query($sql, array($id_user));
        $notif = $hasil->result_array();
        return $notif;
     }
