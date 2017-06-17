@@ -77,11 +77,11 @@ class User_Model extends CI_Model {
 		}
 		return $users2;
 	}
-
+	
 	public function get_isTeman($id_user, $id_teman){
 		$sql ="SELECT ut.*
 				FROM users_teman ut
-				WHERE ut.id_user = ? AND ut.id_teman = ?"
+				WHERE ut.id_user = ? AND ut.id_teman = ?";
 		$hasil = $this->db->query($sql, array($id_user, $id_teman));
 		$users = $hasil->result_array();
 		return $users;

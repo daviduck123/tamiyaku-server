@@ -118,7 +118,7 @@ class User extends REST_Controller {
          try {
             $id_user =  $this->get("id_user");
             $result = $this->User_Model->get_temanByIdUser($id_user);
-            if($result->mysql_affected_rows() > 0){
+            if(count($result) > 0){
                $this->set_response([
                             'status' => TRUE,
                             'message' => 'Successfully Add Friend'
@@ -139,7 +139,7 @@ class User extends REST_Controller {
             $id_teman =  $this->get("id_teman");
             $id_user =  $this->get("id_user");
             $result = $this->UsersTeman_Model->insert_usersTeman($id_user, $id_teman);
-            if($result->mysql_affected_rows() > 0){
+            if(count($result) > 0){
                $this->set_response([
                             'status' => TRUE,
                             'message' => 'Successfully Add Friend'
