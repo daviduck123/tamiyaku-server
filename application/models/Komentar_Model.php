@@ -115,4 +115,9 @@ class Komentar_Model extends CI_Model {
       $result = $this->db->query($sql, $array);
       return $result;
     }
+
+    public function delete_komentar($id){
+        $sql = "DELETE FROM komentar WHERE id = ?";
+        return $this->db->query($sql, array($id));
+    }
 }

@@ -95,4 +95,9 @@ class JualBeli_Model extends CI_Model {
 
         return $result;
     }
+
+     public function delete_jualBeli($id){
+        $sql = "DELETE FROM jual_beli WHERE id = ?";
+        return $this->db->query($sql, array($id));
+    }
 }

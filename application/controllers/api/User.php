@@ -212,4 +212,62 @@ class User extends REST_Controller {
             $this->response(array('error' => $ex->getMessage()), $ex->getCode());
         }
     }
+
+    public function updateUser_post(){
+        try {
+            $id_user = $this->input->post("id_user")
+            $nama = $this->input->post('nama');
+            $email = $this->input->post('email');
+            $jenis_kelamin = $this->input->post('jenis_kelamin');
+            $id_kelas = $this->input->post('id_kelas');
+            $id_kota = $this->input->post('id_kota');            
+            $password = $this->input->post('password');
+
+            $array_id_kelas = explode(',', $id_kelas);
+            
+            $this->load->helper('file');
+            $config['upload_path'] = './assets/images/users/';
+            $config['allowed_types'] =  'gif|jpg|png';
+
+            $this->load->library('upload', $config);
+            $this->upload->initialize($config);
+            
+            if($this->upload->do_upload('file'))
+            {
+                $file = $this->upload->data();
+                $path = file_get_contents($file['full_path']);
+                
+                $this->load->helper('security');
+                $password = do_hash($password, "md5");
+
+                $result = $this->User_Model->update_user($id_user, $email, $nama, $password, $jenis_kelamin, $path, $id_kota);
+                if($result->num_rows() > 0){
+                    $this->set_response([
+                        'status' => TRUE,
+                        'message' => 'Successfully Update User'
+                            ], REST_Controller::HTTP_OK);
+                } else {
+                    $this->set_response([
+                        'status' => FALSE,
+                        'message' => 'Failed Update User'
+                            ], REST_Controller::HTTP_BAD_REQUEST);
+                }
+            } else {
+                $result = $this->User_Model->update_user($id_user, $email, $nama, $password, $jenis_kelamin, NULL, $id_kota);
+                if(count($result) > 0){
+                    $this->set_response([
+                        'status' => TRUE,
+                        'message' => 'Successfully Update User'
+                        ], REST_Controller::HTTP_OK);
+                } else {
+                    $this->set_response([
+                        'status' => FALSE,
+                        'message' => 'Failed Update User'
+                            ], REST_Controller::HTTP_BAD_REQUEST);
+                }
+            }
+        } catch (Exception $ex) {
+            $this->response(array('error' => $ex->getMessage()), $ex->getCode());
+        }
+    }
 }

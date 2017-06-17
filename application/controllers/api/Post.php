@@ -123,4 +123,79 @@ class Post extends REST_Controller {
             $this->response(array('error' => $ex->getMessage()), $ex->getCode());
         }
     }
+
+    public function updatePost_post(){
+        try {
+            $deskripsi = $this->input->post('deskripsi');
+            $id_user = $this->input->post('id_user');
+            $id_grup = $this->input->post('id_grup');
+            $id_post = $this->input->post('id_post');
+
+            $this->load->helper('file');
+            $config['upload_path'] = './assets/images/post/';
+            $config['allowed_types'] =  'gif|jpg|png';
+
+            $this->load->library('upload', $config);
+            $this->upload->initialize($config);
+            
+            if(!empty($_FILES['file']['name'])){      
+                if($this->upload->do_upload('file'))
+                {
+                    $file = $this->upload->data();
+                    $path = file_get_contents($file['full_path']);
+
+                    $result = $this->Post_Model->update_post($id_post, $deskripsi, $path, $id_user, $id_grup);
+                    if(count($result) > 0){
+                        $this->set_response([
+                            'status' => TRUE,
+                            'message' => 'Successfully Update Post'
+                            ], REST_Controller::HTTP_OK);
+                    } else {
+                        $this->set_response([
+                            'status' => FALSE,
+                            'message' => 'Failed Update Post'
+                                ], REST_Controller::HTTP_BAD_REQUEST);
+                    }
+                } else {
+                    $error = $this->upload->display_errors();
+                    $this->response(array('error' => $error), REST_Controller::HTTP_INTERNAL_SERVER_ERROR);
+                }
+            }else{
+                 $result = $this->Post_Model->update_post($id_post, $deskripsi, NULL, $id_user, $id_grup);
+                    if(count($result) > 0){
+                        $this->set_response([
+                            'status' => TRUE,
+                            'message' => 'Successfully Update Post'
+                            ], REST_Controller::HTTP_OK);
+                    } else {
+                        $this->set_response([
+                            'status' => FALSE,
+                            'message' => 'Failed Update Post'
+                                ], REST_Controller::HTTP_BAD_REQUEST);
+                    }
+            }
+        } catch (Exception $ex) {
+            $this->response(array('error' => $ex->getMessage()), $ex->getCode());
+        }
+    }
+
+    public function deletePost_get(){
+        try {   
+            $id_post =  $this->get("id_post");
+            $result = $this->Post_Model->delete_post($id_post);
+            if ($result->num_rows() > 0) {
+                $this->set_response([
+                            'status' => TRUE,
+                            'message' => 'Successfully Update Post'
+                            ], REST_Controller::HTTP_OK);
+            } else {
+                $this->set_response([
+                            'status' => TRUE,
+                            'message' => 'Failed Update Post'
+                            ], REST_Controller::HTTP_INTERNAL_SERVER_ERROR);
+            }
+        } catch (Exception $ex) {
+            $this->response(array('error' => $ex->getMessage()), $ex->getCode());
+        }
+    }
 }

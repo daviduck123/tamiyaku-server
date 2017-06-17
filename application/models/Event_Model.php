@@ -64,7 +64,7 @@ class Event_Model extends CI_Model {
         return $events2;
     }
 
-    public function update_event($id_event, $nama, $tanggal, $tempat, $hadiah1, $hadiah2, $hadiah3, $foto, $harga_tiket, $deskripsi, $id_kota, $id_kelas){
+    public function update_event($id_event, $nama, $tanggal, $tempat, $hadiah1, $hadiah2, $hadiah3, $foto, $harga_tiket, $deskripsi, $id_kota, $id_kelas, $id_user){
       $sql = "UPDATE `event` SET `nama`=?,`tanggal`=?,`tempat`=?,`hadiah1`=?,`harga_tiket`=?,`deskripsi`=?,`id_kota`=?,`id_kelas`=?";
       $array=array($nama, $tanggal, $tempat, $hadiah1, $harga_tiket, $deskripsi, $id_kota, $id_kelas);
        if(isset($hadiah2)){

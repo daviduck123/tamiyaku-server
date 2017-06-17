@@ -40,8 +40,17 @@ class User_Model extends CI_Model {
 	}
 
 	public function insert_user($nama, $password, $id_kota, $email, $jenis_kelamin, $file, $array_id_kelas){
-		$sql = "INSERT INTO `users` (`nama`, `password`, `id_kota`, `email`, `jenis_kelamin`,`foto`,`created_at`) VALUES (?,?,?,?,?,?,NOW())";
-		$this->db->query($sql, array($nama, $password, $id_kota, $email, $jenis_kelamin, $file));
+		$sql = "INSERT INTO `users` (`nama`, `password`, `id_kota`, `email`, `jenis_kelamin`,";
+		$values = "VALUES (?,?,?,?,?,"
+		$array = array($nama, $password, $id_kota, $email, $jenis_kelamin);
+		if(isset($foto)){
+			$sql .= "`foto`, ";
+			$values .= "?,";
+			array_push($array, $foto);
+		}
+
+		$sql .= "`created_at`) ".$values ."NOW());";
+		$this->db->query($sql, $array);
 
 		$sql2 = "SELECT LAST_INSERT_ID() as id";
 		$hasil = $this->db->query($sql2);

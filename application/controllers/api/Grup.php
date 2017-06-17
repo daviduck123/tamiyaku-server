@@ -113,8 +113,6 @@ class Grup extends REST_Controller {
                                 ], REST_Controller::HTTP_BAD_REQUEST);
                     }
             }
-            $data = json_decode(file_get_contents('php://input'));
-            
         } catch (Exception $ex) {
             $this->response(array('error' => $ex->getMessage()), $ex->getCode());
         }
@@ -171,6 +169,85 @@ class Grup extends REST_Controller {
                $this->set_response($result, REST_Controller::HTTP_OK);
             } else {
                 $this->set_response([], REST_Controller::HTTP_OK);
+            }
+        } catch (Exception $ex) {
+            $this->response(array('error' => $ex->getMessage()), $ex->getCode());
+        }
+    }
+
+    public function updateGrup_post(){
+        try {
+            $id_grup = $this->input->post("id_grup")
+            $nama = $this->input->post('nama');
+            $lat = $this->input->post('lat');
+            $lng = $this->input->post('lng');
+            $lokasi = $this->input->post('lokasi');
+            $id_kota = $this->input->post('id_kota');
+            $id_user = $this->input->post('id_user');
+            $id_kelas = $this->input->post('id_kelas');
+
+            $this->load->helper('file');
+            $config['upload_path'] = './assets/images/grup/';
+            $config['allowed_types'] =  'gif|jpg|png';
+
+            $this->load->library('upload', $config);
+            $this->upload->initialize($config);
+            
+            if(!empty($_FILES['file']['name'])){
+                if($this->upload->do_upload('file'))
+                {
+                    $file = $this->upload->data();
+                    $path = file_get_contents($file['full_path']);
+
+                    $result = $this->Grup_Model->update_grup($id_grup, $nama, $lat, $lng, $path, $lokasi, $id_kelas, $id_kota, $id_user);
+                    if(count($result) > 0){
+                        $this->set_response([
+                            'status' => TRUE,
+                            'message' => 'Successfully Update Grup'
+                            ], REST_Controller::HTTP_OK);
+                    } else {
+                        $this->set_response([
+                            'status' => FALSE,
+                            'message' => 'Failed Update Grup'
+                                ], REST_Controller::HTTP_BAD_REQUEST);
+                    }
+                } else {
+                    $error = $this->upload->display_errors();
+                    $this->response(array('error' => $error), REST_Controller::HTTP_INTERNAL_SERVER_ERROR);
+                }
+            }else{
+                 $result = $this->Grup_Model->update_grup($id_grup,$nama, $lat, $lng, NULL, $lokasi, $id_kelas, $id_kota, $id_user);
+                    if(count($result) > 0){
+                        $this->set_response([
+                            'status' => TRUE,
+                            'message' => 'Successfully Update Grup'
+                            ], REST_Controller::HTTP_OK);
+                    } else {
+                        $this->set_response([
+                            'status' => FALSE,
+                            'message' => 'Failed Update Grup'
+                                ], REST_Controller::HTTP_BAD_REQUEST);
+                    }
+            }
+        } catch (Exception $ex) {
+            $this->response(array('error' => $ex->getMessage()), $ex->getCode());
+        }
+    }
+
+    public function deleteGrup_get(){
+        try {   
+            $id_grup =  $this->get("id_grup");
+            $result = $this->Grup_Model->delete_grup($id_grup);
+            if ($result->num_rows() > 0) {
+                $this->set_response([
+                            'status' => TRUE,
+                            'message' => 'Successfully Delete Grup'
+                            ], REST_Controller::HTTP_OK);
+            } else {
+                $this->set_response([
+                            'status' => TRUE,
+                            'message' => 'Failed Delete Grup'
+                            ], REST_Controller::HTTP_INTERNAL_SERVER_ERROR);
             }
         } catch (Exception $ex) {
             $this->response(array('error' => $ex->getMessage()), $ex->getCode());
