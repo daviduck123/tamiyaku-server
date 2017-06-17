@@ -92,14 +92,10 @@ class User_Model extends CI_Model {
 				FROM users u
 				WHERE u.id = ?";
 		$hasil = $this->db->query($sql, array($id_user));
-		$users = $hasil->row_array();
-		$users2 = [];
-		foreach($users as $user){
-		  $user_foto = $user["foto"];
-		  $user['foto'] = base64_encode($user_foto);
-		  array_push($users2, $user);
-		}
-		return $users2;
+		$user = $hasil->row_array();
+		$user_foto = $user["foto"];
+        $user['foto'] = base64_encode($user_foto);
+		return $user;
 	}
 
 	public function update_user($id_user, $email, $nama, $password, $jenis_kelamin, $foto, $id_kota){
