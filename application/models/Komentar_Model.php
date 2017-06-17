@@ -47,7 +47,7 @@ class Komentar_Model extends CI_Model {
     }
 
     public function get_komentar_byIdPost($id_post){
-       $sql = "SELECT k.*, u.id as user_id, u.nama, u.foto as user_foto 
+       $sql = "SELECT k.*, u.id as user_id, u.nama, u.foto 
                FROM komentar k, users u
                WHERE k.id_post = ? AND k.id_user = u.id AND k.type = 1
                ORDER BY created_at DESC";
