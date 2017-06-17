@@ -177,7 +177,7 @@ class Grup extends REST_Controller {
 
     public function updateGrup_post(){
         try {
-            $id_grup = $this->input->post("id_grup")
+            $id_grup = $this->input->post("id_grup");
             $nama = $this->input->post('nama');
             $lat = $this->input->post('lat');
             $lng = $this->input->post('lng');
