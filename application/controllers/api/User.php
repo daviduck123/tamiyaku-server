@@ -215,7 +215,7 @@ class User extends REST_Controller {
 
     public function updateUser_post(){
         try {
-            $id_user = $this->input->post("id_user")
+            $id_user = $this->input->post("id_user");
             $nama = $this->input->post('nama');
             $email = $this->input->post('email');
             $jenis_kelamin = $this->input->post('jenis_kelamin');
