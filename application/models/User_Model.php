@@ -41,7 +41,7 @@ class User_Model extends CI_Model {
 
 	public function insert_user($nama, $password, $id_kota, $email, $jenis_kelamin, $file, $array_id_kelas){
 		$sql = "INSERT INTO `users` (`nama`, `password`, `id_kota`, `email`, `jenis_kelamin`,";
-		$values = "VALUES (?,?,?,?,?,"
+		$values = "VALUES (?,?,?,?,?,";
 		$array = array($nama, $password, $id_kota, $email, $jenis_kelamin);
 		if(isset($foto)){
 			$sql .= "`foto`, ";
