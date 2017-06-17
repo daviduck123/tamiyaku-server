@@ -79,4 +79,20 @@ class User_Model extends CI_Model {
         $user['foto'] = base64_encode($user_foto);
 		return $user;
 	}
+
+	public function update_user($id_user, $email, $nama, $password, $jenis_kelamin, $foto, $id_kota){
+        $sql="UPDATE `users` SET `email`=?,`nama`=?,`password`=?,`jenis_kelamin`=?,`id_kota`=?";
+        $array=array($nama, $harga, $deskripsi, $id_kelas, $id_kota);
+        if(isset($foto)){
+            $sql .= " ,`foto`=?,";
+            array_push($array, $foto);
+        }
+        $sql .= " WHERE id=?";
+        array_push($array, $id_user);
+        
+        $result = $this->db->query($sql, $array);
+
+        return $result;
+    }
+	
 }

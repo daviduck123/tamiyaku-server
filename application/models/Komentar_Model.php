@@ -47,7 +47,7 @@ class Komentar_Model extends CI_Model {
     }
 
     public function get_komentar_byIdPost($id_post){
-       $sql = "SELECT k.*, u.id, u.nama, u.foto 
+       $sql = "SELECT k.*, u.id as user_id, u.nama, u.foto as user_foto 
                FROM komentar k, users u
                WHERE k.id_post = ? AND k.id_user = u.id AND k.type = 1
                ORDER BY created_at DESC";
@@ -63,7 +63,7 @@ class Komentar_Model extends CI_Model {
     } 
 
     public function get_komentar_byIdEvent($id_event){
-       $sql = "SELECT k.*, u.id, u.nama, u.foto 
+       $sql = "SELECT k.*, u.id as user_id, u.nama, u.foto as user_foto
                FROM komentar k, users u
                WHERE k.id_event = ? AND k.id_user = u.id AND k.type = 2
                ORDER BY created_at DESC";
@@ -79,7 +79,7 @@ class Komentar_Model extends CI_Model {
     } 
 
     public function get_komentar_byIdJualBeli($id_jualbeli){
-       $sql = "SELECT k.*, u.id, u.nama, u.foto 
+       $sql = "SELECT k.*, u.id as user_id, u.nama, u.foto as user_foto
                FROM komentar k, users u
                WHERE k.id_jualbeli = ? AND k.id_user = u.id AND k.type = 3
                ORDER BY created_at DESC";
@@ -93,4 +93,26 @@ class Komentar_Model extends CI_Model {
        }
        return $komentar2;
     } 
+
+    public function update_komentar($id_komentar, $deskripsi, $type, $id_post, $id_event, $id_jualbeli, $id_user){
+      $sql="UPDATE `komentar` SET `deskripsi`=?,`type`=?";
+      $array=array($deskripsi, $type);
+      if(isset($id_post)){
+          $sql = $sql .",`id_post`=?";
+          array_push($array, $id_post);
+      }
+      if(isset($id_event)){
+          $sql = $sql .",`id_event`=?";
+          array_push($array, $id_event);
+      }
+      if(isset($id_jualbeli)){
+          $sql = $sql .",`id_jualbeli`=?";
+          array_push($array, $id_jualbeli);
+      }
+      $sql .= " WHERE id=?";
+      array_push($array, $id_komentar);
+        
+      $result = $this->db->query($sql, $array);
+      return $result;
+    }
 }

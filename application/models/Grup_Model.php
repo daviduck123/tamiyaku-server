@@ -41,7 +41,7 @@ class Grup_Model extends CI_Model {
 
     //for searching purpose
     public function get_allGrup_byLatLng($lat, $lng, $id_user){
-        $sql ="SELECT g.*, ( 6371 * acos( cos( radians(?) ) * cos( radians( g.lat ) ) * cos( radians( g.lng ) - radians(?) ) + sin( radians(?) ) * sin( radians( g.lat ) ) ) ) AS distance
+        $sql ="SELECT g.*, ( 6371000 * acos( cos( radians(?) ) * cos( radians( g.lat ) ) * cos( radians( g.lng ) - radians(?) ) + sin( radians(?) ) * sin( radians( g.lat ) ) ) ) AS distance
                 FROM grup g ";
         $values = [];
         array_push($values, $lat, $lng, $lat);
@@ -100,5 +100,27 @@ class Grup_Model extends CI_Model {
           array_push($grups2, $grup);
         }
         return $grups2;
+    }
+
+    public function update_grup($id_grup,$nama, $lat, $lng,$foto, $lokasi, $id_kelas, $id_kota, $id_user){
+        $sql="UPDATE `grup` SET `nama`=?,`lat`=?,`lng`=?,`lokasi`=?,`id_kelas`=?,`id_kota`=?";
+        $array=array($nama, $lat, $lng, $lokasi, $id_kelas, $id_kota);
+        if(isset($foto)){
+            $sql .= " ,`foto`=?,";
+            array_push($array, $foto);
+        }
+        $sql .= " WHERE id=?";
+        array_push($array, $id_grup);
+
+        $result = $this->db->query($sql, $array);
+
+        $this->Notifikasi_Model->insert_notifiksai("telah mengupdate Grup "+$nama,"blabl.html?id_grup="+$id_grup,$id_user);
+
+        return $result;
+    }
+
+     public function delete_grup($id){
+        $sql = "DELETE FROM grup WHERE id = ?";
+        return $this->db->query($sql, array($id));
     }
 }

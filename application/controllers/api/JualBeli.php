@@ -7,7 +7,7 @@ class JualBeli extends REST_Controller {
 
     public function __construct(){
         parent::__construct();
-        $this->load->model('Event_Model');
+        $this->load->model('JualBeli_Model');
     }
 
     public function index_get(){
@@ -18,12 +18,12 @@ class JualBeli extends REST_Controller {
         }
     }
 
-    public function getAllEvent_get(){
+    public function getAllJualBeli_get(){
        try {   
             $id_user =  $this->get("id_user");
-            $events = $this->Event_Model->get_allEventByUserKelas($id_user);
-            if (count($events) > 0) {
-               $this->set_response($events, REST_Controller::HTTP_OK);
+            $jualbelis = $this->JualBeli_Model->get_all_jualBeli($id_user);
+            if (count($jualbelis) > 0) {
+               $this->set_response($jualbelis, REST_Controller::HTTP_OK);
             } else {
                 $this->set_response([], REST_Controller::HTTP_ACCEPTED);
             }
@@ -32,24 +32,34 @@ class JualBeli extends REST_Controller {
         }
     }
 
-    public function createEvent_post(){
+    public function getUserLapak_get(){
+       try {   
+            $id_user =  $this->get("id_user");
+            $jualbelis = $this->JualBeli_Model->get_userLapak($id_user);
+            if (count($jualbelis) > 0) {
+               $this->set_response($jualbelis, REST_Controller::HTTP_OK);
+            } else {
+                $this->set_response([], REST_Controller::HTTP_ACCEPTED);
+            }
+        } catch (Exception $ex) {
+            $this->response(array('error' => $ex->getMessage()), $ex->getCode());
+        }
+    }
+
+    public function createJualBeli_post(){
         try {
             $nama = $this->input->post('nama'); 
-            $tanggal = $this->input->post('tanggal');
-            $tempat = $this->input->post('tempat');
-            $hadiah1 = $this->input->post('hadiah1');
-            $hadiah2 = $this->input->post('hadiah2');
-            $hadiah3 = $this->input->post('hadiah3');
-            $harga_tiket = $this->input->post('harga_tiket');
-            $deskripsi = $this->input->post('deskripsi');
+            $harga = $this->input->post('tanggal');
+            $deskripsi = $this->input->post('tempat');
             $id_user = $this->input->post('id_user');
             $id_kota = $this->input->post('id_kota');
+            $id_kelas = $this->input->post('id_kelas');
 
             $this->load->helper('file');
-            if (!file_exists('./assets/images/event/')) {
-                mkdir('./assets/images/event/', 0777, true);
+            if (!file_exists('./assets/images/jualbeli/'.$id_user.'/')) {
+                mkdir('./assets/images/jualbeli/'.$id_user.'/', 0777, true);
             }
-            $config['upload_path'] = './assets/images/event/';
+            $config['upload_path'] = './assets/images/jualbeli/'.$id_user.'/';
             $config['allowed_types'] =  'gif|jpg|png';
 
             $this->load->library('upload', $config);
@@ -60,16 +70,16 @@ class JualBeli extends REST_Controller {
                 {
                     $file = $this->upload->data();
                     $path = file_get_contents($file['full_path']);
-                    $result = $this->Event_Model->insert_event($nama, $tanggal, $tempat, $hadiah1, $hadiah2, $hadiah3, $harga_tiket, $deskripsi, $path, $id_user, $id_kota);
+                    $result = $this->JualBeli_Model->insert_jualBeli($nama, $harga, $foto, $deskripsi, $id_user, $id_kota, $id_kelas);
                     if(count($result) > 0){
                         $this->set_response([
                             'status' => TRUE,
-                            'message' => 'Successfully Create Event'
+                            'message' => 'Successfully Create Jual Beli'
                             ], REST_Controller::HTTP_OK);
                     } else {
                         $this->set_response([
                             'status' => FALSE,
-                            'message' => 'Failed Create Event'
+                            'message' => 'Failed Create Jual Beli'
                                 ], REST_Controller::HTTP_BAD_REQUEST);
                     }
                 } else {
@@ -77,16 +87,16 @@ class JualBeli extends REST_Controller {
                     $this->response(array('error' => $error), REST_Controller::HTTP_INTERNAL_SERVER_ERROR);
                 }
             }else{
-                 $result = $this->Event_Model->insert_event($nama, $tanggal, $tempat, $hadiah1, $hadiah2, $hadiah3, $harga_tiket, $deskripsi, NULL, $id_user, $id_kota);
+                 $result = $this->JualBeli_Model->insert_jualBeli($nama, $harga, NULL, $deskripsi, $id_user, $id_kota, $id_kelas);
                     if(count($result) > 0){
                         $this->set_response([
                             'status' => TRUE,
-                            'message' => 'Successfully Create Event'
+                            'message' => 'Successfully Create Jual Beli'
                             ], REST_Controller::HTTP_OK);
                     } else {
                         $this->set_response([
                             'status' => FALSE,
-                            'message' => 'Failed Create Event'
+                            'message' => 'Failed Create Jual Beli'
                                 ], REST_Controller::HTTP_BAD_REQUEST);
                     }
             }
