@@ -92,7 +92,7 @@ class User_Model extends CI_Model {
 				FROM users u
 				WHERE u.id = ?";
 		$hasil = $this->db->query($sql, array($id_user));
-		$users = $hasil->result_array();
+		$users = $hasil->row_array();
 		$users2 = [];
 		foreach($users as $user){
 		  $user_foto = $user["foto"];
