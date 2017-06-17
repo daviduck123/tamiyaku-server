@@ -65,7 +65,7 @@ class User_Model extends CI_Model {
 	public function get_temanByIdUser($id_user){
 		$sql = "SELECT u.*
 				FROM users u, users_teman ut
-				WHERE ut.id_user = ? AND ut.id_kelas = u.id
+				WHERE ut.id_user = ? AND ut.id_teman = u.id
 				ORDER BY u.nama ASC";
 		$hasil = $this->db->query($sql, array($id_user));
 		$users = $hasil->result_array();
