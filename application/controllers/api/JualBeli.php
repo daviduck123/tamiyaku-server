@@ -70,7 +70,7 @@ class JualBeli extends REST_Controller {
                 {
                     $file = $this->upload->data();
                     $path = file_get_contents($file['full_path']);
-                    $result = $this->JualBeli_Model->insert_jualBeli($nama, $harga, $foto, $deskripsi, $id_user, $id_kota, $id_kelas);
+                    $result = $this->JualBeli_Model->insert_jualBeli($nama, $harga, $path, $deskripsi, $id_user, $id_kota, $id_kelas);
                     if(count($result) > 0){
                         $this->set_response([
                             'status' => TRUE,
