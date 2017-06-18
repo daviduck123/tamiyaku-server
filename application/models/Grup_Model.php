@@ -41,7 +41,7 @@ class Grup_Model extends CI_Model {
 
     //for searching purpose
     public function get_allGrup_byLatLng($lat, $lng, $id_user){
-        $sql ="SELECT g.*, ( 6371000 * acos( cos( radians(?) ) * cos( radians( g.lat ) ) * cos( radians( g.lng ) - radians(?) ) + sin( radians(?) ) * sin( radians( g.lat ) ) ) ) AS distance
+        $sql ="SELECT g.*, ( 6371 * acos( cos( radians(?) ) * cos( radians( g.lat ) ) * cos( radians( g.lng ) - radians(?) ) + sin( radians(?) ) * sin( radians( g.lat ) ) ) ) AS distance
                 FROM grup g ";
         $values = [];
         array_push($values, $lat, $lng, $lat);
