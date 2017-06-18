@@ -107,7 +107,7 @@ class JualBeli extends REST_Controller {
 
     public function updateJualBeli_post(){
         try {
-            $id_jualbeli = $this->input->post("id_jualbeli")
+            $id_jualbeli = $this->input->post("id_jualbeli");
             $nama = $this->input->post('nama'); 
             $harga = $this->input->post('tanggal');
             $deskripsi = $this->input->post('tempat');
