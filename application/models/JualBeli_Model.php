@@ -31,7 +31,7 @@ class JualBeli_Model extends CI_Model {
 
 	public function get_all_jualBeli($id_user){
 
-		$sql = "SELECT j.*, u.id as user_id, u.nama, u.foto as user_foto 
+		$sql = "SELECT j.*, u.id as user_id, u.nama as user_nama, u.foto as user_foto 
 				FROM jual_beli j, users u ";
 		$values = [];
 		$array_kelas = $this->UsersKelas_Model->get_allKelas_byUser($id_user);
@@ -60,7 +60,7 @@ class JualBeli_Model extends CI_Model {
 	}
 
 	public function get_userLapak($id_user){
-		$sql = "SELECT j.*, u.id as user_id, u.nama, u.foto as user_foto, IFNULL(count(k.id),0) as count_komentar
+		$sql = "SELECT j.*, u.id as user_id, u.nama as user_nama, u.foto as user_foto, IFNULL(count(k.id),0) as count_komentar
 				FROM jual_beli j
 				LEFT JOIN users u ON  u.id = j.id_user
                 LEFT JOIN komentar k ON k.id_jualbeli = j.id
