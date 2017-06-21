@@ -44,7 +44,7 @@ class JualBeli_Model extends CI_Model {
         $len = strlen($id_kelas_sql);
         $id_kelas_sql = substr($id_kelas_sql, 0, $len - 3);
 
-		$sql .= "WHERE (".$id_kelas_sql.") AND j.id_user = u.id AND j.id_user = ?";
+		$sql .= "WHERE (".$id_kelas_sql.") AND j.id_user = u.id";
     array_push($values, $id_user);
 		$hasil = $this->db->query($sql, $values);
 
