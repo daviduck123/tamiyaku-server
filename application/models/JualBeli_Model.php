@@ -46,7 +46,9 @@ class JualBeli_Model extends CI_Model {
         $len = strlen($id_kelas_sql);
         $id_kelas_sql = substr($id_kelas_sql, 0, $len - 3);
 
-		$sql .= " WHERE (".$id_kelas_sql.") AND j.id_user = u.id";
+		$sql .= " WHERE (".$id_kelas_sql.") AND j.id_user = u.id
+              GROUP BY j.id
+              ORDER BY j.created_at DESC";
 		$hasil = $this->db->query($sql, $values);
 
 		$jualbeli = $hasil->result_array();
@@ -66,7 +68,9 @@ class JualBeli_Model extends CI_Model {
 				FROM jual_beli j
 				LEFT JOIN users u ON  u.id = j.id_user
                 LEFT JOIN komentar k ON k.id_jualbeli = j.id
-				WHERE j.id_user = ?";
+				WHERE j.id_user = ?
+        GROUP BY j.id
+        ORDER BY j.created_at DESC";
 		$hasil = $this->db->query($sql, array($id_user));
 
 		$jualbeli = $hasil->result_array();

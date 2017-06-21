@@ -49,6 +49,7 @@ class Event_Model extends CI_Model {
                 LEFT JOIN users u ON e.id_user = u.id
                 LEFT JOIN komentar k ON k.id_event = e.id
                 LEFT JOIN (SELECT uk.* from users_kelas uk WHERE uk.id_user = ?) as t1 ON t1.id_kelas = e.id_kelas
+                GROUP BY e.id
                 ORDER BY e.created_at DESC";
         $hasil = $this->db->query($sql, array($id_user));
         $events = $hasil->result_array();
