@@ -144,7 +144,7 @@ class JualBeli extends REST_Controller {
                     $this->response(array('error' => $error), REST_Controller::HTTP_INTERNAL_SERVER_ERROR);
                 }
             }else{
-                 $result = $this->JualBeli_Model->update_jualBeliupdate_jualBeli($id_jualbeli, $nama, $harga, NULL, $deskripsi, $id_kelas, $id_kota, $id_user);
+                 $result = $this->JualBeli_Model->update_jualBeli($id_jualbeli, $nama, $harga, NULL, $deskripsi, $id_kelas, $id_kota, $id_user);
                     if(count($result) > 0){
                         $this->set_response([
                             'status' => TRUE,
@@ -166,7 +166,7 @@ class JualBeli extends REST_Controller {
         try {   
             $id_jualbeli =  $this->get("id_jualbeli");
             $result = $this->JualBeli_Model->delete_jualBeli($id_jualbeli);
-            if ($result->num_rows() > 0) {
+            if (count($result) > 0) {
                 $this->set_response([
                             'status' => TRUE,
                             'message' => 'Successfully Delete Jual Beli'
