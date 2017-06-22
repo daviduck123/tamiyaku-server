@@ -15,7 +15,7 @@ class UsersGrup_Model extends CI_Model {
 		$hasil = $this->db->query($sql2);
 
 		$id = $hasil->row()->id;
-        $this->Notifikasi_Model->insert_notifiksai("telah bergabung ke grup","blabl.html?id_grup="+$id, $id_user);
+        $this->Notifikasi_Model->insert_notifiksai("telah bergabung ke grup","blabl.html?id_grup=".$id, $id_user);
 
 		return $id;
 	}

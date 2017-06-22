@@ -38,7 +38,7 @@ class Event_Model extends CI_Model {
          $hasil = $this->db->query($sql2);
          $id = $hasil->row()->id;
          
-         $this->Notifikasi_Model->insert_notifiksai("telah membuat Lomba "+$nama,"blabl.html?id_event="+$id,$id_user);
+         $this->Notifikasi_Model->insert_notifiksai("telah membuat Lomba ".$nama,"blabl.html?id_event=".$id,$id_user);
 
          return $id;
     }
@@ -85,7 +85,7 @@ class Event_Model extends CI_Model {
 
         $result = $this->db->query($sql, $array);
 
-        $this->Notifikasi_Model->insert_notifiksai("telah mengupdate Lomba "+$nama,"blabl.html?id_event="+$id_event,$id_user);
+        $this->Notifikasi_Model->insert_notifiksai("telah mengupdate Lomba ".$nama,"blabl.html?id_event=".$id_event,$id_user);
 
         return $result;
     }

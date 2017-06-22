@@ -36,7 +36,7 @@ class Post_Model extends CI_Model {
        $hasil = $this->db->query($sql2);
 
        $id = $hasil -> row()->id;
-       $this->Notifikasi_Model->insert_notifiksai("telah menulis status","blabl.html?id_post="+$id, $id_user);
+       $this->Notifikasi_Model->insert_notifiksai("telah menulis status","blabl.html?id_post=".$id, $id_user);
 
        return $id;
     }
@@ -137,7 +137,7 @@ class Post_Model extends CI_Model {
         
         $result = $this->db->query($sql, $array);
 
-        $this->Notifikasi_Model->insert_notifiksai("telah mengupdate Postingan "+$nama,"blabl.html?id_post="+$id_post,$id_user);
+        $this->Notifikasi_Model->insert_notifiksai("telah mengupdate Postingan ".$nama,"blabl.html?id_post=".$id_post,$id_user);
 
         return $result;
     }

@@ -41,7 +41,7 @@ class Komentar_Model extends CI_Model {
        $hasil = $this->db->query($sql2);
 
        $id = $hasil->row()->id;
-       $this->Notifikasi_Model->insert_notifiksai("telah menulis komentar di post","blabl.html?id_post="+$id, $id_user);
+       $this->Notifikasi_Model->insert_notifiksai("telah menulis komentar di post","blabl.html?id_post=".$id, $id_user);
 
        return $id;
     }
@@ -79,7 +79,7 @@ class Komentar_Model extends CI_Model {
     } 
 
     public function get_komentar_byIdJualBeli($id_jualbeli){
-       $sql = "SELECT k.*, u.id as user_id, u.nama, u.foto as user_foto
+       $sql = "SELECT k.*, u.id as user_id, u.nama, u.foto
                FROM komentar k, users u
                WHERE k.id_jualbeli = ? AND k.id_user = u.id AND k.type = 3
                ORDER BY created_at DESC";

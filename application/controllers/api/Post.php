@@ -161,18 +161,18 @@ class Post extends REST_Controller {
                     $this->response(array('error' => $error), REST_Controller::HTTP_INTERNAL_SERVER_ERROR);
                 }
             }else{
-                 $result = $this->Post_Model->update_post($id_post, $deskripsi, NULL, $id_user, $id_grup);
-                    if(count($result) > 0){
-                        $this->set_response([
-                            'status' => TRUE,
-                            'message' => 'Successfully Update Post'
-                            ], REST_Controller::HTTP_OK);
-                    } else {
-                        $this->set_response([
-                            'status' => FALSE,
-                            'message' => 'Failed Update Post'
-                                ], REST_Controller::HTTP_BAD_REQUEST);
-                    }
+                $result = $this->Post_Model->update_post($id_post, $deskripsi, NULL, $id_user, $id_grup);
+                if(count($result) > 0){
+                    $this->set_response([
+                        'status' => TRUE,
+                        'message' => 'Successfully Update Post'
+                        ], REST_Controller::HTTP_OK);
+                } else {
+                    $this->set_response([
+                        'status' => FALSE,
+                        'message' => 'Failed Update Post'
+                            ], REST_Controller::HTTP_BAD_REQUEST);
+                }
             }
         } catch (Exception $ex) {
             $this->response(array('error' => $ex->getMessage()), $ex->getCode());

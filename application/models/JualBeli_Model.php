@@ -24,7 +24,7 @@ class JualBeli_Model extends CI_Model {
 		$hasil = $this->db->query($sql2);
 		$id = $hasil->row()->id;
 
-		$this->Notifikasi_Model->insert_notifiksai("telah menjual barang "+$nama,"blabl.html?id_jualbeli="+$id, $id_user);
+		$this->Notifikasi_Model->insert_notifiksai("telah menjual barang ".$nama,"blabl.html?id_jualbeli=".$id, $id_user);
 
 		return $hasil;
 	}
@@ -97,7 +97,7 @@ class JualBeli_Model extends CI_Model {
         
         $result = $this->db->query($sql, $array);
 
-        $this->Notifikasi_Model->insert_notifiksai("telah mengupdate Lapak "+$nama,"blabl.html?id_jualbeli="+$id_jualbeli,$id_user);
+        $this->Notifikasi_Model->insert_notifiksai("telah mengupdate Lapak ".$nama,"blabl.html?id_jualbeli=".$id_jualbeli,$id_user);
 
         return $result;
     }
