@@ -89,7 +89,7 @@ class JualBeli_Model extends CI_Model {
         $sql="UPDATE `jual_beli` SET `nama`=?,`harga`=?,`deskripsi`=?,`id_kelas`=?,`id_kota`=?";
         $array=array($nama, $harga, $deskripsi, $id_kelas, $id_kota);
         if(isset($foto)){
-            $sql .= " ,`foto`=?,";
+            $sql .= " ,`foto`=?";
             array_push($array, $foto);
         }
         $sql .= " WHERE id=?";
