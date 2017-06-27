@@ -79,12 +79,12 @@ class Post_Model extends CI_Model {
        $sql = "SELECT p.*, u.id as user_id, u.nama, u.foto as user_foto, IFNULL(count(k.id),0) as count_komentar
                 FROM post p
                 LEFT JOIN users u ON p.id_user = u.id
-                LEFT JOIN users_teman ut ON p.id_user = ut.id_user OR p.id_user = ut.id_user
                 LEFT JOIN komentar k ON k.id_post = p.id
-                WHERE p.id_user = ? AND p.id_grup IS NULL
+                WHERE (p.id_user = ? OR p.id_user IN (SELECT ut.id_teman FROM users_teman ut WHERE ut.id_user = ?))
+                  AND p.id_grup IS NULL
                 GROUP BY p.id
                 ORDER BY p.created_at DESC";
-       $hasil = $this->db->query($sql, array($id_user));
+       $hasil = $this->db->query($sql, array($id_user, $id_user));
        $post = $hasil->result_array();
        $post2 = [];
        foreach($post as $posting){
