@@ -183,7 +183,7 @@ class Post extends REST_Controller {
         try {   
             $id_post =  $this->get("id_post");
             $result = $this->Post_Model->delete_post($id_post);
-            if ($result->num_rows() > 0) {
+            if(count($result) > 0){
                 $this->set_response([
                             'status' => TRUE,
                             'message' => 'Successfully Update Post'
