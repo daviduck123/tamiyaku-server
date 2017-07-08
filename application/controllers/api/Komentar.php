@@ -100,17 +100,8 @@ class Komentar extends REST_Controller {
                 $id_jualbeli = $data->id_jualbeli;
             }
             $deskripsi = $data->deskripsi;
-            if(isset($id_post)){
-                $type = 1;
-            }
-            if(isset($id_event)){
-                $type = 2;
-            }
-            if(isset($id_jualbeli)){
-                $type = 3;
-            }
-
-            $result = $this->Komentar_Model->update_komentar($id_komentar, $deskripsi, $type, $id_post, $id_event, $id_jualbeli, $id_user);
+            
+            $result = $this->Komentar_Model->update_komentar($id_komentar, $deskripsi, $id_post, $id_event, $id_jualbeli, $id_user);
             if(count($result) > 0){
                $this->set_response([
                     'status' => "TRUE",

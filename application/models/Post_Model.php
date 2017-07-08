@@ -119,17 +119,17 @@ class Post_Model extends CI_Model {
     }  
     public function update_post($id_post, $deskripsi, $foto, $id_user, $id_grup){
         $sql="UPDATE `post` SET `deskripsi`=?";
-        $array=array($nama, $harga, $deskripsi, $id_kelas, $id_kota);
+        $array=array($deskripsi);
         if(isset($foto)){
-            $sql .= " ,`foto`=?,";
+            $sql .= " ,`foto`=?";
             array_push($array, $foto);
         }
        if(isset($id_user)){
-         $sql = $sql .",`id_user`=?";
+         $sql .= $sql .",`id_user`=?";
           array_push($array, $id_user);
        }
        if(isset($id_grup)){
-         $sql = $sql .",`id_grup`=?";
+         $sql .= $sql .",`id_grup`=?";
           array_push($array, $id_grup);
        }
         $sql .= " WHERE id=?";
