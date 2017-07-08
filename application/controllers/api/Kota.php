@@ -20,7 +20,7 @@ class Kota extends REST_Controller {
                 $this->set_response([
                     'status' => "TRUE",
                     'message' => 'Kota kosong'
-                        ], REST_Controller::HTTP_ACCEPTED);
+                        ], REST_Controller::HTTP_OK);
             }
         } catch (Exception $ex) {
             $this->response(array('error' => $ex->getMessage()), $ex->getCode());

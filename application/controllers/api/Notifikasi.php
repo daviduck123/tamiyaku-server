@@ -16,9 +16,9 @@ class Notifikasi extends REST_Controller {
             $id_user = $this->get("id_user");
             $notif = $this->Notifikasi_Model->get_notifikasibyIdUser($id_user);
             if(count($notif) > 0){
-                $this->set_response($notif, REST_Controller::HTTP_ACCEPTED);    
+                $this->set_response($notif, REST_Controller::HTTP_OK);    
             }else{
-                $this->set_response([], REST_Controller::HTTP_ACCEPTED);
+                $this->set_response([], REST_Controller::HTTP_OK);
             }
         } catch (Exception $ex) {
             $this->response(array('error' => $ex->getMessage()), $ex->getCode());

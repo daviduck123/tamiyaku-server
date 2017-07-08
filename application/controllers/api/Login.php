@@ -31,18 +31,18 @@ class Login extends REST_Controller {
                             'user' => $user,
                             'status' => "TRUE",
                             'message' => 'Berhasil Login'
-                            ], REST_Controller::HTTP_ACCEPTED);
+                            ], REST_Controller::HTTP_OK);
                     } else {
                         $this->set_response([
                             'status' => "FALSE",
                             'message' => 'Password salah'
-                                ], REST_Controller::HTTP_ACCEPTED);
+                                ], REST_Controller::HTTP_OK);
                     }
                 } else {
                     $this->set_response([
                         'status' => "FALSE",
                         'message' => 'User tidak ditemukan'
-                            ], REST_Controller::HTTP_ACCEPTED);
+                            ], REST_Controller::HTTP_OK);
                 }
             } else {
                 $this->set_response([

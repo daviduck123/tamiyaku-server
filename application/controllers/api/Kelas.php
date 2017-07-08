@@ -18,7 +18,7 @@ class Kelas extends REST_Controller {
           if (count($kelas) > 0) {
                $this->set_response($kelas, REST_Controller::HTTP_OK);
             } else {
-                $this->set_response([], REST_Controller::HTTP_ACCEPTED);
+                $this->set_response([], REST_Controller::HTTP_OK);
             }
         } catch (Exception $ex) {
             $this->response(array('error' => $ex->getMessage()), $ex->getCode());

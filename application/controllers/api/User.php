@@ -21,9 +21,9 @@ class User extends REST_Controller {
             $id_user = $this->get('id_user');
             $user = $this->User_Model->get_infoById($id_user);
             if (count($user) > 0) {
-                $this->set_response($user, REST_Controller::HTTP_ACCEPTED);
+                $this->set_response($user, REST_Controller::HTTP_OK);
             } else {
-                $this->set_response([], REST_Controller::HTTP_ACCEPTED);
+                $this->set_response([], REST_Controller::HTTP_OK);
             }
         } catch (Exception $ex) {
             $this->response(array('error' => $ex->getMessage()), $ex->getCode());
@@ -203,12 +203,12 @@ class User extends REST_Controller {
                     'users' => $users,
                     'status' => "TRUE",
                     'message' => 'Berhasil ketemu'
-                        ], REST_Controller::HTTP_ACCEPTED);
+                        ], REST_Controller::HTTP_OK);
             } else {
                 $this->set_response([
                     'status' => "FALSE",
                     'message' => 'Tidak ada yang ketemu'
-                        ], REST_Controller::HTTP_ACCEPTED);
+                        ], REST_Controller::HTTP_OK);
             }
         } catch (Exception $ex) {
             $this->response(array('error' => $ex->getMessage()), $ex->getCode());

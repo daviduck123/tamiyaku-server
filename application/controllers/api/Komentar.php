@@ -31,7 +31,7 @@ class Komentar extends REST_Controller {
                 $this->set_response([
                     'status' => "TRUE",
                     'message' => 'Komentar kosong'
-                        ], REST_Controller::HTTP_ACCEPTED);
+                        ], REST_Controller::HTTP_OK);
             }
         } catch (Exception $ex) {
             $this->response(array('error' => $ex->getMessage()), $ex->getCode());
@@ -70,12 +70,12 @@ class Komentar extends REST_Controller {
                $this->set_response([
                     'status' => "TRUE",
                     'message' => 'Berhasil Insert Komentar'
-                        ], REST_Controller::HTTP_ACCEPTED);
+                        ], REST_Controller::HTTP_OK);
             } else {
                 $this->set_response([
                     'status' => "TRUE",
                     'message' => 'Gagal Insert Komentar'
-                        ], REST_Controller::HTTP_ACCEPTED);
+                        ], REST_Controller::HTTP_OK);
             }
         } catch (Exception $ex) {
             $this->response(array('error' => $ex->getMessage()), $ex->getCode());
@@ -106,12 +106,12 @@ class Komentar extends REST_Controller {
                $this->set_response([
                     'status' => "TRUE",
                     'message' => 'Berhasil Update Komentar'
-                        ], REST_Controller::HTTP_ACCEPTED);
+                        ], REST_Controller::HTTP_OK);
             } else {
                 $this->set_response([
                     'status' => "TRUE",
                     'message' => 'Gagal Update Komentar'
-                        ], REST_Controller::HTTP_ACCEPTED);
+                        ], REST_Controller::HTTP_OK);
             }
         } catch (Exception $ex) {
             $this->response(array('error' => $ex->getMessage()), $ex->getCode());

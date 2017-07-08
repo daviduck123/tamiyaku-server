@@ -13,7 +13,7 @@ class JualBeli extends REST_Controller {
 
     public function index_get(){
        try {
-            $this->set_response([], REST_Controller::HTTP_ACCEPTED);    
+            $this->set_response([], REST_Controller::HTTP_OK);    
         } catch (Exception $ex) {
             $this->response(array('error' => $ex->getMessage()), $ex->getCode());
         }
@@ -26,7 +26,7 @@ class JualBeli extends REST_Controller {
             if (count($jualbelis) > 0) {
                $this->set_response($jualbelis, REST_Controller::HTTP_OK);
             } else {
-                $this->set_response([], REST_Controller::HTTP_ACCEPTED);
+                $this->set_response([], REST_Controller::HTTP_OK);
             }
         } catch (Exception $ex) {
             $this->response(array('error' => $ex->getMessage()), $ex->getCode());
@@ -40,7 +40,7 @@ class JualBeli extends REST_Controller {
             if (count($jualbelis) > 0) {
                $this->set_response($jualbelis, REST_Controller::HTTP_OK);
             } else {
-                $this->set_response([], REST_Controller::HTTP_ACCEPTED);
+                $this->set_response([], REST_Controller::HTTP_OK);
             }
         } catch (Exception $ex) {
             $this->response(array('error' => $ex->getMessage()), $ex->getCode());
@@ -82,7 +82,7 @@ class JualBeli extends REST_Controller {
                         $this->set_response([
                             'status' => FALSE,
                             'message' => 'Failed Create Jual Beli'
-                                ], REST_Controller::HTTP_BAD_REQUEST);
+                                ], REST_Controller::HTTP_OK);
                     }
                 } else {
                     $error = $this->upload->display_errors();
@@ -99,7 +99,7 @@ class JualBeli extends REST_Controller {
                         $this->set_response([
                             'status' => FALSE,
                             'message' => 'Failed Create Jual Beli'
-                                ], REST_Controller::HTTP_BAD_REQUEST);
+                                ], REST_Controller::HTTP_OK);
                     }
             }
         } catch (Exception $ex) {

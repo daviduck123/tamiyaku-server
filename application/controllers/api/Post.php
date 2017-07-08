@@ -20,7 +20,7 @@ class Post extends REST_Controller {
                 $this->set_response([
                     'status' => "TRUE",
                     'message' => 'Post kosong'
-                        ], REST_Controller::HTTP_ACCEPTED);
+                        ], REST_Controller::HTTP_OK);
             }
         } catch (Exception $ex) {
             $this->response(array('error' => $ex->getMessage()), $ex->getCode());
@@ -33,7 +33,7 @@ class Post extends REST_Controller {
             if (count($result) > 0) {
                $this->set_response($result, REST_Controller::HTTP_OK);
             } else {
-                $this->set_response([], REST_Controller::HTTP_ACCEPTED);
+                $this->set_response([], REST_Controller::HTTP_OK);
             }
         } catch (Exception $ex) {
             $this->response(array('error' => $ex->getMessage()), $ex->getCode());
@@ -46,7 +46,7 @@ class Post extends REST_Controller {
             if (count($result) > 0) {
                $this->set_response($result, REST_Controller::HTTP_OK);
             } else {
-                $this->set_response([], REST_Controller::HTTP_ACCEPTED);
+                $this->set_response([], REST_Controller::HTTP_OK);
             }
         } catch (Exception $ex) {
             $this->response(array('error' => $ex->getMessage()), $ex->getCode());
@@ -59,7 +59,7 @@ class Post extends REST_Controller {
             if (count($result) > 0) {
                $this->set_response($result, REST_Controller::HTTP_OK);
             } else {
-                $this->set_response([], REST_Controller::HTTP_ACCEPTED);
+                $this->set_response([], REST_Controller::HTTP_OK);
             }
         } catch (Exception $ex) {
             $this->response(array('error' => $ex->getMessage()), $ex->getCode());
