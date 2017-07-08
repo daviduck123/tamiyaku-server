@@ -6,6 +6,7 @@ require APPPATH . '/libraries/REST_Controller.php';
 class Login extends REST_Controller {
 
     public function __construct(){
+        header('Access-Control-Allow-Origin: *');
         parent::__construct();
         $this->load->model('User_Model');
     }
