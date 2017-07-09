@@ -91,6 +91,7 @@ class Event_Model extends CI_Model {
 
     public function delete_event($id){
         $sql = "DELETE FROM event WHERE id = ?";
-        return $this->db->query($sql, array($id));
+        $result = $this->db->query($sql, array($id));
+        return $result;
     }
 }

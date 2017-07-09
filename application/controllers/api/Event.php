@@ -214,7 +214,7 @@ class Event extends REST_Controller {
         try {   
             $id_event =  $this->get("id_event");
             $result = $this->Event_Model->delete_event($id_event);
-            if ($result->num_rows() > 0) {
+            if ($result == true) {
                 $this->set_response([
                             'status' => TRUE,
                             'message' => 'Successfully Delete Event'
