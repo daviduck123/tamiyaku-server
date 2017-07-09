@@ -136,6 +136,7 @@ class Event extends REST_Controller {
             $id_user = $this->input->post('id_user');
             $id_kota = $this->input->post('id_kota');
             $id_kelas = $this->input->post('id_kelas');
+            $canvas = $this->input->post("canvas");
 
             $this->load->helper('file');
             if (!file_exists('./assets/images/event/')) {
@@ -144,43 +145,65 @@ class Event extends REST_Controller {
             $config['upload_path'] = './assets/images/event/';
             $config['allowed_types'] =  'gif|jpg|png';
 
-            $this->load->library('upload', $config);
-            $this->upload->initialize($config);
-            
-            if(!empty($_FILES['file']['name'])){
-                if($this->upload->do_upload('file'))
-                {
-                    $file = $this->upload->data();
-                    $path = file_get_contents($file['full_path']);
-                    $result = $this->Event_Model->update_event($id_event, $nama, $tanggal, $tempat, $hadiah1, $hadiah2, $hadiah3, $path, $harga_tiket, $deskripsi, $id_kota, $id_kelas, $id_user);
-                    if(count($result) > 0){
-                        $this->set_response([
-                            'status' => TRUE,
-                            'message' => 'Successfully Create Event'
-                            ], REST_Controller::HTTP_OK);
-                    } else {
-                        $this->set_response([
-                            'status' => FALSE,
-                            'message' => 'Failed Update Event'
-                                ], REST_Controller::HTTP_BAD_REQUEST);
-                    }
+            if(isset($canvas)){
+                $this->load->helper('string');
+                $img = str_replace('data:image/png;base64,', '', $canvas);
+                $img = str_replace(' ', '+', $img);
+                $data = base64_decode($img);
+                $uniqueId = random_string('alnum',32);
+                $file = "./assets/images/event/" .$uniqueId. '.png';
+                $success = file_put_contents($file, $data);
+                $result = $this->Event_Model->update_event($id_event, $nama, $tanggal, $tempat, $hadiah1, $hadiah2, $hadiah3, $data, $harga_tiket, $deskripsi, $id_kota, $id_kelas, $id_user);
+                if(count($result) > 0){
+                    $this->set_response([
+                        'status' => TRUE,
+                        'message' => 'Successfully Update Event'
+                        ], REST_Controller::HTTP_OK);
                 } else {
-                    $error = $this->upload->display_errors();
-                    $this->response(array('error' => $error), REST_Controller::HTTP_INTERNAL_SERVER_ERROR);
+                    $this->set_response([
+                        'status' => FALSE,
+                        'message' => 'Failed Update Event'
+                            ], REST_Controller::HTTP_BAD_REQUEST);
                 }
             }else{
-                 $result = $this->Event_Model->update_event($id_event, $nama, $tanggal, $tempat, $hadiah1, $hadiah2, $hadiah3, NULL, $harga_tiket, $deskripsi, $id_kota, $id_kelas, $id_user);
-                    if(count($result) > 0){
-                        $this->set_response([
-                            'status' => TRUE,
-                            'message' => 'Successfully Update Event'
-                            ], REST_Controller::HTTP_OK);
+                $this->load->library('upload', $config);
+                $this->upload->initialize($config);
+                
+                if(!empty($_FILES['file']['name'])){
+                    if($this->upload->do_upload('file'))
+                    {
+                        $file = $this->upload->data();
+                        $path = file_get_contents($file['full_path']);
+                        $result = $this->Event_Model->update_event($id_event, $nama, $tanggal, $tempat, $hadiah1, $hadiah2, $hadiah3, $path, $harga_tiket, $deskripsi, $id_kota, $id_kelas, $id_user);
+                        if(count($result) > 0){
+                            $this->set_response([
+                                'status' => TRUE,
+                                'message' => 'Successfully Update Event'
+                                ], REST_Controller::HTTP_OK);
+                        } else {
+                            $this->set_response([
+                                'status' => FALSE,
+                                'message' => 'Failed Update Event'
+                                    ], REST_Controller::HTTP_BAD_REQUEST);
+                        }
                     } else {
-                        $this->set_response([
-                            'status' => FALSE,
-                            'message' => 'Failed Update Event'
-                                ], REST_Controller::HTTP_BAD_REQUEST);
+                        $error = $this->upload->display_errors();
+                        $this->response(array('error' => $error), REST_Controller::HTTP_INTERNAL_SERVER_ERROR);
                     }
+                }else{
+                     $result = $this->Event_Model->update_event($id_event, $nama, $tanggal, $tempat, $hadiah1, $hadiah2, $hadiah3, NULL, $harga_tiket, $deskripsi, $id_kota, $id_kelas, $id_user);
+                        if(count($result) > 0){
+                            $this->set_response([
+                                'status' => TRUE,
+                                'message' => 'Successfully Update Event'
+                                ], REST_Controller::HTTP_OK);
+                        } else {
+                            $this->set_response([
+                                'status' => FALSE,
+                                'message' => 'Failed Update Event'
+                                    ], REST_Controller::HTTP_BAD_REQUEST);
+                        }
+                }
             }
         } catch (Exception $ex) {
             $this->response(array('error' => $ex->getMessage()), $ex->getCode());

@@ -44,7 +44,7 @@ class Event_Model extends CI_Model {
     }
 
     public function get_allEventByUserKelas($id_user){
-        $sql = "SELECT e.*, u.id as user_id, u.nama, u.foto as user_foto, IFNULL(count(k.id),0) as count_komentar
+        $sql = "SELECT e.*, u.id as user_id, u.nama as user_nama, u.foto as user_foto, IFNULL(count(k.id),0) as count_komentar
                 FROM event e
                 LEFT JOIN users u ON e.id_user = u.id
                 LEFT JOIN komentar k ON k.id_event = e.id
@@ -64,7 +64,6 @@ class Event_Model extends CI_Model {
         }
         return $events2;
     }
-
     public function update_event($id_event, $nama, $tanggal, $tempat, $hadiah1, $hadiah2, $hadiah3, $foto, $harga_tiket, $deskripsi, $id_kota, $id_kelas, $id_user){
       $sql = "UPDATE `event` SET `nama`=?,`tanggal`=?,`tempat`=?,`hadiah1`=?,`harga_tiket`=?,`deskripsi`=?,`id_kota`=?,`id_kelas`=?";
       $array=array($nama, $tanggal, $tempat, $hadiah1, $harga_tiket, $deskripsi, $id_kota, $id_kelas);
