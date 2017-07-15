@@ -122,7 +122,7 @@ class Komentar extends REST_Controller {
         try {   
             $id_komentar =  $this->get("id_komentar");
             $result = $this->Komentar_Model->delete_komentar($id_komentar);
-            if ($result->num_rows() > 0) {
+            if ($result) {
                 $this->set_response([
                             'status' => TRUE,
                             'message' => 'Successfully Update Komentar'

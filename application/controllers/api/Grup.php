@@ -239,7 +239,7 @@ class Grup extends REST_Controller {
         try {   
             $id_grup =  $this->get("id_grup");
             $result = $this->Grup_Model->delete_grup($id_grup);
-            if ($result->num_rows() > 0) {
+            if ($result) {
                 $this->set_response([
                             'status' => TRUE,
                             'message' => 'Successfully Delete Grup'
