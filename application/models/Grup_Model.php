@@ -6,7 +6,7 @@ class Grup_Model extends CI_Model {
         $this->load->database();
 
         //$this->load->model("GrupKelas_Model");
-		$this->load->model("Grup_Model");
+        $this->load->model("Grup_Model");
         $this->load->model("UsersKelas_Model");
         $this->load->model("UsersGrup_Model");
         $this->load->model("Notifikasi_Model");
@@ -127,12 +127,12 @@ class Grup_Model extends CI_Model {
     public function get_grupBySearch($param){
         $sql="SELECT g.* 
                 FROM grup g 
-                WHERE g.nama LIKE '%".$param."%' '
+                WHERE g.nama LIKE '%".$param."%'
                 ORDER BY g.nama ASC";
         $hasil = $this->db->query($sql);
-        $users = $hasil->result_array();
+        $grups= $hasil->result_array();
         $grup2 = [];
-        foreach($users as $user){
+        foreach($grups as $grup){
           $grup_foto = $grup["foto"];
           $grup['foto'] = base64_encode($grup_foto);
           array_push($grup2, $grup);

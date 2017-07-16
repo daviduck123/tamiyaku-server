@@ -25,12 +25,12 @@ class Grup extends REST_Controller {
             $this->response(array('error' => $ex->getMessage()), $ex->getCode());
         }
     }
-	
-	public function getGrupNearBy_get(){
+    
+    public function getGrupNearBy_get(){
        try {  
-			$id_user =  $this->get("id_user");	   
+            $id_user =  $this->get("id_user");     
             $lat =  $this->get("lat");
-			$lng =  $this->get("lng");
+            $lng =  $this->get("lng");
             $grup = $this->Grup_Model->get_allGrup_byLatLng($lat, $lng, $id_user);
             if (count($grup) > 0) {
                $this->set_response($grup, REST_Controller::HTTP_OK);
@@ -260,8 +260,8 @@ class Grup extends REST_Controller {
             $param = $this->get('param');
             $grups = $this->Grup_Model->get_grupBySearch($param);
             if (count($grups) > 0) {
-                 $this->grups([
-                    'users' => $users,
+                 $this->set_response([
+                    'grups' => $grups,
                     'status' => "TRUE",
                     'message' => 'Berhasil ketemu'
                         ], REST_Controller::HTTP_OK);
