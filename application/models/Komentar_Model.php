@@ -50,7 +50,7 @@ class Komentar_Model extends CI_Model {
        $sql = "SELECT k.*, u.id as user_id, u.nama, u.foto 
                FROM komentar k, users u
                WHERE k.id_post = ? AND k.id_user = u.id AND k.type = 1
-               ORDER BY created_at DESC";
+               ORDER BY created_at ASC";
        $hasil = $this->db->query($sql, array($id_post));
        $komentar = $hasil->result_array();
        $komentar2 = [];
@@ -66,7 +66,7 @@ class Komentar_Model extends CI_Model {
        $sql = "SELECT k.*, u.id as user_id, u.nama, u.foto
                FROM komentar k, users u
                WHERE k.id_event = ? AND k.id_user = u.id AND k.type = 2
-               ORDER BY created_at DESC";
+               ORDER BY created_at ASC";
        $hasil = $this->db->query($sql, array($id_event));
        $komentar = $hasil->result_array();
        $komentar2 = [];
@@ -82,7 +82,7 @@ class Komentar_Model extends CI_Model {
        $sql = "SELECT k.*, u.id as user_id, u.nama, u.foto
                FROM komentar k, users u
                WHERE k.id_jualbeli = ? AND k.id_user = u.id AND k.type = 3
-               ORDER BY created_at DESC";
+               ORDER BY created_at ASC";
        $hasil = $this->db->query($sql, array($id_jualbeli));
        $komentar = $hasil->result_array();
        $komentar2 = [];
