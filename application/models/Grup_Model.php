@@ -126,7 +126,7 @@ class Grup_Model extends CI_Model {
 
     public function get_grupBySearch($param){
         $sql="SELECT g.* 
-                FROM grup u 
+                FROM grup g 
                 WHERE g.nama LIKE '%".$param."%' '
                 ORDER BY g.nama ASC";
         $hasil = $this->db->query($sql);
