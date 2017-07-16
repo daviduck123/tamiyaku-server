@@ -123,4 +123,20 @@ class Grup_Model extends CI_Model {
         $sql = "DELETE FROM grup WHERE id = ?";
         return $this->db->query($sql, array($id));
     }
+
+    public function get_grupBySearch($param){
+        $sql="SELECT g.* 
+                FROM grup u 
+                WHERE g.nama LIKE '%".$param."%' '
+                ORDER BY g.nama ASC";
+        $hasil = $this->db->query($sql);
+        $users = $hasil->result_array();
+        $grup2 = [];
+        foreach($users as $user){
+          $grup_foto = $grup["foto"];
+          $grup['foto'] = base64_encode($grup_foto);
+          array_push($grup2, $grup);
+        }
+        return $grup2;
+    } 
 }

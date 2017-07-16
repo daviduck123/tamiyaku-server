@@ -254,4 +254,25 @@ class Grup extends REST_Controller {
             $this->response(array('error' => $ex->getMessage()), $ex->getCode());
         }
     }
+
+    public function searchGrup_get(){
+        try {            
+            $param = $this->get('param');
+            $grups = $this->Grup_Model->get_grupBySearch($param);
+            if (count($grups) > 0) {
+                 $this->grups([
+                    'users' => $users,
+                    'status' => "TRUE",
+                    'message' => 'Berhasil ketemu'
+                        ], REST_Controller::HTTP_OK);
+            } else {
+                $this->set_response([
+                    'status' => "FALSE",
+                    'message' => 'Tidak ada yang ketemu'
+                        ], REST_Controller::HTTP_OK);
+            }
+        } catch (Exception $ex) {
+            $this->response(array('error' => $ex->getMessage()), $ex->getCode());
+        }
+    }
 }
