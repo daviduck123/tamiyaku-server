@@ -31,7 +31,7 @@ class JualBeli_Model extends CI_Model {
 
 	public function get_all_jualBeli($id_user){
 
-		$sql = "SELECT j.*, ka.name as kategori_name, u.id as user_id, u.nama as user_nama, u.foto as user_foto, IFNULL(count(k.id),0) as count_komentar
+		$sql = "SELECT j.*, ka.nama as kategori_name, u.id as user_id, u.nama as user_nama, u.foto as user_foto, IFNULL(count(k.id),0) as count_komentar
 				FROM jual_beli j
         LEFT JOIN users u ON  u.id = j.id_user
         LEFT JOIN kategori ka ON  ka.id = j.id_kategori
@@ -65,7 +65,7 @@ class JualBeli_Model extends CI_Model {
 	}
 
 	public function get_userLapak($id_user){
-		$sql = "SELECT j.*, ka.name as kategori_name, u.id as user_id, u.nama as user_nama, u.foto as user_foto, IFNULL(count(k.id),0) as count_komentar
+		$sql = "SELECT j.*, ka.nama as kategori_name, u.id as user_id, u.nama as user_nama, u.foto as user_foto, IFNULL(count(k.id),0) as count_komentar
 				FROM jual_beli j
 				LEFT JOIN users u ON  u.id = j.id_user
         LEFT JOIN kategori ka ON  ka.id = j.id_kategori
