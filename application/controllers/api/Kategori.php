@@ -15,7 +15,7 @@ class Kategori extends REST_Controller {
         try {   
             $kategori = $this->Kategori_Model->get_allKategori();
             if (count($kategori) > 0) {
-               $this->set_response($kota, REST_Controller::HTTP_OK);
+               $this->set_response($kategori, REST_Controller::HTTP_OK);
             } else {
                 $this->set_response([
                     'status' => "TRUE",
