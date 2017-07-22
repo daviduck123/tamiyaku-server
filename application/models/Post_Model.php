@@ -125,11 +125,11 @@ class Post_Model extends CI_Model {
             array_push($array, $foto);
         }
        if(isset($id_user)){
-         $sql .= $sql .",`id_user`=?";
+         $sql .= ",`id_user`=?";
           array_push($array, $id_user);
        }
        if(isset($id_grup)){
-         $sql .= $sql .",`id_grup`=?";
+         $sql .= ",`id_grup`=?";
           array_push($array, $id_grup);
        }
         $sql .= " WHERE id=?";
