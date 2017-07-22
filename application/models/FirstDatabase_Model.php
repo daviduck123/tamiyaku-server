@@ -195,7 +195,7 @@ class FirstDatabase_Model extends CI_Model {
         $sql = "SHOW TABLES LIKE 'jual_beli'";
         $exist = $this->db->query($sql);
         if($exist->num_rows() == 0){
-           $sql2 = "CREATE TABLE `jual_beli` ( `id` INT NOT NULL AUTO_INCREMENT , `nama` VARCHAR(255) NOT NULL , `email` VARCHAR(255) NULL, `harga` INT(20) NOT NULL , `foto` BLOB NOT NULL , `deskripsi` TEXT NOT NULL , `created_at` DATETIME NOT NULL, `id_user` INT NOT NULL, `id_kelas` INT NOT NULL, `id_kategori` INT NOT NULL, `id_kota` INT NOT NULL , PRIMARY KEY (`id`), INDEX (`id_user`), INDEX (`id_kota`), INDEX (`id_kategori`),  INDEX (`id_kelas`)) ENGINE = InnoDB;";
+           $sql2 = "CREATE TABLE `jual_beli` ( `id` INT NOT NULL AUTO_INCREMENT , `nama` VARCHAR(255) NOT NULL , `harga` INT(20) NOT NULL , `foto` BLOB NOT NULL , `deskripsi` TEXT NOT NULL , `created_at` DATETIME NOT NULL, `id_user` INT NOT NULL, `id_kelas` INT NOT NULL, `id_kategori` INT NOT NULL, `id_kota` INT NOT NULL , PRIMARY KEY (`id`), INDEX (`id_user`), INDEX (`id_kota`), INDEX (`id_kategori`),  INDEX (`id_kelas`)) ENGINE = InnoDB;";
             $this->db->query($sql2);
 
             $sql3 = "ALTER TABLE `jual_beli` ADD CONSTRAINT `fk_jualbeli_user` FOREIGN KEY (`id_user`) REFERENCES `users`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;";

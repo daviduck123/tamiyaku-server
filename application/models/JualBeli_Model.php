@@ -7,9 +7,9 @@ class JualBeli_Model extends CI_Model {
         $this->load->model("Notifikasi_Model");
 	}
 
-	public function insert_jualBeli($nama, $email, $harga, $foto, $deskripsi, $id_user, $id_kota, $id_kelas, $id_jualbeli){
-		$sql = "INSERT INTO `jual_beli` (`nama`, `harga`, `email`, ";
-		$values = "VALUES (?,?,?,";
+	public function insert_jualBeli($nama, $harga, $foto, $deskripsi, $id_user, $id_kota, $id_kelas, $id_jualbeli){
+		$sql = "INSERT INTO `jual_beli` (`nama`, `harga`, ";
+		$values = "VALUES (?,?,";
 		$array = array($nama, $harga, $email);
 		if(isset($foto)){
 			$sql .= "`foto`, ";
