@@ -39,10 +39,10 @@ class User_Model extends CI_Model {
 		return $users2;
 	}
 
-	public function insert_user($nama, $password, $id_kota, $email, $jenis_kelamin, $foto, $array_id_kelas){
-		$sql = "INSERT INTO `users` (`nama`, `password`, `id_kota`, `email`, `jenis_kelamin`,";
-		$values = "VALUES (?,?,?,?,?,";
-		$array = array($nama, $password, $id_kota, $email, $jenis_kelamin);
+	public function insert_user($nama, $password, $id_kota, $email, $uniqueId, $jenis_kelamin, $foto, $array_id_kelas){
+		$sql = "INSERT INTO `users` (`nama`, `password`, `id_kota`, `email`, `uniqueId`, `verified`, `jenis_kelamin`,";
+		$values = "VALUES (?,?,?,?,?,'0',?,";
+		$array = array($nama, $password, $id_kota, $email, $uniqueId, $jenis_kelamin);
 		if(isset($foto)){
 			$sql .= "`foto`, ";
 			$values .= "?,";
@@ -96,6 +96,13 @@ class User_Model extends CI_Model {
 		$user_foto = $user["foto"];
         $user['foto'] = base64_encode($user_foto);
 		return $user;
+	}
+
+	public function update_verified($id_user){
+		$sql="UPDATE `users` SET `verified`=1 WHERE id=?";        
+        $result = $this->db->query($sql, array($id_user));
+
+        return $result;
 	}
 
 	public function update_user($id_user, $email, $nama, $password, $jenis_kelamin, $foto, $id_kota){

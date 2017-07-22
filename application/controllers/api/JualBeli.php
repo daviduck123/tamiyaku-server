@@ -56,6 +56,7 @@ class JualBeli extends REST_Controller {
             $id_user = $this->input->post('id_user');
             $id_kota = $this->input->post('id_kota');
             $id_kelas = $this->input->post('id_kelas');
+            $id_kategori = $this->input->post('id_kategori');
 
             $this->load->helper('file');
             if (!file_exists('./assets/images/jualbeli/'.$id_user.'/')) {
@@ -72,7 +73,7 @@ class JualBeli extends REST_Controller {
                 {
                     $file = $this->upload->data();
                     $path = file_get_contents($file['full_path']);
-                    $result = $this->JualBeli_Model->insert_jualBeli($nama, $email, $harga, $path, $deskripsi, $id_user, $id_kota, $id_kelas);
+                    $result = $this->JualBeli_Model->insert_jualBeli($nama, $email, $harga, $path, $deskripsi, $id_user, $id_kota, $id_kelas, $id_kategori);
                     if(count($result) > 0){
                         $this->set_response([
                             'status' => TRUE,
@@ -89,7 +90,7 @@ class JualBeli extends REST_Controller {
                     $this->response(array('error' => $error), REST_Controller::HTTP_INTERNAL_SERVER_ERROR);
                 }
             }else{
-                 $result = $this->JualBeli_Model->insert_jualBeli($nama, $email, $harga, NULL, $deskripsi, $id_user, $id_kota, $id_kelas);
+                 $result = $this->JualBeli_Model->insert_jualBeli($nama, $email, $harga, NULL, $deskripsi, $id_user, $id_kota, $id_kelas, $id_kategori);
                     if(count($result) > 0){
                         $this->set_response([
                             'status' => TRUE,
@@ -116,6 +117,7 @@ class JualBeli extends REST_Controller {
             $id_user = $this->input->post('id_user');
             $id_kota = $this->input->post('id_kota');
             $id_kelas = $this->input->post('id_kelas');
+            $id_kategori = $this->input->post('id_kategori');
 
             $this->load->helper('file');
             $config['upload_path'] = './assets/images/jualbeli/'.$id_user.'/';
@@ -129,7 +131,7 @@ class JualBeli extends REST_Controller {
                 {
                     $file = $this->upload->data();
                     $path = file_get_contents($file['full_path']);
-                    $result = $this->JualBeli_Model->update_jualBeli($id_jualbeli, $nama, $harga, $path, $deskripsi, $id_kelas, $id_kota, $id_user);
+                    $result = $this->JualBeli_Model->update_jualBeli($id_jualbeli, $nama, $harga, $path, $deskripsi, $id_kelas, $id_kategori, $id_kota, $id_user);
                     if(count($result) > 0){
                         $this->set_response([
                             'status' => TRUE,
@@ -146,7 +148,7 @@ class JualBeli extends REST_Controller {
                     $this->response(array('error' => $error), REST_Controller::HTTP_INTERNAL_SERVER_ERROR);
                 }
             }else{
-                 $result = $this->JualBeli_Model->update_jualBeli($id_jualbeli, $nama, $harga, NULL, $deskripsi, $id_kelas, $id_kota, $id_user);
+                 $result = $this->JualBeli_Model->update_jualBeli($id_jualbeli, $nama, $harga, NULL, $deskripsi, $id_kelas, $id_kategori, $id_kota, $id_user);
                     if(count($result) > 0){
                         $this->set_response([
                             'status' => TRUE,

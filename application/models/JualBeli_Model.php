@@ -7,7 +7,7 @@ class JualBeli_Model extends CI_Model {
         $this->load->model("Notifikasi_Model");
 	}
 
-	public function insert_jualBeli($nama, $email, $harga, $foto, $deskripsi, $id_user, $id_kota, $id_kelas){
+	public function insert_jualBeli($nama, $email, $harga, $foto, $deskripsi, $id_user, $id_kota, $id_kelas, $id_jualbeli){
 		$sql = "INSERT INTO `jual_beli` (`nama`, `harga`, `email`, ";
 		$values = "VALUES (?,?,?,";
 		$array = array($nama, $harga, $email);
@@ -16,8 +16,8 @@ class JualBeli_Model extends CI_Model {
 			$values .= "?,";
 			array_push($array, $foto);
 		}
-		$sql .= "`deskripsi`, `created_at`, `id_user`, `id_kota`, `id_kelas`) ".$values ."?,NOW(),?,?,?);";
-		array_push($array, $deskripsi, $id_user, $id_kota, $id_kelas);
+		$sql .= "`deskripsi`, `created_at`, `id_user`, `id_kota`, `id_kelas`, `id_jualbeli`) ".$values ."?,NOW(),?,?,?,?);";
+		array_push($array, $deskripsi, $id_user, $id_kota, $id_kelas, $id_jualbeli);
 		$result = $this->db->query($sql, $array);
 
 		$sql2 = "SELECT LAST_INSERT_ID() as id";
@@ -31,9 +31,10 @@ class JualBeli_Model extends CI_Model {
 
 	public function get_all_jualBeli($id_user){
 
-		$sql = "SELECT j.*, u.id as user_id, u.nama as user_nama, u.foto as user_foto, IFNULL(count(k.id),0) as count_komentar
+		$sql = "SELECT j.*, ka.name as kategori_name, u.id as user_id, u.nama as user_nama, u.foto as user_foto, IFNULL(count(k.id),0) as count_komentar
 				FROM jual_beli j
         LEFT JOIN users u ON  u.id = j.id_user
+        LEFT JOIN kategori ka ON  ka.id = j.id_kategori
         LEFT JOIN komentar k ON k.id_jualbeli = j.id";
 		$values = [];
 		$array_kelas = $this->UsersKelas_Model->get_allKelas_byUser($id_user);
@@ -64,10 +65,11 @@ class JualBeli_Model extends CI_Model {
 	}
 
 	public function get_userLapak($id_user){
-		$sql = "SELECT j.*, u.id as user_id, u.nama as user_nama, u.foto as user_foto, IFNULL(count(k.id),0) as count_komentar
+		$sql = "SELECT j.*, ka.name as kategori_name, u.id as user_id, u.nama as user_nama, u.foto as user_foto, IFNULL(count(k.id),0) as count_komentar
 				FROM jual_beli j
 				LEFT JOIN users u ON  u.id = j.id_user
-                LEFT JOIN komentar k ON k.id_jualbeli = j.id
+        LEFT JOIN kategori ka ON  ka.id = j.id_kategori
+        LEFT JOIN komentar k ON k.id_jualbeli = j.id
 				WHERE j.id_user = ?
         GROUP BY j.id
         ORDER BY j.created_at DESC";
@@ -85,9 +87,9 @@ class JualBeli_Model extends CI_Model {
        return $jualbeli2;
 	}
 
-	public function update_jualBeli($id_jualbeli, $nama, $harga, $foto, $deskripsi, $id_kelas, $id_kota, $id_user){
-        $sql="UPDATE `jual_beli` SET `nama`=?,`harga`=?,`deskripsi`=?,`id_kelas`=?,`id_kota`=?";
-        $array=array($nama, $harga, $deskripsi, $id_kelas, $id_kota);
+	public function update_jualBeli($id_jualbeli, $nama, $harga, $foto, $deskripsi, $id_kelas, $id_kategori, $id_kota, $id_user){
+        $sql="UPDATE `jual_beli` SET `nama`=?,`harga`=?,`deskripsi`=?,`id_kelas`=?,`id_kota`=?, `id_kategori` = ?";
+        $array=array($nama, $harga, $deskripsi, $id_kelas, $id_kota, $id_kategori);
         if(isset($foto)){
             $sql .= " ,`foto`=?";
             array_push($array, $foto);

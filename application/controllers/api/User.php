@@ -73,8 +73,29 @@ class User extends REST_Controller {
                 $this->load->helper('security');
                 $password = do_hash($password, "md5");
 
-                $result = $this->User_Model->insert_user($nama, $password, $id_kota, $email, $jenis_kelamin, $path, $array_id_kelas);
+                $this->load->helper('string');
+                $uniqueId = random_string('alnum',12);
+
+                $result = $this->User_Model->insert_user($nama, $password, $id_kota, $email, $uniqueId, $jenis_kelamin, $path, $array_id_kelas);
                 if($result->num_rows() > 0){
+                    $config = Array(
+                    'protocol' => 'smtp',
+                    'smtp_host' => 'smtp.gmail.com',
+                    'smtp_port' => 465,
+                     'smtp_user' => 'mini4wdku@gmail.com', // change it to yours
+                      'smtp_pass' => 'namamu123', // change it to yours
+                    'mailtype'  => 'html', 
+                    'charset'   => 'iso-8859-1'
+                    );
+
+                    $this->load->library('email', $config);
+                    $this->email->to($email);
+
+                    $this->email->subject('Email Verifikasi');
+                    $this->email->message('Welcome to Website Tamiyaku.<br/>'.$nama.' here is the <a href="http://https://www.facebook.com/">activation link.</a><br/><br/>Thank you for joining with us.<br/><br/>Admin Tamiyaku.');
+
+                    $this->email->send();
+
                     $this->set_response([
                         'status' => TRUE,
                         'message' => 'Successfully Insert User'
@@ -267,6 +288,34 @@ class User extends REST_Controller {
                         'message' => 'Failed Update User'
                             ], REST_Controller::HTTP_BAD_REQUEST);
                 }
+            }
+        } catch (Exception $ex) {
+            $this->response(array('error' => $ex->getMessage()), $ex->getCode());
+        }
+    }
+
+    public function updateVerified_get(){
+         try {            
+            $id_user = $this->get('id_user');
+            $user = $this->User_Model->get_infoById($id_user);
+            if (count($user) > 0) {
+                $uniqueId = $this->get('uniqueId');
+                if($uniqueId == $user["uniqueId"]){
+                    $result = $this->User_Model->update_verified($id_user);
+                    if(count($result) > 0){
+                        $this->set_response([
+                            'status' => TRUE,
+                            'message' => 'Successfully Verified User'
+                            ], REST_Controller::HTTP_OK);
+                    } else {
+                        $this->set_response([
+                            'status' => FALSE,
+                            'message' => 'Failed Verified User'
+                                ], REST_Controller::HTTP_BAD_REQUEST);
+                    }
+                }
+            } else {
+                $this->set_response([], REST_Controller::HTTP_OK);
             }
         } catch (Exception $ex) {
             $this->response(array('error' => $ex->getMessage()), $ex->getCode());
