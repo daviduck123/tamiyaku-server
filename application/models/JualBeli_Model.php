@@ -7,7 +7,7 @@ class JualBeli_Model extends CI_Model {
         $this->load->model("Notifikasi_Model");
 	}
 
-	public function insert_jualBeli($nama, $harga, $foto, $deskripsi, $id_user, $id_kota, $id_kelas, $id_jualbeli){
+	public function insert_jualBeli($nama, $harga, $foto, $deskripsi, $id_user, $id_kota, $id_kelas, $id_kategori){
 		$sql = "INSERT INTO `jual_beli` (`nama`, `harga`, ";
 		$values = "VALUES (?,?,";
 		$array = array($nama, $harga, $email);
@@ -16,8 +16,8 @@ class JualBeli_Model extends CI_Model {
 			$values .= "?,";
 			array_push($array, $foto);
 		}
-		$sql .= "`deskripsi`, `created_at`, `id_user`, `id_kota`, `id_kelas`, `id_jualbeli`) ".$values ."?,NOW(),?,?,?,?);";
-		array_push($array, $deskripsi, $id_user, $id_kota, $id_kelas, $id_jualbeli);
+		$sql .= "`deskripsi`, `created_at`, `id_user`, `id_kota`, `id_kelas`, `id_kategori`) ".$values ."?,NOW(),?,?,?,?);";
+		array_push($array, $deskripsi, $id_user, $id_kota, $id_kelas, $id_kategori);
 		$result = $this->db->query($sql, $array);
 
 		$sql2 = "SELECT LAST_INSERT_ID() as id";
