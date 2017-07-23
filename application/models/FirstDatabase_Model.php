@@ -49,16 +49,12 @@ class FirstDatabase_Model extends CI_Model {
             $sql2="CREATE TABLE `kota` (`id` INT NOT NULL AUTO_INCREMENT , `nama` VARCHAR(255) NOT NULL , `created_at` DATETIME NOT NULL , PRIMARY KEY (`id`)) ENGINE = InnoDB;"; 
             $this->db->query($sql2);
 
-            $sql3 = "INSERT INTO `kota` (`nama`, `created_at`) VALUES (?, NOW());";
-            $this->db->query($sql3, array("Surabaya"));
-            $sql3 = "INSERT INTO `kota` (`nama`, `created_at`) VALUES (?, NOW());";
-            $this->db->query($sql3, array("Jakarta"));
-            $sql3 = "INSERT INTO `kota` (`nama`, `created_at`) VALUES (?, NOW());";
-            $this->db->query($sql3, array("Semarang"));
-            $sql3 = "INSERT INTO `kota` (`nama`, `created_at`) VALUES (?, NOW());";
-            $this->db->query($sql3, array("Bandung"));
-            $sql3 = "INSERT INTO `kota` (`nama`, `created_at`) VALUES (?, NOW());";
-            $this->db->query($sql3, array("Denpasar"));
+            $kotas = ["Ambon","Balikpapan","Banda Aceh","Bandar Lampung","Bandung","Banjar","Banjarbaru","Banjarmasin","Batam","Batu","Bau-Bau","Bekasi","Bengkulu","Bima","Binjai","Bitung","Blitar","Bogor","Bontang","Bukittinggi","Cilegon","Cimahi","Cirebon","Denpasar","Depok","Dumai","Gorontalo","Jambi","Jayapura","Kediri","Kendari","Jakarta Barat","Jakarta Pusat","Jakarta Selatan","Jakarta Timur","Jakarta Utara","Kotamobagu","Kupang","Langsa","Lhokseumawe","Lubuklinggau","Madiun","Magelang","Makassar","Malang","Manado","Mataram","Medan","Metro","Meulaboh","Mojokerto","Padang","Padang Sidempuan","Padangpanjang","Pagaralam","Palangkaraya","Palembang","Palopo","Palu","Pangkalpinang","Parepare","Pariaman","Pasuruan","Payakumbuh","Pekalongan","Pekanbaru","Pematangsiantar","Pontianak","Prabumulih","Probolinggo","Purwokerto","Sabang","Salatiga","Samarinda","Sawahlunto","Semarang","Serang","Sibolga","Singkawang","Solok","Sorong","Subulussalam","Sukabumi","Sungai Penuh","Surabaya","Surakarta","Tangerang","Tangerang Selatan","Tanjungbalai","Tanjungpinang","Tarakan","Tasikmalaya","Tebingtinggi","Tegal","Ternate","Tidore Kepulauan","Tomohon","Tual","Yogyakarta"];
+
+            foreach ($kotas as $kota) {
+                $sql3 = "INSERT INTO `kota` (`nama`, `created_at`) VALUES (?, NOW());";
+                $this->db->query($sql3, array($kota));
+            }
         }
     }
 
