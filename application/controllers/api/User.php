@@ -317,9 +317,17 @@ class User extends REST_Controller {
                             'message' => 'Failed Verified User'
                                 ], REST_Controller::HTTP_BAD_REQUEST);
                     }
+                }else{
+                       $this->set_response([
+                            'status' => FALSE,
+                            'message' => 'Failed Verified User'
+                                ], REST_Controller::HTTP_BAD_REQUEST);
                 }
             } else {
-                $this->set_response([], REST_Controller::HTTP_OK);
+                $this->set_response([
+                            'status' => FALSE,
+                            'message' => 'User not found'
+                                ], REST_Controller::HTTP_BAD_REQUEST);
             }
         } catch (Exception $ex) {
             $this->response(array('error' => $ex->getMessage()), $ex->getCode());
