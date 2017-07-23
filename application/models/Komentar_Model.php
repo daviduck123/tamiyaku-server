@@ -94,7 +94,7 @@ class Komentar_Model extends CI_Model {
        return $komentar2;
     } 
 
-    public function update_komentar($id_komentar, $deskripsi, $type, $id_post, $id_event, $id_jualbeli, $id_user){
+    public function update_komentar($id_komentar, $deskripsi, $id_post, $id_event, $id_jualbeli, $id_user){
       $sql="UPDATE `komentar` SET `deskripsi`=?";
       $array=array($deskripsi);
       if(isset($id_post)){

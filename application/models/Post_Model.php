@@ -137,7 +137,7 @@ class Post_Model extends CI_Model {
         
         $result = $this->db->query($sql, $array);
 
-        $this->Notifikasi_Model->insert_notifiksai("telah mengupdate Postingan ".$nama,"blabl.html?id_post=".$id_post,$id_user);
+        $this->Notifikasi_Model->insert_notifiksai("telah mengupdate Postingan ","blabl.html?id_post=".$id_post,$id_user);
 
         return $result;
     }
