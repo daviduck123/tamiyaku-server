@@ -106,7 +106,7 @@ class Grup_Model extends CI_Model {
         $sql="UPDATE `grup` SET `nama`=?,`lat`=?,`lng`=?,`lokasi`=?,`id_kelas`=?,`id_kota`=?";
         $array=array($nama, $lat, $lng, $lokasi, $id_kelas, $id_kota);
         if(isset($foto)){
-            $sql .= " ,`foto`=?,";
+            $sql .= " ,`foto`=? ";
             array_push($array, $foto);
         }
         $sql .= " WHERE id=?";

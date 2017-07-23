@@ -106,16 +106,37 @@ class User_Model extends CI_Model {
 	}
 
 	public function update_user($id_user, $email, $nama, $password, $jenis_kelamin, $foto, $id_kota){
-        $sql="UPDATE `users` SET `email`=?,`nama`=?,`password`=?,`jenis_kelamin`=?,`id_kota`=?";
-        $array=array($nama, $harga, $deskripsi, $id_kelas, $id_kota);
+        $sql="UPDATE `users` SET ";
+        $array=array();
         if(isset($foto)){
-            $sql .= " ,`foto`=?,";
+            $sql .= " `foto`=?,";
             array_push($array, $foto);
         }
-        $sql .= " WHERE id=?";
+         if(isset($email)){
+            $sql .= " `email`=?,";
+            array_push($array, $email);
+        }
+         if(isset($password)){
+            $sql .= " `password`=?,";
+            array_push($array, $password);
+        }
+         if(isset($jenis_kelamin)){
+            $sql .= " `jenis_kelamin`=?,";
+            array_push($array, $jenis_kelamin);
+        }
+        if(isset($id_kota)){
+            $sql .= " `id_kota`=?,";
+            array_push($array, $id_kota);
+        }
+        if(isset($nama)){
+            $sql .= " `nama`=?,";
+            array_push($array, $nama);
+        }
+        $sql2 = substr($sql, 0, -1);
+        $sql2 .= " WHERE id=?";
         array_push($array, $id_user);
         
-        $result = $this->db->query($sql, $array);
+        $result = $this->db->query($sql2, $array);
 
         return $result;
     }

@@ -28,7 +28,32 @@ class Welcome extends CI_Controller {
 		$this->load->view('welcome_message');
 	}
 
-	public function test(){
-		
-	}
+    public function send_email(){
+        $this->load->library("email");
+        $config = Array(
+            'protocol' => 'smtp',
+            'smtp_host' => 'ssl://smtp.googlemail.com',
+            'smtp_port' => 465,
+            'smtp_user' => 'mini4wdku@gmail.com', // change it to yours
+            'smtp_pass' => 'namamu123', // change it to yours
+            'mailtype'  => 'html', 
+            'newline' => "\r\n",
+            'starttls'  => true,
+            'charset'   => 'iso-8859-1'
+            );
+
+            $this->email->initialize($config);
+            $this->email->from('mini4wdku@gmail.com', "Admin Mini4WD");
+            $this->email->to($email);
+
+
+            $this->email->subject('Email Verifikasi');
+            $this->email->message('<html><head></head><body>Welcome to Website Tamiyaku.<br/>'.$nama.' here is the <a href="http://https://www.facebook.com/">activation link.</a><br/><br/>Thank you for joining with us.<br/><br/>Admin Tamiyaku.</body></html>');
+
+            if ($this->email->send()) {
+                echo "Sukses";
+            } else {
+                print_r($this->email->print_debugger());
+            }
+    }
 }

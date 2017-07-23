@@ -78,21 +78,25 @@ class User extends REST_Controller {
 
                 $result = $this->User_Model->insert_user($nama, $password, $id_kota, $email, $uniqueId, $jenis_kelamin, $path, $array_id_kelas);
                 if($result->num_rows() > 0){
+                    $this->load->library('email');
+
                     $config = Array(
-                    'protocol' => 'smtp',
-                    'smtp_host' => 'smtp.gmail.com',
+                    'protocol' => 'mail', //GoDaddy use "mail" or "sendmail", smtp not working
+                    'smtp_host' => 'ssl://smtp.googlemail.com',
                     'smtp_port' => 465,
-                     'smtp_user' => 'mini4wdku@gmail.com', // change it to yours
-                      'smtp_pass' => 'namamu123', // change it to yours
+                    'smtp_user' => 'mini4wdku@gmail.com', // change it to yours
+                    'smtp_pass' => 'namamu123', // change it to yours
                     'mailtype'  => 'html', 
+                    'newline' => "\r\n",
+                    'starttls'  => true,
                     'charset'   => 'iso-8859-1'
                     );
 
-                    $this->load->library('email', $config);
+                    $this->email->initialize($config);
                     $this->email->to($email);
 
                     $this->email->subject('Email Verifikasi');
-                    $this->email->message('Welcome to Website Tamiyaku.<br/>'.$nama.' here is the <a href="http://https://www.facebook.com/">activation link.</a><br/><br/>Thank you for joining with us.<br/><br/>Admin Tamiyaku.');
+                    $this->email->message('Welcome to Website Tamiyaku.<br/>'.$nama.' here is the Activation Code : '. $uniqueId .'.</a><br/><br/>Thank you for joining with us.<br/><br/>Admin Tamiyaku.');
 
                     $this->email->send();
 
@@ -245,8 +249,11 @@ class User extends REST_Controller {
             $id_kelas = $this->input->post('id_kelas');
             $id_kota = $this->input->post('id_kota');            
             $password = $this->input->post('password');
-
             $array_id_kelas = explode(',', $id_kelas);
+            if(isset($password)){
+                $this->load->helper('security');
+                $password = do_hash($password, "md5");
+            }
             
             $this->load->helper('file');
             $config['upload_path'] = './assets/images/users/';
@@ -259,12 +266,9 @@ class User extends REST_Controller {
             {
                 $file = $this->upload->data();
                 $path = file_get_contents($file['full_path']);
-                
-                $this->load->helper('security');
-                $password = do_hash($password, "md5");
 
                 $result = $this->User_Model->update_user($id_user, $email, $nama, $password, $jenis_kelamin, $path, $id_kota);
-                if($result->num_rows() > 0){
+                if(count($result) > 0){
                     $this->set_response([
                         'status' => TRUE,
                         'message' => 'Successfully Update User'
