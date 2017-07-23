@@ -93,17 +93,24 @@ class User extends REST_Controller {
                     );
 
                     $this->email->initialize($config);
+                    $this->email->from($config['smtp_user'], "Admin Mini4WD");
                     $this->email->to($email);
 
                     $this->email->subject('Email Verifikasi');
                     $this->email->message('Welcome to Website Tamiyaku.<br/>'.$nama.' here is the Activation Code : '. $uniqueId .'.</a><br/><br/>Thank you for joining with us.<br/><br/>Admin Tamiyaku.');
 
-                    $this->email->send();
-
-                    $this->set_response([
-                        'status' => TRUE,
-                        'message' => 'Successfully Insert User'
-                            ], REST_Controller::HTTP_OK);
+                    if($this->email->send()){
+                        $this->set_response([
+                                'status' => TRUE,
+                                'message' => 'Successfully Insert User'
+                                    ], REST_Controller::HTTP_OK);
+                    }else{
+                        print_r($this->email->print_debugger());
+                        $this->set_response([
+                                'status' => FALSE,
+                                'message' => 'Failed Send Email'
+                                    ], REST_Controller::HTTP_BAD_REQUEST);
+                     }
                 } else {
                     $this->set_response([
                         'status' => FALSE,
@@ -315,19 +322,19 @@ class User extends REST_Controller {
                         $this->set_response([
                             'status' => FALSE,
                             'message' => 'Failed Verified User'
-                                ], REST_Controller::HTTP_BAD_REQUEST);
+                                ], REST_Controller::HTTP_OK);
                     }
                 }else{
                        $this->set_response([
                             'status' => FALSE,
                             'message' => 'Failed Verified User'
-                                ], REST_Controller::HTTP_BAD_REQUEST);
+                                ], REST_Controller::HTTP_OK);
                 }
             } else {
                 $this->set_response([
                             'status' => FALSE,
                             'message' => 'User not found'
-                                ], REST_Controller::HTTP_BAD_REQUEST);
+                                ], REST_Controller::HTTP_INTERNAL_SERVER_ERROR);
             }
         } catch (Exception $ex) {
             $this->response(array('error' => $ex->getMessage()), $ex->getCode());
