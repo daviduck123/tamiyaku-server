@@ -74,7 +74,7 @@ class User extends REST_Controller {
                 $password = do_hash($password, "md5");
 
                 $this->load->helper('string');
-                $uniqueId = random_string('alnum',12);
+                $uniqueId = random_string('numeric',6);
 
                 $result = $this->User_Model->insert_user($nama, $password, $id_kota, $email, $uniqueId, $jenis_kelamin, $path, $array_id_kelas);
                 if($result->num_rows() > 0){
