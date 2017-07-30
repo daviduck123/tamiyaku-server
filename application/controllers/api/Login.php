@@ -24,7 +24,7 @@ class Login extends REST_Controller {
             $this->load->helper('security');
             if ($email != null && $password != null) {
                 $user = $this->User_Model->get_userByEmail($email);
-                if (count($user) > 0) {
+                if (isset($user['id'])) {
                     $password = do_hash($password, "md5");
                     if ($password == $user["password"]) {
                         $this->set_response([

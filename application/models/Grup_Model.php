@@ -40,7 +40,7 @@ class Grup_Model extends CI_Model {
     }
 
     //for searching purpose
-    public function get_allGrup_byLatLng($lat, $lng, $id_user){
+    public function get_allGrup_byLatLng($lat, $lng, $id_user, $id_kelas){
         $sql ="SELECT g.*, ( 6371 * acos( cos( radians(?) ) * cos( radians( g.lat ) ) * cos( radians( g.lng ) - radians(?) ) + sin( radians(?) ) * sin( radians( g.lat ) ) ) ) AS distance
                 FROM grup g ";
         $values = [];
@@ -48,14 +48,15 @@ class Grup_Model extends CI_Model {
 
         $array_kelas = $this->UsersKelas_Model->get_allKelas_byUser($id_user);
        
-        $id_kelas_sql = "";
-        foreach ($array_kelas as $id_kelas) {
+        $id_kelas_sql = " g.id_kelas = ?";
+        array_push($values, $id_kelas);
+        /*foreach ($array_kelas as $id_kelas) {
             $id_kelas_sql .= "g.id_kelas = ? OR ";
             array_push($values, $id_kelas["id_kelas"]);
         }
         $len = strlen($id_kelas_sql);
         $id_kelas_sql = substr($id_kelas_sql, 0, $len - 3);
-
+*/
         $sql .= "WHERE ".$id_kelas_sql." 
                 HAVING distance < 20"; //in 20 km radius
 

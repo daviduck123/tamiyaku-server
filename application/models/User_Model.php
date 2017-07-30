@@ -18,8 +18,10 @@ class User_Model extends CI_Model {
 		HAVING u.id IS NOT NULL";
 		$hasil = $this->db->query($sql, array($email));
 		$user = $hasil->row_array();
-		$user_foto = $user["foto"];
-        $user['foto'] = base64_encode($user_foto);
+		if(count($user) > 0){
+	        $user_foto = $user["foto"];
+        	$user['foto'] = base64_encode($user_foto);
+		}
 		return $user;
 	}
 
@@ -93,8 +95,10 @@ class User_Model extends CI_Model {
 				WHERE u.id = ?";
 		$hasil = $this->db->query($sql, array($id_user));
 		$user = $hasil->row_array();
-		$user_foto = $user["foto"];
-        $user['foto'] = base64_encode($user_foto);
+		if(count($user) > 0){
+	        $user_foto = $user["foto"];
+        	$user['foto'] = base64_encode($user_foto);
+		}
 		return $user;
 	}
 
