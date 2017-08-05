@@ -68,21 +68,24 @@ class FirstDatabase_Model extends CI_Model {
        if($exist->num_rows() == 0){
             $sql2="CREATE TABLE `kategori` (`id` INT NOT NULL AUTO_INCREMENT , `nama` VARCHAR(255) NOT NULL , `created_at` DATETIME NOT NULL , PRIMARY KEY (`id`)) ENGINE = InnoDB;"; 
             $this->db->query($sql2);
-
             $sql3 = "INSERT INTO `kategori` (`nama`, `created_at`) VALUES (?, NOW());";
-            $this->db->query($sql3, array("Ban / Wheel"));
+            $this->db->query($sql3, array("Ban / Velg"));
             $sql3 = "INSERT INTO `kategori` (`nama`, `created_at`) VALUES (?, NOW());";
             $this->db->query($sql3, array("Baterai"));
+            $sql3 = "INSERT INTO `kategori` (`nama`, `created_at`) VALUES (?, NOW());";
+            $this->db->query($sql3, array("Body"));
+            $sql3 = "INSERT INTO `kategori` (`nama`, `created_at`) VALUES (?, NOW());";
+            $this->db->query($sql3, array("Charger"));
             $sql3 = "INSERT INTO `kategori` (`nama`, `created_at`) VALUES (?, NOW());";
             $this->db->query($sql3, array("Chassis"));
             $sql3 = "INSERT INTO `kategori` (`nama`, `created_at`) VALUES (?, NOW());";
             $this->db->query($sql3, array("Dinamo"));
             $sql3 = "INSERT INTO `kategori` (`nama`, `created_at`) VALUES (?, NOW());";
-            $this->db->query($sql3, array("Plate"));
+            $this->db->query($sql3, array("Kit"));
             $sql3 = "INSERT INTO `kategori` (`nama`, `created_at`) VALUES (?, NOW());";
             $this->db->query($sql3, array("Roller"));
             $sql3 = "INSERT INTO `kategori` (`nama`, `created_at`) VALUES (?, NOW());";
-            $this->db->query($sql3, array("Tamiya"));
+            $this->db->query($sql3, array("Shaft / Baut"));
             $sql3 = "INSERT INTO `kategori` (`nama`, `created_at`) VALUES (?, NOW());";
             $this->db->query($sql3, array("Other"));
         }
