@@ -50,17 +50,29 @@ class Event extends REST_Controller {
 
             $this->load->helper('file');
             if (!file_exists('./assets/images/event/')) {
+                //If not found Directory, then Create
+                //0777 = Hak Akses (ini coba di cari di google, macma2 hak akses nya, masukin bab 5 mgkn gpp)
                 mkdir('./assets/images/event/', 0777, true);
             }
 
+            //canvas
             if(isset($canvas)){
                 $this->load->helper('string');
+                //Biasanya canvas hasil base64 nya
+                //data:image/png;base64,/9j/4AAQSkZJRgABAQAAAQABAA......
                 $img = str_replace('data:image/png;base64,', '', $canvas);
                 $img = str_replace(' ', '+', $img);
+
+                //Setelah dapat code nya, di decode menjadi object, lalu d simpan
                 $data = base64_decode($img);
+                //generate uniqueId, jumlah karakter
                 $uniqueId = random_string('alnum',32);
-                $file = "./assets/images/event/" .$uniqueId. '.png';
+                $file = "./assets/images/event/" .$uniqueId. '.png'; //Buat nama file baru
+
+                //taruh file ke server
                 $success = file_put_contents($file, $data);
+
+                //save
                 $result = $this->Event_Model->insert_event($nama, $tanggal, $tempat, $hadiah1, $hadiah2, $hadiah3, $harga_tiket, $deskripsi, $data, $id_user, $id_kota, $id_kelas);
                 if(count($result) > 0){
                     $this->set_response([
@@ -74,6 +86,7 @@ class Event extends REST_Controller {
                             ], REST_Controller::HTTP_BAD_REQUEST);
                 }
             }else{
+                //image configuration, lokasi dan jenis file yg bisa d terima
                 $config['upload_path'] = './assets/images/event/';
                 $config['allowed_types'] =  'gif|jpg|png';
 
@@ -81,10 +94,11 @@ class Event extends REST_Controller {
                 $this->upload->initialize($config);
                 
                 if(!empty($_FILES['file']['name'])){
+                    //Jika berhasil simpan
                     if($this->upload->do_upload('file'))
                     {
-                        $file = $this->upload->data();
-                        $path = file_get_contents($file['full_path']);
+                        $file = $this->upload->data(); //ambil uploaded data
+                        $path = file_get_contents($file['full_path']); //simpan gambar ke server
                         $result = $this->Event_Model->insert_event($nama, $tanggal, $tempat, $hadiah1, $hadiah2, $hadiah3, $harga_tiket, $deskripsi, $path, $id_user, $id_kota, $id_kelas);
                         if(count($result) > 0){
                             $this->set_response([
@@ -102,6 +116,7 @@ class Event extends REST_Controller {
                         $this->response(array('error' => $error), REST_Controller::HTTP_INTERNAL_SERVER_ERROR);
                     }
                 }else{
+                    //jika ga ad gambar yg d upload
                      $result = $this->Event_Model->insert_event($nama, $tanggal, $tempat, $hadiah1, $hadiah2, $hadiah3, $harga_tiket, $deskripsi, NULL, $id_user, $id_kota, $id_kelas);
                         if(count($result) > 0){
                             $this->set_response([
