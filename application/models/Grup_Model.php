@@ -42,21 +42,15 @@ class Grup_Model extends CI_Model {
     //for searching purpose
     public function get_allGrup_byLatLng($lat, $lng, $id_user, $id_kelas){
         $sql ="SELECT g.*, ( 6371 * acos( cos( radians(?) ) * cos( radians( g.lat ) ) * cos( radians( g.lng ) - radians(?) ) + sin( radians(?) ) * sin( radians( g.lat ) ) ) ) AS distance
-                FROM grup g ";
+                FROM grup g "; //Rumus dari google, banyak yg begini
+                //6371 radius bumi
         $values = [];
         array_push($values, $lat, $lng, $lat);
 
-        $array_kelas = $this->UsersKelas_Model->get_allKelas_byUser($id_user);
-       
+        //Taruh id kelas sesuai yg d pilih       
         $id_kelas_sql = " g.id_kelas = ?";
         array_push($values, $id_kelas);
-        /*foreach ($array_kelas as $id_kelas) {
-            $id_kelas_sql .= "g.id_kelas = ? OR ";
-            array_push($values, $id_kelas["id_kelas"]);
-        }
-        $len = strlen($id_kelas_sql);
-        $id_kelas_sql = substr($id_kelas_sql, 0, $len - 3);
-*/
+
         $sql .= "WHERE ".$id_kelas_sql." 
                 HAVING distance < 20"; //in 20 km radius
 
@@ -64,6 +58,8 @@ class Grup_Model extends CI_Model {
 
         $grups = $hasil -> result_array();
         $grups2 = [];
+
+        //TIap foto harus di encode biar bisa di passing ke json
         foreach($grups as $grup){
           $grup_foto = $grup["foto"];
           $grup['foto'] = base64_encode($grup_foto);
