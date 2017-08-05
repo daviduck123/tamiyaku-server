@@ -177,7 +177,7 @@ class FirstDatabase_Model extends CI_Model {
         $sql = "SHOW TABLES LIKE 'event'";
         $exist = $this->db->query($sql);
         if($exist->num_rows() == 0){
-           $sql2 = "CREATE TABLE `event` ( `id` INT NOT NULL AUTO_INCREMENT , `nama` VARCHAR(255) NOT NULL , `tanggal` DATE NOT NULL , `tempat` VARCHAR(255) NOT NULL , `hadiah1` INT NOT NULL , `hadiah2` INT NULL , `hadiah3` INT NULL , `harga_tiket` INT NOT NULL , `deskripsi` TEXT NOT NULL , `foto` MEDIUMBLOB NULL , `id_user` INT NOT NULL , `id_kota` INT NOT NULL , `id_kelas` INT NOT NULL , `created_at` DATETIME NOT NULL , PRIMARY KEY (`id`), INDEX (`id_user`), INDEX (`id_kelas`), INDEX (`id_kota`)) ENGINE = InnoDB;";
+           $sql2 = "CREATE TABLE `event` ( `id` INT NOT NULL AUTO_INCREMENT , `nama` VARCHAR(255) NOT NULL , `tanggal` DATE NOT NULL , `tempat` VARCHAR(255) NOT NULL , `hadiah1` INT NOT NULL , `hadiah2` INT NULL , `hadiah3` INT NULL , `harga_tiket` INT NOT NULL , `deskripsi` TEXT NOT NULL , `lat` FLOAT NOT NULL , `lng` FLOAT NOT NULL , `foto` MEDIUMBLOB NULL , `id_user` INT NOT NULL , `id_kota` INT NOT NULL , `id_kelas` INT NOT NULL , `created_at` DATETIME NOT NULL , PRIMARY KEY (`id`), INDEX (`id_user`), INDEX (`id_kelas`), INDEX (`id_kota`)) ENGINE = InnoDB;";
             $this->db->query($sql2);
 
             $sql3 = "ALTER TABLE `event` ADD CONSTRAINT `fk_event_user` FOREIGN KEY (`id_user`) REFERENCES `users`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;";

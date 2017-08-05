@@ -9,11 +9,11 @@ class Event_Model extends CI_Model {
     }
 
 
-    public function insert_event($nama, $tanggal, $tempat, $hadiah1, $hadiah2, $hadiah3, $harga_tiket, $deskripsi, 
+    public function insert_event($nama, $tanggal, $tempat, $hadiah1, $hadiah2, $hadiah3, $harga_tiket, $deskripsi,  $lat, $lng,
       $foto, $id_user, $id_kota, $id_kelas){
-        $sql = "INSERT INTO `event` (`nama`, `tanggal`, `tempat`, `hadiah1`, ";
+        $sql = "INSERT INTO `event` (`nama`, `tanggal`, `tempat`, `lat`, `lng`, `hadiah1`, ";
         $values = "VALUES (?,?,?,?,";
-        $array = array($nama, $tanggal, $tempat, $hadiah1);
+        $array = array($nama, $tanggal, $tempat, $lat, $lng, $hadiah1);
         if(isset($hadiah2)){
             $sql .= "`hadiah2`,";
             $values .= "?,";
@@ -64,7 +64,7 @@ class Event_Model extends CI_Model {
         }
         return $events2;
     }
-    public function update_event($id_event, $nama, $tanggal, $tempat, $hadiah1, $hadiah2, $hadiah3, $foto, $harga_tiket, $deskripsi, $id_kota, $id_kelas, $id_user){
+    public function update_event($id_event, $nama, $tanggal, $tempat, $hadiah1, $hadiah2, $hadiah3, $foto, $harga_tiket, $deskripsi, $lat, $lng, $id_kota, $id_kelas, $id_user){
       $sql = "UPDATE `event` SET `nama`=?,`tanggal`=?,`tempat`=?,`hadiah1`=?,`harga_tiket`=?,`deskripsi`=?,`id_kota`=?,`id_kelas`=?";
       $array=array($nama, $tanggal, $tempat, $hadiah1, $harga_tiket, $deskripsi, $id_kota, $id_kelas);
        if(isset($hadiah2)){
@@ -74,6 +74,14 @@ class Event_Model extends CI_Model {
         if(isset($hadiah3)){
             $sql .= ",`hadiah3`=?";
             array_push($array, $hadiah3);
+        }
+        if(isset($lat)){
+            $sql .= ",`lat`=?";
+            array_push($array, $lat);
+        }
+        if(isset($lng)){
+            $sql .= ",`lng`=?";
+            array_push($array, $lng);
         }
         if(isset($foto)){
             $sql .= ",`foto`=?";

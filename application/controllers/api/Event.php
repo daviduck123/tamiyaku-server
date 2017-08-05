@@ -45,6 +45,8 @@ class Event extends REST_Controller {
             $deskripsi = $this->input->post('deskripsi');
             $id_user = $this->input->post('id_user');
             $id_kota = $this->input->post('id_kota');
+            $lat = $this->input->post('lat');
+            $lng = $this->input->post('lng');
             $id_kelas = $this->input->post('id_kelas');
             $canvas = $this->input->post("canvas");
 
@@ -73,7 +75,7 @@ class Event extends REST_Controller {
                 $success = file_put_contents($file, $data);
 
                 //save
-                $result = $this->Event_Model->insert_event($nama, $tanggal, $tempat, $hadiah1, $hadiah2, $hadiah3, $harga_tiket, $deskripsi, $data, $id_user, $id_kota, $id_kelas);
+                $result = $this->Event_Model->insert_event($nama, $tanggal, $tempat, $hadiah1, $hadiah2, $hadiah3, $harga_tiket, $deskripsi, $lat, $lng, $data, $id_user, $id_kota, $id_kelas);
                 if(count($result) > 0){
                     $this->set_response([
                         'status' => TRUE,
@@ -99,7 +101,7 @@ class Event extends REST_Controller {
                     {
                         $file = $this->upload->data(); //ambil uploaded data
                         $path = file_get_contents($file['full_path']); //simpan gambar ke server
-                        $result = $this->Event_Model->insert_event($nama, $tanggal, $tempat, $hadiah1, $hadiah2, $hadiah3, $harga_tiket, $deskripsi, $path, $id_user, $id_kota, $id_kelas);
+                        $result = $this->Event_Model->insert_event($nama, $tanggal, $tempat, $hadiah1, $hadiah2, $hadiah3, $harga_tiket, $deskripsi, $lat, $lng, $path, $id_user, $id_kota, $id_kelas);
                         if(count($result) > 0){
                             $this->set_response([
                                 'status' => TRUE,
@@ -148,6 +150,8 @@ class Event extends REST_Controller {
             $hadiah3 = $this->input->post('hadiah3');
             $harga_tiket = $this->input->post('harga_tiket');
             $deskripsi = $this->input->post('deskripsi');
+            $lat = $this->input->post('lat');
+            $lng = $this->input->post('lng');
             $id_user = $this->input->post('id_user');
             $id_kota = $this->input->post('id_kota');
             $id_kelas = $this->input->post('id_kelas');
@@ -168,7 +172,7 @@ class Event extends REST_Controller {
                 $uniqueId = random_string('alnum',32);
                 $file = "./assets/images/event/" .$uniqueId. '.png';
                 $success = file_put_contents($file, $data);
-                $result = $this->Event_Model->update_event($id_event, $nama, $tanggal, $tempat, $hadiah1, $hadiah2, $hadiah3, $data, $harga_tiket, $deskripsi, $id_kota, $id_kelas, $id_user);
+                $result = $this->Event_Model->update_event($id_event, $nama, $tanggal, $tempat, $hadiah1, $hadiah2, $hadiah3, $data, $harga_tiket, $deskripsi, $lat, $lng, $id_kota, $id_kelas, $id_user);
                 if(count($result) > 0){
                     $this->set_response([
                         'status' => TRUE,
@@ -189,7 +193,7 @@ class Event extends REST_Controller {
                     {
                         $file = $this->upload->data();
                         $path = file_get_contents($file['full_path']);
-                        $result = $this->Event_Model->update_event($id_event, $nama, $tanggal, $tempat, $hadiah1, $hadiah2, $hadiah3, $path, $harga_tiket, $deskripsi, $id_kota, $id_kelas, $id_user);
+                        $result = $this->Event_Model->update_event($id_event, $nama, $tanggal, $tempat, $hadiah1, $hadiah2, $hadiah3, $path, $harga_tiket, $deskripsi, $lat, $lng, $id_kota, $id_kelas, $id_user);
                         if(count($result) > 0){
                             $this->set_response([
                                 'status' => TRUE,
