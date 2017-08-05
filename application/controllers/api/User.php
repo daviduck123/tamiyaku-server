@@ -107,7 +107,7 @@ class User extends REST_Controller {
                     }else{
                         print_r($this->email->print_debugger());
                         $this->set_response([
-                                'status' => FALSE,
+                                'status' => TRUE,
                                 'message' => 'Failed Send Email'
                                     ], REST_Controller::HTTP_BAD_REQUEST);
                      }
@@ -256,11 +256,8 @@ class User extends REST_Controller {
             $id_kelas = $this->input->post('id_kelas');
             $id_kota = $this->input->post('id_kota');            
             $password = $this->input->post('password');
+
             $array_id_kelas = explode(',', $id_kelas);
-            if(isset($password)){
-                $this->load->helper('security');
-                $password = do_hash($password, "md5");
-            }
             
             $this->load->helper('file');
             $config['upload_path'] = './assets/images/users/';
@@ -268,12 +265,16 @@ class User extends REST_Controller {
 
             $this->load->library('upload', $config);
             $this->upload->initialize($config);
+            if(isset($password)){
+                $this->load->helper('security');
+                $password = do_hash($password, "md5");
+            }
             
             if($this->upload->do_upload('file'))
             {
                 $file = $this->upload->data();
                 $path = file_get_contents($file['full_path']);
-
+                
                 $result = $this->User_Model->update_user($id_user, $email, $nama, $password, $jenis_kelamin, $path, $id_kota);
                 if(count($result) > 0){
                     $this->set_response([
@@ -319,22 +320,22 @@ class User extends REST_Controller {
                             'message' => 'Successfully Verified User'
                             ], REST_Controller::HTTP_OK);
                     } else {
-                        $this->set_response([
+                         $this->set_response([
                             'status' => FALSE,
-                            'message' => 'Failed Verified User'
-                                ], REST_Controller::HTTP_OK);
+                            'message' => 'Gagal melakukan verifikasi User'
+                            ], REST_Controller::HTTP_OK);
                     }
                 }else{
                        $this->set_response([
                             'status' => FALSE,
-                            'message' => 'Failed Verified User'
+                            'message' => 'Kode verifikasi tidak benar.'
                                 ], REST_Controller::HTTP_OK);
                 }
             } else {
                 $this->set_response([
                             'status' => FALSE,
                             'message' => 'User not found'
-                                ], REST_Controller::HTTP_INTERNAL_SERVER_ERROR);
+                                ], REST_Controller::HTTP_BAD_REQUEST);
             }
         } catch (Exception $ex) {
             $this->response(array('error' => $ex->getMessage()), $ex->getCode());
