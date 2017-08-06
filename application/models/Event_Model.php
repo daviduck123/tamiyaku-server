@@ -12,7 +12,7 @@ class Event_Model extends CI_Model {
     public function insert_event($nama, $tanggal, $tempat, $hadiah1, $hadiah2, $hadiah3, $harga_tiket, $deskripsi,  $lat, $lng,
       $foto, $id_user, $id_kota, $id_kelas){
         $sql = "INSERT INTO `event` (`nama`, `tanggal`, `tempat`, `lat`, `lng`, `hadiah1`, ";
-        $values = "VALUES (?,?,?,?,";
+        $values = "VALUES (?,?,?,?,?,?,";
         $array = array($nama, $tanggal, $tempat, $lat, $lng, $hadiah1);
         if(isset($hadiah2)){
             $sql .= "`hadiah2`,";
