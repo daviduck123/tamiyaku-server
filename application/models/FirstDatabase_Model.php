@@ -26,7 +26,7 @@ class FirstDatabase_Model extends CI_Model {
         $sql = "SHOW TABLES LIKE 'kelas'";
         $exist = $this->db->query($sql);
         if($exist->num_rows() == 0){
-             $sql2="CREATE TABLE `kelas` ( `id` INT NOT NULL AUTO_INCREMENT , `nama` VARCHAR(255) NOT NULL , `deskripsi` TEXT NOT NULL , PRIMARY KEY (`id`)) ENGINE = InnoDB;";
+             $sql2="CREATE TABLE `kelas` ( `id` INT NOT NULL AUTO_INCREMENT , `nama` VARCHAR(25) NOT NULL , `deskripsi` TEXT NOT NULL , PRIMARY KEY (`id`)) ENGINE = InnoDB;";
              $this->db->query($sql2);
 
 
@@ -46,7 +46,7 @@ class FirstDatabase_Model extends CI_Model {
         $sql = "SHOW TABLES LIKE 'kota'";
         $exist = $this->db->query($sql);
        if($exist->num_rows() == 0){
-            $sql2="CREATE TABLE `kota` (`id` INT NOT NULL AUTO_INCREMENT , `nama` VARCHAR(255) NOT NULL , `lat` FLOAT NOT NULL , `lng` FLOAT NOT NULL , `created_at` DATETIME NOT NULL , PRIMARY KEY (`id`)) ENGINE = InnoDB;"; 
+            $sql2="CREATE TABLE `kota` (`id` INT NOT NULL AUTO_INCREMENT , `nama` VARCHAR(50) NOT NULL , `lat` FLOAT NOT NULL , `lng` FLOAT NOT NULL , `created_at` DATETIME NOT NULL , PRIMARY KEY (`id`)) ENGINE = InnoDB;"; 
             $this->db->query($sql2);
 
             $kota = ["Ambon","Balikpapan","Banda Aceh","Bandar Lampung","Bandung","Banjar","Banjarbaru","Banjarmasin","Batam","Batu","Bau-Bau","Bekasi","Bengkulu","Bima","Binjai","Bitung","Blitar","Bogor","Bontang","Bukittinggi","Cilegon","Cimahi","Cirebon","Denpasar","Depok","Dumai","Gorontalo","Jambi","Jayapura","Kediri","Kendari","Jakarta Barat","Jakarta Pusat","Jakarta Selatan","Jakarta Timur","Jakarta Utara","Kotamobagu","Kupang","Langsa","Lhokseumawe","Lubuklinggau","Madiun","Magelang","Makassar","Malang","Manado","Mataram","Medan","Metro","Meulaboh","Mojokerto","Padang","Padang Sidempuan","Padangpanjang","Pagaralam","Palangkaraya","Palembang","Palopo","Palu","Pangkalpinang","Parepare","Pariaman","Pasuruan","Payakumbuh","Pekalongan","Pekanbaru","Pematangsiantar","Pontianak","Prabumulih","Probolinggo","Purwokerto","Sabang","Salatiga","Samarinda","Sawahlunto","Semarang","Serang","Sibolga","Singkawang","Solok","Sorong","Subulussalam","Sukabumi","Sungai Penuh","Surabaya","Surakarta","Tangerang","Tangerang Selatan","Tanjungbalai","Tanjungpinang","Tarakan","Tasikmalaya","Tebingtinggi","Tegal","Ternate","Tidore Kepulauan","Tomohon","Tual","Yogyakarta"];
@@ -66,7 +66,7 @@ class FirstDatabase_Model extends CI_Model {
         $sql = "SHOW TABLES LIKE 'kategori'";
         $exist = $this->db->query($sql);
        if($exist->num_rows() == 0){
-            $sql2="CREATE TABLE `kategori` (`id` INT NOT NULL AUTO_INCREMENT , `nama` VARCHAR(255) NOT NULL , `created_at` DATETIME NOT NULL , PRIMARY KEY (`id`)) ENGINE = InnoDB;"; 
+            $sql2="CREATE TABLE `kategori` (`id` INT NOT NULL AUTO_INCREMENT , `nama` VARCHAR(50) NOT NULL , `created_at` DATETIME NOT NULL , PRIMARY KEY (`id`)) ENGINE = InnoDB;"; 
             $this->db->query($sql2);
             $sql3 = "INSERT INTO `kategori` (`nama`, `created_at`) VALUES (?, NOW());";
             $this->db->query($sql3, array("Ban / Velg"));
@@ -95,7 +95,7 @@ class FirstDatabase_Model extends CI_Model {
         $sql = "SHOW TABLES LIKE 'users'";
         $exist = $this->db->query($sql);
         if($exist->num_rows() == 0){
-            $sql2="CREATE TABLE `users` ( `id` INT NOT NULL AUTO_INCREMENT , `email` VARCHAR(255) NOT NULL , `nama` VARCHAR(255) NOT NULL ,`password` VARCHAR(255) NOT NULL , `jenis_kelamin` ENUM('Laki-laki','Perempuan') NOT NULL , `foto` MEDIUMBLOB NULL , `uniqueId` VARCHAR(6) NOT NULL , `verified` ENUM('1','0') NOT NULL , `id_kota` INT NULL , `created_at` DATETIME NOT NULL , PRIMARY KEY (`id`), UNIQUE (`email`), INDEX(`id_kota`)) ENGINE = InnoDB;";
+            $sql2="CREATE TABLE `users` ( `id` INT NOT NULL AUTO_INCREMENT , `email` VARCHAR(50) NOT NULL , `nama` VARCHAR(50) NOT NULL ,`password` VARCHAR(25) NOT NULL , `jenis_kelamin` ENUM('Laki-laki','Perempuan') NOT NULL , `foto` MEDIUMBLOB NULL , `uniqueId` VARCHAR(6) NOT NULL , `verified` ENUM('1','0') NOT NULL , `id_kota` INT NULL , `created_at` DATETIME NOT NULL , PRIMARY KEY (`id`), UNIQUE (`email`), INDEX(`id_kota`)) ENGINE = InnoDB;";
             $this->db->query($sql2);
 
             $sql3="ALTER TABLE `users` ADD CONSTRAINT `fk_users_kota` FOREIGN KEY (`id_kota`) REFERENCES `kota`(`id`) ON DELETE RESTRICT ON UPDATE RESTRICT;";
@@ -131,7 +131,7 @@ class FirstDatabase_Model extends CI_Model {
         $sql = "SHOW TABLES LIKE 'grup'";
         $exist = $this->db->query($sql);
         if($exist->num_rows() == 0){
-            $sql2 = "CREATE TABLE `grup` ( `id` INT NOT NULL AUTO_INCREMENT , `nama` VARCHAR(255) NOT NULL ,  `foto` MEDIUMBLOB NULL , `lat` FLOAT NOT NULL , `lng` FLOAT NOT NULL , `lokasi` TEXT NULL , `created_at` DATETIME NOT NULL , `id_user` INT NOT NULL , `id_kelas` INT NOT NULL , `id_kota` INT NOT NULL , PRIMARY KEY (`id`), INDEX (`id_user`), INDEX (`id_kelas`), INDEX (`id_kota`)) ENGINE = InnoDB;";
+            $sql2 = "CREATE TABLE `grup` ( `id` INT NOT NULL AUTO_INCREMENT , `nama` VARCHAR(50) NOT NULL ,  `foto` MEDIUMBLOB NULL , `lat` FLOAT NOT NULL , `lng` FLOAT NOT NULL , `lokasi` TEXT NULL , `created_at` DATETIME NOT NULL , `id_user` INT NOT NULL , `id_kelas` INT NOT NULL , `id_kota` INT NOT NULL , PRIMARY KEY (`id`), INDEX (`id_user`), INDEX (`id_kelas`), INDEX (`id_kota`)) ENGINE = InnoDB;";
             $this->db->query($sql2);
 
             $sql3 = "ALTER TABLE `grup` ADD CONSTRAINT `fk_grup_user` FOREIGN KEY (`id_user`) REFERENCES `users`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;";
@@ -180,7 +180,7 @@ class FirstDatabase_Model extends CI_Model {
         $sql = "SHOW TABLES LIKE 'event'";
         $exist = $this->db->query($sql);
         if($exist->num_rows() == 0){
-           $sql2 = "CREATE TABLE `event` ( `id` INT NOT NULL AUTO_INCREMENT , `nama` VARCHAR(255) NOT NULL , `tanggal` DATE NOT NULL , `tempat` TEXT NOT NULL , `hadiah1` INT(20) NOT NULL , `hadiah2` INT(20) NULL , `hadiah3` INT(20) NULL , `harga_tiket` INT(20) NOT NULL , `deskripsi` TEXT NOT NULL , `lat` FLOAT NOT NULL , `lng` FLOAT NOT NULL , `foto` MEDIUMBLOB NULL , `id_user` INT NOT NULL , `id_kota` INT NOT NULL , `id_kelas` INT NOT NULL , `created_at` DATETIME NOT NULL , PRIMARY KEY (`id`), INDEX (`id_user`), INDEX (`id_kelas`), INDEX (`id_kota`)) ENGINE = InnoDB;";
+           $sql2 = "CREATE TABLE `event` ( `id` INT NOT NULL AUTO_INCREMENT , `nama` VARCHAR(50) NOT NULL , `tanggal` DATE NOT NULL , `tempat` TEXT NOT NULL , `hadiah1` INT(20) NOT NULL , `hadiah2` INT(20) NULL , `hadiah3` INT(20) NULL , `harga_tiket` INT(20) NOT NULL , `deskripsi` TEXT NOT NULL , `lat` FLOAT NOT NULL , `lng` FLOAT NOT NULL , `foto` MEDIUMBLOB NULL , `id_user` INT NOT NULL , `id_kota` INT NOT NULL , `id_kelas` INT NOT NULL , `created_at` DATETIME NOT NULL , PRIMARY KEY (`id`), INDEX (`id_user`), INDEX (`id_kelas`), INDEX (`id_kota`)) ENGINE = InnoDB;";
             $this->db->query($sql2);
 
             $sql3 = "ALTER TABLE `event` ADD CONSTRAINT `fk_event_user` FOREIGN KEY (`id_user`) REFERENCES `users`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;";
@@ -198,7 +198,7 @@ class FirstDatabase_Model extends CI_Model {
         $sql = "SHOW TABLES LIKE 'jual_beli'";
         $exist = $this->db->query($sql);
         if($exist->num_rows() == 0){
-           $sql2 = "CREATE TABLE `jual_beli` ( `id` INT NOT NULL AUTO_INCREMENT , `nama` VARCHAR(255) NOT NULL , `harga` INT(20) NOT NULL , `foto` MEDIUMBLOB NOT NULL , `deskripsi` TEXT NOT NULL , `created_at` DATETIME NOT NULL, `id_user` INT NOT NULL, `id_kelas` INT NOT NULL, `id_kategori` INT NOT NULL, `id_kota` INT NOT NULL , PRIMARY KEY (`id`), INDEX (`id_user`), INDEX (`id_kota`), INDEX (`id_kategori`),  INDEX (`id_kelas`)) ENGINE = InnoDB;";
+           $sql2 = "CREATE TABLE `jual_beli` ( `id` INT NOT NULL AUTO_INCREMENT , `nama` VARCHAR(50) NOT NULL , `harga` INT(20) NOT NULL , `foto` MEDIUMBLOB NOT NULL , `deskripsi` TEXT NOT NULL , `created_at` DATETIME NOT NULL, `id_user` INT NOT NULL, `id_kelas` INT NOT NULL, `id_kategori` INT NOT NULL, `id_kota` INT NOT NULL , PRIMARY KEY (`id`), INDEX (`id_user`), INDEX (`id_kota`), INDEX (`id_kategori`),  INDEX (`id_kelas`)) ENGINE = InnoDB;";
             $this->db->query($sql2);
 
             $sql3 = "ALTER TABLE `jual_beli` ADD CONSTRAINT `fk_jualbeli_user` FOREIGN KEY (`id_user`) REFERENCES `users`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;";
