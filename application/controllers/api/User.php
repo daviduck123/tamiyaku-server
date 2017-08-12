@@ -283,6 +283,7 @@ class User extends REST_Controller {
             $this->load->helper('file');
             $config['upload_path'] = './assets/images/users/';
             $config['allowed_types'] =  'gif|jpg|png';
+            $config['overwrite'] = TRUE;
 
             $this->load->library('upload', $config);
             $this->upload->initialize($config);
@@ -294,19 +295,41 @@ class User extends REST_Controller {
             if($this->upload->do_upload('file'))
             {
                 $file = $this->upload->data();
-                $path = file_get_contents($file['full_path']);
+
+                $this->load->library('image_lib'); 
+
+                $config2['image_library'] = 'gd2';
+                $config2['source_image'] = $file['full_path'];
+                $config2['new_image'] = './assets/images/users/';
+                $config2['maintain_ratio'] = TRUE;
+                $config2['create_thumb'] = FALSE;
+                $config2['width'] = 200;
+                $config2['height'] = 400;
+               
+                $this->image_lib->clear();
+                $this->image_lib->initialize($config2);
+                if (!$this->image_lib->resize())
+                {
+                    print_r($this->image_lib->display_errors());
+                    $this->set_response([
+                                    'status' => TRUE,
+                                    'message' => 'Failed Resize Image'
+                                        ], REST_Controller::HTTP_BAD_REQUEST);
+                }else{
+                    $path = file_get_contents($file['full_path']);
                 
-                $result = $this->User_Model->update_user($id_user, $email, $nama, $password, $jenis_kelamin, $path, $id_kota);
-                if(count($result) > 0){
-                    $this->set_response([
-                        'status' => TRUE,
-                        'message' => 'Successfully Update User'
-                            ], REST_Controller::HTTP_OK);
-                } else {
-                    $this->set_response([
-                        'status' => FALSE,
-                        'message' => 'Failed Update User'
-                            ], REST_Controller::HTTP_BAD_REQUEST);
+                    $result = $this->User_Model->update_user($id_user, $email, $nama, $password, $jenis_kelamin, $path, $id_kota);
+                    if(count($result) > 0){
+                        $this->set_response([
+                            'status' => TRUE,
+                            'message' => 'Successfully Update User'
+                                ], REST_Controller::HTTP_OK);
+                    } else {
+                        $this->set_response([
+                            'status' => FALSE,
+                            'message' => 'Failed Update User'
+                                ], REST_Controller::HTTP_BAD_REQUEST);
+                    }
                 }
             } else {
                 $result = $this->User_Model->update_user($id_user, $email, $nama, $password, $jenis_kelamin, NULL, $id_kota);
