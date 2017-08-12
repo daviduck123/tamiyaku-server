@@ -24,7 +24,7 @@ class JualBeli_Model extends CI_Model {
 		$hasil = $this->db->query($sql2);
 		$id = $hasil->row()->id;
 
-		$this->Notifikasi_Model->insert_notifiksai("telah menjual barang ".$nama,"blabl.html?id_jualbeli=".$id, $id_user);
+		$this->Notifikasi_Model->insert_notifiksai("telah menjual barang ".$nama,"jualbeli" , 0 , $id, $id_user);
 
 		return $hasil;
 	}
@@ -65,17 +65,17 @@ class JualBeli_Model extends CI_Model {
 	}
 
 	public function get_userLapak($id_user){
-		$sql = "SELECT j.*, ka.nama as kategori_name, u.email as user_email, u.id as user_id, u.nama as user_nama, u.foto as user_foto, IFNULL(count(k.id),0) as count_komentar
-				FROM jual_beli j
-				LEFT JOIN users u ON  u.id = j.id_user
+    $sql = "SELECT j.*, ka.nama as kategori_name, u.email as user_email, u.id as user_id, u.nama as user_nama, u.foto as user_foto, IFNULL(count(k.id),0) as count_komentar
+        FROM jual_beli j
+        LEFT JOIN users u ON  u.id = j.id_user
         LEFT JOIN kategori ka ON  ka.id = j.id_kategori
         LEFT JOIN komentar k ON k.id_jualbeli = j.id
-				WHERE j.id_user = ?
+        WHERE j.id_user = ?
         GROUP BY j.id
         ORDER BY j.created_at DESC";
-		$hasil = $this->db->query($sql, array($id_user));
+    $hasil = $this->db->query($sql, array($id_user));
 
-		$jualbeli = $hasil->result_array();
+    $jualbeli = $hasil->result_array();
         $jualbeli2 = [];
         foreach($jualbeli as $jb){
           $jb_foto = $jb["foto"];
@@ -85,7 +85,28 @@ class JualBeli_Model extends CI_Model {
           array_push($jualbeli2, $jb);
        }
        return $jualbeli2;
-	}
+  }
+
+  public function get_jualBeliById($id){
+      $sql = "SELECT j.*, ka.nama as kategori_name, u.email as user_email, u.id as user_id, u.nama as user_nama, u.foto as user_foto, IFNULL(count(k.id),0) as count_komentar
+          FROM jual_beli j
+          LEFT JOIN users u ON  u.id = j.id_user
+          LEFT JOIN kategori ka ON  ka.id = j.id_kategori
+          LEFT JOIN komentar k ON k.id_jualbeli = j.id
+          WHERE j.id = ?
+          GROUP BY j.id
+          ORDER BY j.created_at DESC";
+      $hasil = $this->db->query($sql, array($id));
+
+      $jualbeli = $hasil->row_array();
+      if(count($jualbeli) > 0){
+            $jb_foto = $jualbeli["foto"];
+            $user_foto = $jualbeli["user_foto"];
+            $jualbeli['foto'] = base64_encode($jb_foto);
+            $jualbeli['user_foto'] = base64_encode($user_foto);
+       }
+       return $jualbeli;
+  }
 
 	public function update_jualBeli($id_jualbeli, $nama, $harga, $foto, $deskripsi, $id_kelas, $id_kategori, $id_kota, $id_user){
         $sql="UPDATE `jual_beli` SET `nama`=?,`harga`=?,`deskripsi`=?,`id_kelas`=?,`id_kota`=?, `id_kategori` = ?";
@@ -99,7 +120,7 @@ class JualBeli_Model extends CI_Model {
         
         $result = $this->db->query($sql, $array);
 
-        $this->Notifikasi_Model->insert_notifiksai("telah mengupdate Lapak ".$nama,"blabl.html?id_jualbeli=".$id_jualbeli,$id_user);
+        $this->Notifikasi_Model->insert_notifiksai("telah mengupdate Lapak ".$nama, "jualbeli" , 0 , $id_jualbeli, $id_user);
 
         return $result;
     }

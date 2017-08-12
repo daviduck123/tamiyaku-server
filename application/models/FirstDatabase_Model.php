@@ -240,7 +240,7 @@ class FirstDatabase_Model extends CI_Model {
         $sql = "SHOW TABLES LIKE 'notifikasi'";
         $exist = $this->db->query($sql);
         if($exist->num_rows() == 0){
-           $sql2 = "CREATE TABLE `notifikasi` ( `id` INT NOT NULL AUTO_INCREMENT , `deskripsi` TEXT NOT NULL ,`url` TEXT NULL , `created_at` DATETIME NOT NULL , `id_user` INT NOT NULL , PRIMARY KEY (`id`)) ENGINE = InnoDB;";
+           $sql2 = "CREATE TABLE `notifikasi` ( `id` INT NOT NULL AUTO_INCREMENT , `deskripsi` TEXT NOT NULL , `type` ENUM('event','post','grup','jualbeli','user') NOT NULL, `komen` TINYINT(1) NOT NULL,   `id_tujuan` INT NULL, `created_at` DATETIME NOT NULL , `id_user` INT NOT NULL , PRIMARY KEY (`id`)) ENGINE = InnoDB;";
             $this->db->query($sql2);
 
             $sql3 = "ALTER TABLE `notifikasi` ADD CONSTRAINT `fk_notifkiasi_user` FOREIGN KEY (`id_user`) REFERENCES `users`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;";

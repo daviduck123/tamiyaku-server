@@ -36,19 +36,44 @@ class Post_Model extends CI_Model {
        $hasil = $this->db->query($sql2);
 
        $id = $hasil -> row()->id;
-       $this->Notifikasi_Model->insert_notifiksai("telah menulis status","blabl.html?id_post=".$id, $id_user);
+       $this->Notifikasi_Model->insert_notifiksai("telah menulis status","post", 0, $id, $id_user);
 
        return $id;
     }
 
+    public function get_postById($id){
+        $sql = "SELECT p.*, u.id as user_id, u.nama, u.foto as user_foto, IFNULL(count(k.id),0) as count_komentar
+                FROM post p
+                LEFT JOIN users u ON p.id_user = u.id
+                LEFT JOIN komentar k ON k.id_post = p.id
+                WHERE p.id = ?
+                ORDER BY p.created_at DESC";
+        $hasil = $this->db->query($sql, array($id));
+        $post = $hasil->row_array();
+        if(count($user) > 0){
+          $posting_foto = $post["foto"];
+          $user_foto = $post["user_foto"];
+          $post['foto'] = base64_encode($posting_foto);
+          $post['user_foto'] = base64_encode($user_foto);
+        }
+       return $post;
+    } 
+
     public function get_all_post(){
-       $sql = "SELECT * FROM post ORDER BY created_at DESC";
+      $sql = "SELECT p.*, u.id as user_id, u.nama, u.foto as user_foto, IFNULL(count(k.id),0) as count_komentar
+                FROM post p
+                LEFT JOIN users u ON p.id_user = u.id
+                LEFT JOIN komentar k ON k.id_post = p.id
+                GROUP BY p.id
+                ORDER BY p.created_at DESC";
        $hasil = $this->db->query($sql);
        $post = $hasil->result_array();
        $post2 = [];
        foreach($post as $posting){
           $posting_foto = $posting["foto"];
+          $user_foto = $posting["user_foto"];
           $posting['foto'] = base64_encode($posting_foto);
+          $posting['user_foto'] = base64_encode($user_foto);
           array_push($post2, $posting);
        }
        return $post2;
@@ -137,7 +162,7 @@ class Post_Model extends CI_Model {
         
         $result = $this->db->query($sql, $array);
 
-        $this->Notifikasi_Model->insert_notifiksai("telah mengupdate Postingan ","blabl.html?id_post=".$id_post,$id_user);
+        $this->Notifikasi_Model->insert_notifiksai("telah mengupdate Postingan ","post" , 0 , $id_post, $id_user);
 
         return $result;
     }

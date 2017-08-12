@@ -19,6 +19,20 @@ class Event extends REST_Controller {
         }
     }
 
+    public function getEventById_get(){
+       try {   
+            $id =  $this->get("id");
+            $events = $this->Event_Model->get_eventById($id);
+            if (count($events) > 0) {
+               $this->set_response($events, REST_Controller::HTTP_OK);
+            } else {
+                $this->set_response(NULL, REST_Controller::HTTP_OK);
+            }
+        } catch (Exception $ex) {
+            $this->response(array('error' => $ex->getMessage()), $ex->getCode());
+        }
+    }
+
     public function getAllEvent_get(){
        try {   
             $id_user =  $this->get("id_user");

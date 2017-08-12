@@ -34,7 +34,7 @@ class Grup_Model extends CI_Model {
         //Save User Grup (Member)
         $this->UsersGrup_Model->insert_usersGrup($id_user, $id_grup);
          
-        $this->Notifikasi_Model->insert_notifiksai("telah membuat Grup ".$nama,"blabl.html?id_grup=".$id_grup, $id_user);
+        $this->Notifikasi_Model->insert_notifiksai("telah membuat Grup ".$nama,"grup", 0, $id_grup, $id_user);
 
         return $hasil;
     }
@@ -83,6 +83,20 @@ class Grup_Model extends CI_Model {
         return $grups2;
     }
 
+    public function get_grupById($id){
+        $sql ="SELECT g.*, IFNULL(count(ug.id_user),0) as count_member
+                FROM grup g
+                LEFT JOIN users_grup ug ON ug.id_grup = g.id
+                WHERE g.id = ?";
+        $hasil = $this->db->query($sql, array($id));
+        $grup = $hasil -> row_array();
+        if(count($grup) > 0){
+          $grup_foto = $grup["foto"];
+          $grup['foto'] = base64_encode($grup_foto);
+        }
+        return $grup;
+    }
+
     public function get_grupInfo($id_grup){
         $sql ="SELECT g.*, IFNULL(count(ug.id_user),0) as count_member
                 FROM grup g
@@ -111,7 +125,7 @@ class Grup_Model extends CI_Model {
 
         $result = $this->db->query($sql, $array);
 
-        $this->Notifikasi_Model->insert_notifiksai("telah mengupdate Grup ".$nama,"blabl.html?id_grup=".$id_grup,$id_user);
+        $this->Notifikasi_Model->insert_notifiksai("telah mengupdate Grup ".$nama,"grup" , 0 , $id_grup, $id_user);
 
         return $result;
     }

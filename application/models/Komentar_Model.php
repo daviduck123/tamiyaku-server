@@ -18,20 +18,25 @@ class Komentar_Model extends CI_Model {
           $values .= "?,";
           array_push($array, $id_user);
        }
+
+      $id_tujuan = "";
        if(isset($id_post)){
           $sql = $sql ." `id_post`,";
           $values .= "?,";
           array_push($array, $id_post);
+          $id_tujuan = $id_post;
        }
        if(isset($id_event)){
           $sql = $sql ." `id_event`,";
           $values .= "?,";
           array_push($array, $id_event);
+          $id_tujuan = $id_event;
        }
        if(isset($id_jualbeli)){
           $sql = $sql ." `id_jualbeli`,";
           $values .= "?,";
           array_push($array, $id_jualbeli);
+          $id_tujuan = $id_jualbeli;
        }
        $sql = $sql ."`created_at`) ".$values." NOW());";
 
@@ -41,7 +46,27 @@ class Komentar_Model extends CI_Model {
        $hasil = $this->db->query($sql2);
 
        $id = $hasil->row()->id;
-       $this->Notifikasi_Model->insert_notifiksai("telah menulis komentar di post","blabl.html?id_post=".$id, $id_user);
+
+       $from = "";
+      if(isset($id_post)){
+         $from = "post";
+         $this->load->model("Post_Model");
+         $post = $this->Post_Model->get_postById($id_post);
+         if(count($pots) > 0){
+            if($post["id_grup"] == null){
+              $from = "grup";
+            }
+         }
+      }
+      if(isset($id_event)){
+          $from = "event";
+      }
+      if(isset($id_jualbeli)){
+          $from = "jualbeli";
+      }
+
+
+       $this->Notifikasi_Model->insert_notifiksai("telah menulis komentar di post", $from, 1, $id_tujuan, $id_user);
 
        return $id;
     }

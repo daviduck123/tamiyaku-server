@@ -38,9 +38,29 @@ class Event_Model extends CI_Model {
          $hasil = $this->db->query($sql2);
          $id = $hasil->row()->id;
          
-         $this->Notifikasi_Model->insert_notifiksai("telah membuat Lomba ".$nama,"blabl.html?id_event=".$id,$id_user);
+         $this->Notifikasi_Model->insert_notifiksai("telah membuat Lomba ".$nama, "event", 0, $id, $id_user);
 
          return $id;
+    }
+
+    public function get_eventById($id){
+        $sql = "SELECT e.*, u.id as user_id, u.nama as user_nama, u.foto as user_foto, IFNULL(count(k.id),0) as count_komentar
+                FROM event e
+                LEFT JOIN users u ON e.id_user = u.id
+                LEFT JOIN komentar k ON k.id_event = e.id
+                WHERE e.id = ?
+                GROUP BY e.id
+                ORDER BY e.created_at DESC";
+        $hasil = $this->db->query($sql, array($id));
+        $event = $hasil->row_array();
+        if(count($event) > 0){
+            $event_foto = $event["foto"];
+            $event['foto'] = base64_encode($event_foto);
+
+            $user_foto = $event["user_foto"];
+            $event['user_foto'] = base64_encode($user_foto);
+        }
+        return $event;
     }
 
     public function get_allEventByUserKelas($id_user){
@@ -92,8 +112,7 @@ class Event_Model extends CI_Model {
 
         $result = $this->db->query($sql, $array);
 
-        $this->Notifikasi_Model->insert_notifiksai("telah mengupdate Lomba ".$nama,"blabl.html?id_event=".$id_event,$id_user);
-
+        $this->Notifikasi_Model->insert_notifiksai("telah mengupdate Lomba ".$nama,"event", 0, $id_event, $id_user);
         return $result;
     }
 

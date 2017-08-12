@@ -19,6 +19,20 @@ class JualBeli extends REST_Controller {
         }
     }
 
+    public function getJualBeliById_get(){
+       try {   
+            $id =  $this->get("id");
+            $jualbelis = $this->JualBeli_Model->get_jualBeliById($id);
+            if (count($jualbelis) > 0) {
+               $this->set_response($jualbelis, REST_Controller::HTTP_OK);
+            } else {
+                $this->set_response(NULL, REST_Controller::HTTP_OK);
+            }
+        } catch (Exception $ex) {
+            $this->response(array('error' => $ex->getMessage()), $ex->getCode());
+        }
+    }
+
     public function getAllJualBeli_get(){
        try {   
             $id_user =  $this->get("id_user");

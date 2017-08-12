@@ -27,6 +27,19 @@ class Post extends REST_Controller {
         }
     }
 
+    public function getPostById_get(){
+        try{
+            $result = $this->Post_Model->get_postById($this->get("id"));
+            if (count($result) > 0) {
+               $this->set_response($result, REST_Controller::HTTP_OK);
+            } else {
+                $this->set_response(NULL, REST_Controller::HTTP_OK);
+            }
+        } catch (Exception $ex) {
+            $this->response(array('error' => $ex->getMessage()), $ex->getCode());
+        }
+    }
+
     public function getAllPostByUser_get(){
         try{
             $result = $this->Post_Model->get_post_byIdUser($this->get("id_user"));
