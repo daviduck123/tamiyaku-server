@@ -63,6 +63,7 @@ class JualBeli extends REST_Controller {
             }
             $config['upload_path'] = './assets/images/jualbeli/'.$id_user.'/';
             $config['allowed_types'] =  'gif|jpg|png';
+            $config['overwrite'] = TRUE;
 
             $this->load->library('upload', $config);
             $this->upload->initialize($config);
@@ -71,18 +72,40 @@ class JualBeli extends REST_Controller {
                 if($this->upload->do_upload('file'))
                 {
                     $file = $this->upload->data();
-                    $path = file_get_contents($file['full_path']);
-                    $result = $this->JualBeli_Model->insert_jualBeli($nama, $harga, $path, $deskripsi, $id_user, $id_kota, $id_kelas, $id_kategori);
-                    if(count($result) > 0){
+
+                    $this->load->library('image_lib'); 
+
+                    $config2['image_library'] = 'gd2';
+                    $config2['source_image'] = $file['full_path'];
+                    $config2['new_image'] = './assets/images/jualbeli/'.$id_user.'/';
+                    $config2['maintain_ratio'] = TRUE;
+                    $config2['create_thumb'] = FALSE;
+                    $config2['width'] = 300;
+                    $config2['height'] = 600;
+
+                    $this->image_lib->clear();
+                    $this->image_lib->initialize($config2);
+                    if (!$this->image_lib->resize())
+                    {
+                        print_r($this->image_lib->display_errors());
                         $this->set_response([
-                            'status' => TRUE,
-                            'message' => 'Successfully Create Jual Beli'
-                            ], REST_Controller::HTTP_OK);
-                    } else {
-                        $this->set_response([
-                            'status' => FALSE,
-                            'message' => 'Failed Create Jual Beli'
+                                        'status' => TRUE,
+                                        'message' => 'Failed Resize Image'
+                                            ], REST_Controller::HTTP_BAD_REQUEST);
+                    }else{
+                        $path = file_get_contents($file['full_path']);
+                        $result = $this->JualBeli_Model->insert_jualBeli($nama, $harga, $path, $deskripsi, $id_user, $id_kota, $id_kelas, $id_kategori);
+                        if(count($result) > 0){
+                            $this->set_response([
+                                'status' => TRUE,
+                                'message' => 'Successfully Create Jual Beli'
                                 ], REST_Controller::HTTP_OK);
+                        } else {
+                            $this->set_response([
+                                'status' => FALSE,
+                                'message' => 'Failed Create Jual Beli'
+                                    ], REST_Controller::HTTP_OK);
+                        }
                     }
                 } else {
                     $error = $this->upload->display_errors();
