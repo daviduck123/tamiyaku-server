@@ -50,7 +50,7 @@ class Post_Model extends CI_Model {
                 ORDER BY p.created_at DESC";
         $hasil = $this->db->query($sql, array($id));
         $post = $hasil->row_array();
-        if(count($user) > 0){
+        if(count($post) > 0){
           $posting_foto = $post["foto"];
           $user_foto = $post["user_foto"];
           $post['foto'] = base64_encode($posting_foto);
