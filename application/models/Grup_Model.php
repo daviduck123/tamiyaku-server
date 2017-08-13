@@ -34,7 +34,7 @@ class Grup_Model extends CI_Model {
         //Save User Grup (Member)
         $this->UsersGrup_Model->insert_usersGrup($id_user, $id_grup);
          
-        $this->Notifikasi_Model->insert_notifiksai("telah membuat Grup ".$nama,"grup", 0, $id_grup, $id_user);
+        $this->Notifikasi_Model->insert_notifiksai("telah membuat Grup ".$nama,"grup/".$id_grup, 0, $id_grup, $id_user);
 
         return $hasil;
     }
@@ -125,7 +125,7 @@ class Grup_Model extends CI_Model {
 
         $result = $this->db->query($sql, $array);
 
-        $this->Notifikasi_Model->insert_notifiksai("telah mengupdate Grup ".$nama,"grup" , 0 , $id_grup, $id_user);
+        $this->Notifikasi_Model->insert_notifiksai("telah mengupdate Grup ".$nama,"grup/".$id_grup , 0 , $id_grup, $id_user);
 
         return $result;
     }

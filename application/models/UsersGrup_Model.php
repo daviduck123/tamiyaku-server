@@ -15,7 +15,7 @@ class UsersGrup_Model extends CI_Model {
 		$hasil = $this->db->query($sql2);
 
 		$id = $hasil->row()->id;
-        $this->Notifikasi_Model->insert_notifiksai("telah bergabung ke grup","grup", 0, $id_grup, $id_user);
+        $this->Notifikasi_Model->insert_notifiksai("telah bergabung ke grup","grup/".$id_grup, 0, $id_grup, $id_user);
 
 		return $id;
 	}
@@ -24,7 +24,7 @@ class UsersGrup_Model extends CI_Model {
 		$sql = "DELETE FROM `users_grup` WHERE id_grup=? AND id_user=?;";
 		$result = $this->db->query($sql, array($id_grup, $id_user));
 
-        $this->Notifikasi_Model->insert_notifiksai("telah bergabung ke grup","grup", 0 , $id_grup, $id_user);
+        $this->Notifikasi_Model->insert_notifiksai("telah bergabung ke grup","grup/".$id_grup, 0 , $id_grup, $id_user);
 
 		return $result;
 	}

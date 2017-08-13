@@ -53,8 +53,8 @@ class Komentar_Model extends CI_Model {
          $this->load->model("Post_Model");
          $post = $this->Post_Model->get_postById($id_post);
          if(count($post) > 0){
-            if($post["id_grup"] == null){
-              $from = "grup";
+            if($post["id_grup"] != null){
+              $from = "grup/".$post["id_grup"];
             }
          }
       }
