@@ -98,46 +98,54 @@ class User extends REST_Controller {
                     $this->load->helper('string');
                     $uniqueId = random_string('numeric',6);
 
-                    $result = $this->User_Model->insert_user($nama, $password, $id_kota, $email, $uniqueId, $jenis_kelamin, $path, $array_id_kelas);
-                    if($result->num_rows() > 0){
-                        $this->load->library('email');
-
-                        $config = Array(
-                        'protocol' => 'mail', //GoDaddy use "mail" or "sendmail", smtp not working
-                        'smtp_host' => 'ssl://smtp.googlemail.com',
-                        'smtp_port' => 465,
-                        'smtp_user' => 'mini4wdku@gmail.com', // change it to yours
-                        'smtp_pass' => 'namamu123', // change it to yours
-                        'mailtype'  => 'html', 
-                        'newline' => "\r\n",
-                        'starttls'  => true,
-                        'charset'   => 'iso-8859-1'
-                        );
-
-                        $this->email->initialize($config);
-                        $this->email->from($config['smtp_user'], "Admin Mini4WD");
-                        $this->email->to($email);
-
-                        $this->email->subject('Email Verifikasi');
-                        $this->email->message('Welcome to Website Tamiyaku.<br/>'.$nama.' here is the Activation Code : '. $uniqueId .'.</a><br/><br/>Thank you for joining with us.<br/><br/>Admin Tamiyaku.');
-                        
-                        if($this->email->send()){
-                            $this->set_response([
-                                    'status' => TRUE,
-                                    'message' => 'Successfully Insert User'
-                                        ], REST_Controller::HTTP_OK);
-                        }else{
-                            print_r($this->email->print_debugger());
-                            $this->set_response([
-                                    'status' => TRUE,
-                                    'message' => 'Failed Send Email'
-                                        ], REST_Controller::HTTP_BAD_REQUEST);
-                         }
-                    } else {
+                    $duplicate = $this->User_Model->get_userByemail($email);
+                    if(count($duplicate) > 0){
                         $this->set_response([
                             'status' => FALSE,
-                            'message' => 'Failed Insert User'
+                            'message' => 'Email telah terdaftar'
                                 ], REST_Controller::HTTP_BAD_REQUEST);
+                    }else{
+                        $result = $this->User_Model->insert_user($nama, $password, $id_kota, $email, $uniqueId, $jenis_kelamin, $path, $array_id_kelas);
+                        if($result->num_rows() > 0){
+                            $this->load->library('email');
+
+                            $config = Array(
+                            'protocol' => 'mail', //GoDaddy use "mail" or "sendmail", smtp not working
+                            'smtp_host' => 'ssl://smtp.googlemail.com',
+                            'smtp_port' => 465,
+                            'smtp_user' => 'mini4wdku@gmail.com', // change it to yours
+                            'smtp_pass' => 'namamu123', // change it to yours
+                            'mailtype'  => 'html', 
+                            'newline' => "\r\n",
+                            'starttls'  => true,
+                            'charset'   => 'iso-8859-1'
+                            );
+
+                            $this->email->initialize($config);
+                            $this->email->from($config['smtp_user'], "Admin Mini4WD");
+                            $this->email->to($email);
+
+                            $this->email->subject('Email Verifikasi');
+                            $this->email->message('Welcome to Website Tamiyaku.<br/>'.$nama.' here is the Activation Code : '. $uniqueId .'.</a><br/><br/>Thank you for joining with us.<br/><br/>Admin Tamiyaku.');
+                            
+                            if($this->email->send()){
+                                $this->set_response([
+                                        'status' => TRUE,
+                                        'message' => 'Successfully Insert User'
+                                            ], REST_Controller::HTTP_OK);
+                            }else{
+                                print_r($this->email->print_debugger());
+                                $this->set_response([
+                                        'status' => TRUE,
+                                        'message' => 'Failed Send Email'
+                                            ], REST_Controller::HTTP_BAD_REQUEST);
+                             }
+                        } else {
+                            $this->set_response([
+                                'status' => FALSE,
+                                'message' => 'Failed Insert User'
+                                    ], REST_Controller::HTTP_BAD_REQUEST);
+                        }
                     }
                 }                
             } else {
