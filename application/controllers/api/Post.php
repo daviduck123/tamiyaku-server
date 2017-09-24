@@ -33,7 +33,7 @@ class Post extends REST_Controller {
             if (count($result) > 0) {
                $this->set_response($result, REST_Controller::HTTP_OK);
             } else {
-                $this->set_response(NULL, REST_Controller::HTTP_OK);
+                $this->set_response([], REST_Controller::HTTP_OK);
             }
         } catch (Exception $ex) {
             $this->response(array('error' => $ex->getMessage()), $ex->getCode());

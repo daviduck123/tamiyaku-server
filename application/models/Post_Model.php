@@ -49,14 +49,16 @@ class Post_Model extends CI_Model {
                 WHERE p.id = ?
                 ORDER BY p.created_at DESC";
         $hasil = $this->db->query($sql, array($id));
-        $post = $hasil->row_array();
+        $post = $hasil->result_array();
+        $post2 = [];
         if(count($post) > 0){
           $posting_foto = $post["foto"];
           $user_foto = $post["user_foto"];
           $post['foto'] = base64_encode($posting_foto);
           $post['user_foto'] = base64_encode($user_foto);
+          array_push($post2, $posting);
         }
-       return $post;
+       return $post2;
     } 
 
     public function get_all_post(){
