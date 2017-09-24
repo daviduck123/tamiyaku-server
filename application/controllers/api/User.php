@@ -326,7 +326,7 @@ class User extends REST_Controller {
                 }else{
                     $path = file_get_contents($file['full_path']);
                 
-                    $result = $this->User_Model->update_user($id_user, $email, $nama, $password, $jenis_kelamin, $path, $id_kota);
+                    $result = $this->User_Model->update_user($id_user, $email, $nama, $password, $jenis_kelamin, $path, $id_kota, $array_id_kelas);
                     if(count($result) > 0){
                         $this->set_response([
                             'status' => TRUE,
@@ -340,7 +340,7 @@ class User extends REST_Controller {
                     }
                 }
             } else {
-                $result = $this->User_Model->update_user($id_user, $email, $nama, $password, $jenis_kelamin, NULL, $id_kota);
+                $result = $this->User_Model->update_user($id_user, $email, $nama, $password, $jenis_kelamin, NULL, $id_kota, $array_id_kelas);
                 if(count($result) > 0){
                     $this->set_response([
                         'status' => TRUE,

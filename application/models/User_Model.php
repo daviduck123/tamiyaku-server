@@ -109,7 +109,7 @@ class User_Model extends CI_Model {
         return $result;
 	}
 
-	public function update_user($id_user, $email, $nama, $password, $jenis_kelamin, $foto, $id_kota){
+	public function update_user($id_user, $email, $nama, $password, $jenis_kelamin, $foto, $id_kota, $array_id_kelas){
         $sql="UPDATE `users` SET ";
         $array=array();
         if(isset($foto)){
@@ -142,6 +142,11 @@ class User_Model extends CI_Model {
         
         $result = $this->db->query($sql2, $array);
 
+        $this->UsersKelas_Model->delete_userAndKelas($id_user);
+        
+        foreach ($array_id_kelas as $id_kelas) {
+			$this->UsersKelas_Model->insert_users_Kelas($id_user, $id_kelas);
+		}
         return $result;
     }
 	

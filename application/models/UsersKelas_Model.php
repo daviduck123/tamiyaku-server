@@ -20,4 +20,9 @@ class UsersKelas_Model extends CI_Model {
 		$hasil = $this->db->query($sql, array($id_user));
 		return $hasil->result_array();
 	}
+
+	public function delete_userAndKelas($id_user){
+		$sql = "DELETE FROM users_kelas WHERE id_user = ?";
+		$this->db->query($sql, array($id_user));
+	}
 }
