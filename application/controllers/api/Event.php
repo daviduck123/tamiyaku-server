@@ -270,7 +270,7 @@ class Event extends REST_Controller {
                         $this->response(array('error' => $error), REST_Controller::HTTP_INTERNAL_SERVER_ERROR);
                     }
                 }else{
-                     $result = $this->Event_Model->update_event($id_event, $nama, $tanggal, $tempat, $hadiah1, $hadiah2, $hadiah3, NULL, $harga_tiket, $deskripsi, $id_kota, $id_kelas, $id_user);
+                     $result = $this->Event_Model->update_event($id_event, $nama, $tanggal, $tempat, $hadiah1, $hadiah2, $hadiah3, NULL, $harga_tiket, $deskripsi, $lat, $lng, $id_kota, $id_kelas, $id_user);
                         if(count($result) > 0){
                             $this->set_response([
                                 'status' => TRUE,
